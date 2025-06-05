@@ -12,7 +12,7 @@ PRegEx used to be available for both Windows and Macintosh/macOS, however since 
 
 ## Compiling
 
-Compiling both Xtra versions requires Visual Studio 2017 or later. Instead of opening the Visual Studio solutions in the IDE you can also compile the release versions directly by running the appropriate `make_<vs-studio-version>.cmd` script at the root of the 1.0 resp. 2.0 folder.
+Compiling both Xtra versions requires Visual Studio 2017 or later. Instead of opening the Visual Studio solutions in the IDE you can also compile the release versions directly by running the appropriate `make_<vs-studio-version>.cmd` script at the root of the 1.0 resp. 2.0 folder. However, in Visual Studio 2019 and 2022 this will only work if you have platform toolset v141 (Visual Studio 2017) installed, otherwise you first have to upgrade the toolset to v142 resp. v143 in the project settings.
 
 PRegEx 2.0 uses pcre and iconv libs that have to be compiled with Mingw32/MSYS2. For convenience precompiled versions are provided, so there is no other dependency than Visual Studio. The code for those libs can be found in [pregex-v2.0-rev-0167-20081207.zip](src-org/pregex-v2.0-rev-0167-20081207.zip).
 
