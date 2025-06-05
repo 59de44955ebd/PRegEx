@@ -7,8 +7,8 @@ The xtra used to be available for both Windows and Macintosh/macOS, however sinc
 
 ## Versions
 
-- PRegEx 1.0 supports Director 7 to 10.x.
-- PRegEx 2.0 supports Director 11 and later
+- PRegEx [1.0](1.0/) supports Director 7 to 10.x.
+- PRegEx [2.0](2.0/) supports Director 11 and later
 
 ## Compiling
 
