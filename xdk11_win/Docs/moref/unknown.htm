@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaUnknown</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaUnknown </h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaUnknown <BR>
+  </CODE>Pointer type: <CODE>PIMoaUnknown <BR>
+  </CODE>Inheritance: <CODE>none <BR>
+  </CODE>Header file: <A HREF = "../../include/ moaxtra.h">moaxtra.h</A> <BR>
+<h3>Description </h3>
+<DL>
+  <DT>
+  <DD><BR>
+    <TT>IMoaUnknown</TT> is the
+    root interface for all MOA interfaces. All MOA objects and interfaces
+    inherit the <TT>IMoaUnknown</TT> interface. This interface allows you to query any object--or any
+    interface belonging to an object--for other interfaces of that
+    object. <TT>IMoaUnknown</TT> also supports the reference counting mechanism used to track instances
+    of MOA interfaces and to determine when they can be released from
+    memory. MOA provides a default implementation of this interface,
+    intended to be used by all MOA objects. <BR>
+    <BR>
+    <BR>
+</DL>
+<h3>Methods </h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#AddRef">AddRef()</A> <BR>
+    <A HREF = "#QueryInterface">QueryInterface()</A> <BR>
+    <A HREF = "#Release">Release()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="AddRef">AddRef()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>MoaError AddRef(IMoaUnknown FAR * <I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Instance of a specified interface <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><TT>MoaError</TT>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Increments the reference count of an existing interface. Call
+    this method when passing an existing interface to code that may
+    need to retain the interface for itself. That code becomes responsible
+    for calling <TT>Release()</TT> on the interface when it is through using it. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="QueryInterface">QueryInterface()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>MoaError QueryInterface(IMoaUnknown FAR * <I>This</I>,
+  <DD><BR>
+    ConstIIDPtr <I>pInterfaceID</I>,<BR>
+    void FAR * FAR * <I>ppvObj</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Interface of object being queried <BR>
+    <BR>
+  <DT><CODE><I>pInterfaceID</I></CODE>
+  <DD>IID of interface being requested<BR>
+    <BR>
+  <DT><CODE><I>ppvObj</I></CODE>
+  <DD>Interface pointer of type being requested<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Queries an interface to request another interface provided
+    by the same object. Creates an instance of that interface (if
+    none exists) and increments the reference count of the interface.
+    Returns the result in <TT><I>ppvObj</I></TT>,
+    a previously allocated pointer of the interface type being requested. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Release">Release()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>MoaError Release(IMoaUnknown FAR * <I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Interface instance to be released. <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Decrements the reference count of the interface instance <TT>This</TT>.
+    Releases the instance if its reference count drops to zero. <BR>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

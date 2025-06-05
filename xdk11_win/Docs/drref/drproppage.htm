@@ -1,0 +1,317 @@
+<html><head><title>IMoaDrMovieStage</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A>
+<BR>
+<A HREF = "index.htm"> DR Interfaces</A> | 
+<A HREF = "drmthndx.htm">DR Methods</A> | 
+<A HREF = "drtypndx.htm">DR Types and Misc API</A>
+
+<hr width=45% align=left>
+
+
+<a name="25532"></a>&nbsp;<br>
+<b>Using the Property page interfaces</b>
+<p> The <code><a href="#PropertyPage">IMuiPropertyPage</a></code> 
+  interface is available by calling <code>IMoaCallback::MoaCreateInstance</code>, 
+  with the class identifier <code>CLSID_IMuiPropertyPage</code>, 
+  and the interface identifier <code>IID_IMuiPropertyPage</code>.
+<p> The support interfaces, 
+  <code><a href="#PropertyPageTarget">IMuiPropertyPageTarget</a> </code>and 
+  <code><a href="#PropertyPageInstance">IMuiPropertyPageInstance</a>, </code>are 
+  only obtained when passed as parameters to the methods of the <code>IMuiPropertyPage</code> 
+  interface.
+<p>
+
+The Xtra you create must define and implement a new MOA object that implements the <code>IMuiPropertyPage</code> interface. The MOA object is created and used solely for user interface purposes and can be implemented in a separate authoring Xtra that supplements the playback Xtra. 
+<p> Use 
+  the information in the <a href="../drdg/vdlsyntax.htm">View Description List 
+  File Syntax</a> section to define Property Inspector controls for Xtras that 
+  you create. 
+<p><b>Note: 
+  </b>The <code>IMuiPropertyPage</code> 
+  interface should not be implemented by the asset object.
+<p>
+
+<a name="registry">&nbsp;</a><br>
+<b>Registry setting</b><br>
+
+To set the registry for the <code>IMuiPropertyPage</code> interface, use the <code>AddRegistryEntry</code> method to add the <code>kMuiDictKey_PropPageEntry</code> to your Registry Dict. <p>
+
+<b>Syntax </b><br><code>pRegDict-&gt;Put(kMuiDictKey_PropPageEntry, VDLPath, sizeof(VDLPath), kMuiDictKey_PropPageEntry);</code><p>
+
+<b>Parameter </b><br><code>VDLPath</code> &#32;A string separated by newlines ("\n") that points to a Property page in the Property page tree. For example, if the asset is registered under <code>xtraTypeSymbol</code>, the string would be member\nxtraTypeSymbol.<p>
+
+<b>Description </b><br>When the <code>Register</code> method of the Asset Xtra you have created is called, the MOA object it defines and implements is registered with the <code>IMuiPropertyPage</code> interface using the registry setting <code>kMuiDictKey_PropPageEntry</code>. This key is used by Director to map the <code>IMuiPropertyPage</code> interface in the registry to the Property page it supports. <p>
+
+When Director is launched, it scans the registry and finds registered objects that support the <code>IMuiPropertyPage</code> interface, creates an instance of the objects, and invokes the <code>GetDescriptor</code> method for each object. These object instances remain in existence until Director shuts down. <p>
+
+The first time a user selects an instance of an asset associated with the Asset Xtra, the Property inspector will target the asset by instantiating a Property page from the template provided by the Xtra's <code>GetDescriptor</code> method. <p>
+
+<a name="PropertyPage"></a>&nbsp;<br>
+<b>IMuiPropertyPage</b><p>
+
+Interface ID: <code>IID_IMuiPropertyPage</code><br>
+
+Class ID: <code>CID_IMuiPropertyPage</code><br>
+
+Pointer type: <code>PIMuiPropertyPage</code><br>
+
+Inheritance: <code>IMoaUnknown</code><br>
+
+Header file: muippage.h<p>
+
+<a name="28200">&nbsp;</a><br>
+<b>Description</b><br>
+
+The <code>IMuiPropertyPage</code> interface defines and maintains Property page information for the targeted object or group of objects, using the information in the Xtra's VDL file to map property values to controls, or in the case where the developer sets the controls directly from the C++ code, using the information inside the Xtra. <p>
+
+<a name="23760">&nbsp;</a><br>
+<b>IMuiPropertryPage method summary</b><br>
+
+<code><a href="#23785">GetDescriptor</a></code>&#32;This method is called by Director to retrieve the VDL file data used to describe the Property page associated with the interface. This information is stored in an external VDL file in the props folder, or is returned by the <code>GetDescriptor</code> method.<p>
+
+<code><a href="#23811">SetTarget</a></code>&#32;This method is called by Director when the Property inspector targets an instance of a new media asset supported by the Asset Xtra you have created.&#32;<p>
+
+<code><a href="#23843">ItemClicked</a></code> &#32;This method is called by Director whenever a user changes the value of a control (moves the Slider, clicks a button, changes text in an Edit field) on the Property page associated with the <code>IMuiPropertyPage</code> object.<p>
+
+<code><a href="#23892">UpdateItems</a></code>&#32;This method is called by Director to update the Property page to reflect the state of the currently targeted item(s).<p>
+
+<code><a href="#23922">Idle</a></code>&#32;This method is called by Director when a user changes the value of a control on the Property page associated with the <code>IMuiPropertyPage</code> object. <p>
+
+<a name="23785"></a>&nbsp;<br>
+<b>GetDescriptor</b><p>
+
+<b>Syntax </b><br><code>GetDescriptor(MoaMmValue*</code> <code>pResult</code><code>)</code><p>
+
+<b>Parameters </b><br><b></b><b><code>pResult</code>&#32;Contains the VDL file data provided by the Xtra. </b><br><b>Returns </b><br><code>MoaError</code> is returned in the <code>pResult</code> parameter.<p>
+
+<b>Description </b><br>Called by Director to retrieve the VDL file information used to describe the Property page for the Asset Xtra. The VDL data can be stored in the Xtra's VDL file in the props folder, or can be provided by the Xtra in this function. <p>
+
+This method can be used instead of a separate VDL file, to describe the layout of the Property page. If the Xtra supports this method, it returns a formatted string that describes it's Property page according to the rules of a VDL file. If an Xtra returns data from this method, and there is a matching VDL file in the props folder, the VDL file has precedence.<p>
+
+<a name="23811"></a>&nbsp;<br>
+<b>SetTarget</b><p>
+
+<b>Syntax </b><br><code>void SetTarget&#32;(PIMuiPropertyPageInstance</code>&#32;<code>pPageInstance,</code>
+
+<code>&#32;PIMuiPropertyPageTarget</code>&#32; <code>pTarget</code><code>)</code><p>
+
+<b>Parameters </b><br><code>pPageInstance</code>&#32;The current instance of the Property page as created from the data in a VDL file. <p>
+
+<code>pTarget</code>&#32;The object or group of objects currently targeted by the Property inspector. This parameter can be set to NULL to indicate that the Property page has no target. <p>
+
+<b>Returns </b><br>No return value.<p>
+
+<b>Description </b><br>Called by Director when the Property inspector targets an instance of a new media asset supported by the Asset Xtra you have created. For example, if you created a RealMedia Xtra, and the user selects a RealMedia cast member, the <code>SetTarget</code> method associated with the instance of <code>IMuiPropertyPage</code> created when Director was launched, is invoked.<p>
+
+<a name="23843"></a>&nbsp;<br>
+<b>ItemClicked</b><p>
+
+<b>Syntax </b><br><code>MoaBool ItemClicked&#32;(MoaMmSymbol</code>&#32;<code>itemID,</code>
+
+<code>&#32;ConstPMoaMmValue</code>&#32; <code>pItemValue,</code><br>
+
+<code>&#32;PIMuiPropertyPageInstance&#32;</code><code>pPageInstance,</code>
+
+<code>&#32;PIMuiPropertyPageTarget&#32;</code><code>pTarget)</code><p>
+
+<b>Parameters </b><br><code>itemID</code>&#32;The symbol for the control the user clicked or modified. The symbol is defined in the VDL data for the Property page. <p>
+
+<code>pItemValue</code>&#32;A Moa value representing the new value of the control. For example, if the control is an Edit field, the value is a string representing the contents of the Edit field when the user presses enter. <p>
+
+<code>pPageInstance</code>&#32;The current instance of the Property page. Use this parameter to query the state/value of the controls on the Property page that were not selected by the user, in order to determine the next action.<p>
+
+<code>pTarget</code>&#32;The object or collection of objects currently targeted by the Property inspector. This parameter can be used to set properties for the object(s) using the value of the controls on the Property page. <p>
+
+<b>Returns </b><br>A boolean. Set this to TRUE if you have handled the Property page message and wish to discontinue the VDL property mapping. Set this to FALSE if you want VDL property mapping to continue. <p>
+
+<b>Description </b><br>Called by Director whenever a user changes the value of a control (moves the Slider, clicks a button, changes text in an Edit field) on the Property page associated with the <code>IMuiPropertyPage</code> object. This method allows the Xtra to access controls or fields on the Property page that are not mapped directly to properties in the Xtra, such as buttons that invoke other dialog boxes or behaviors. The property mapping built directly into the VDL file automatically maps controls to property values for most properties; you need only provide special handling for the few special properties that require it. <p>
+
+<a name="23892"></a>&nbsp;<br>
+<b>UpdateItems</b><p>
+
+<b>Syntax </b><br><code>void UpdateItems&#32;(PIMuiPropertyPageInstance&#32;</code><code>pPageInstance,</code>
+
+<code>&#32;&#32;PIMuiPropertyPageTarget&#32;</code><code>pTarget)</code><p>
+
+<b>Parameters </b><br><code>pPageInstance</code>&#32;The current instance of the Property page. Use this parameter to query the state/value of the controls on the Property page that were not selected by the user, in order to determine the next action.<p>
+
+<code>pTarget</code>&#32;The object or collection of objects currently targeted by the Property inspector. This parameter can be used to set properties for the targeted object(s) using the value of the controls on the Property page. <p>
+
+<b>Returns </b><br>No value returned.<p>
+
+<b>Description </b><br>This method is called by Director once an object or group of objects are targeted, or when targeted objects have changed in some way. This method allows the <code>IMuiPropertyPage</code> interface to set specific control values (enabled, visible, and so on) on the Property page according to the current state of the targeted object. <p>
+
+The VDL file for a Property page can take care of simple mappings of property values to controls that do not have additional built in logic, but once the value of a particular control is set from the Xtra's C++ code, the VDL property mapping will not happen for that control, and the state of that control becomes the responsibility of the programmer. Controls do not necessarily retain state information, therefore each time this method is called, it should set the controls it requires.<p>
+
+<a name="23922"></a>&nbsp;<br>
+<b>Idle</b><p>
+
+<b>Syntax </b><br><code>void Idle&#32;(PIMuiPropertyPageInstance&#32;</code><code>pPageInstance,</code>
+
+<code>&#32;&#32;PIMuiPropertyPageTarget&#32;</code><code>pTarget)</code><p>
+
+<b>Parameters </b><br><code>pPageInstance</code>&#32;The current instance of the Property page.<p>
+
+<code>pTarget</code>&#32;The object or collection of objects currently targeted by the Property inspector. <p>
+
+<b>Returns </b><br>No return value.<p>
+
+<b>Description </b><br>This method is periodically called by Director when the <code>IMuiPropertyPage</code> interface is targeting an object, which allows Director to perform ongoing processing, such as animation, sound, and playback.<p>
+
+<a name="PropertyPageTarget"></a>&nbsp;<br>
+<b>IMuiPropertyPageTarget</b><p>
+
+Interface ID: <code>IID_IMuiPropertyPageTarget</code><br>
+
+Class ID: <code>CID_IMuiPropertyPageTarge</code>t<br>
+
+Pointer type: <code>PIMuiPropertyPageTarget</code><br>
+
+Inheritance: <code>IMoaUnknown</code><br>
+
+Header file: muipage.h<p>
+
+<a name="28201">&nbsp;</a><br>
+<b>Description</b><br>
+
+The <code>IMuiPropertyPageTarget</code> interface creates an abstraction layer above the object or group of objects targeted by the Property page. This layer of abstraction creates a generic interface for accessing multiple targeted objects. When the Property page targets multiple objects, a single call to this interface allows you to set the properties for all of the objects at the same time.<p>
+
+<a name="23961">&nbsp;</a><br>
+<b>IMUIPropertyPageTarget method summary</b><br>
+
+<code><a href="#23987">GetTargetCount</a></code>&#32;Determines how many items the Property inspector is currently targeting.<p>
+
+<code><a href="#23988">GetNthTarget</a></code>&#32;Allows developers to access specific individual targeted objects when more than one object is targeted. <p>
+
+<code><a href="#26109">GetProp</a></code>&#32;Returns the value of a particular property for all of the targeted objects. <p>
+
+<code><a href="#23990">SetProp</a></code>&#32;Sets the value of a particular property for all of the targeted objects.<p>
+
+<a name="23987"></a>&nbsp;<br>
+<b>GetTargetCount</b><p>
+
+<b>Syntax </b><br><code>GetTargetCount(PMoaLong</code>&#32;<code>pCount</code><code>)</code><p>
+
+<b>Parameters </b><br><code>pCount</code>&#32;A pointer to a <code>MoaLong</code>.<p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to determine the number of objects currently targeted by the Property inspector.<p>
+
+<a name="23988"></a>&nbsp;<br>
+<b>GetNthTarget</b><p>
+
+<b>Syntax </b><br><code>GetNthTarget(MoaLong</code>&#32;<code>index,</code>
+
+<code>&#32;PIMoaUnknown*&#32;</code><code>ppTarget</code><code>)</code><p>
+
+<b>Parameters </b><br><code>index</code>&#32;The index of the targeted object to be retrieved. Targeted objects use a zero-based index.<p>
+
+<code>ppTarget</code>&#32;A pointer to a <code>PIMoaUnknown*</code> interface for the targeted object (<code>ppTarget</code>) specified in the arguments.<p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to gain access to individual targeted objects. This interface can be queried to provide access for other interfaces such as the <code>IMoaMmXAsset</code> interface, or a private interface supported by the asset.<p>
+
+<a name="26109"></a>&nbsp;<br>
+<b>GetProp</b><p>
+
+<b>Syntax </b><br><code>GetProp(MoaMmSymbol</code>&#32;<code>property,</code>
+
+<code>&#32;PMoaMmValue&#32;</code><code>pResult</code><code>)</code><p>
+
+<b>Parameters </b><br><code>property</code>&#32;A pointer to a specific <code>MoaMmSymbol</code> property.<p>
+
+<code>pResult</code>&#32;The parameter by which the value of the property being queried is returned.<p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to query the value of a particular property for all currently targeted objects. If all of the objects have the same value for the specified property, the value of that property is put into <code>pResult</code>. If all of the objects have different values, the type of <code>pResult</code> is void with a Null value.<p>
+
+<a name="23990"></a>&nbsp;<br>
+<b>SetProp</b><p>
+
+<b>Syntax </b><br><code>SetProp(MoaMmSymbol</code>&#32;<code>property,</code>
+
+<code>&#32;PMoaMmValue&#32;</code><code>pValue</code><code>)</code><p>
+
+<b>Parameters </b><br><code>property</code>&#32;The property to be set.<p>
+
+<code>pValue&#32;</code>A pointer to a value for the property being set.<p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to set the value of a particular property for all of the currently targeted objects. <p>
+
+<a name="PropertyPageInstance"></a>&nbsp;<br>
+<b>IMuiPropertyPageInstance</b><p>
+
+Interface ID: <code>IID_IMuiPropertyPageInstance</code><br>
+
+Class ID: <code>CID_IMuiPropertyPageInstance</code><br>
+
+Pointer type: <code>PIMuiPropertyPageInstance</code><br>
+
+Inheritance: <code>IMoaUnknown</code><br>
+
+Header file: muipage.h<p>
+
+<a name="26175">&nbsp;</a><br>
+<b>Description</b><br>
+
+The <code>IMuiPropertyPageInstance</code> interface is a support interface for the <code>IMuiPropertyPage</code> interface, and represents the current state of the instantiated Property page generated from the VDL data provided by the Xtra or the data in the Xtra's VDL file in the props folder. Use the methods of the <code>IMuiPropertyPageInstance</code> interface to get or set the state or value of specific controls in the <code>UpdateItem</code> or <code>ItemClicked</code> methods of the <code>IMuiPropertyPage</code> interface. <p>
+
+You can use the <code><a href="#24218">SetControlProp</a></code> and <code><a href="#24157">GetControlProp</a></code> methods to set and retrieve the value of a control on the Property page. The developer passes in a symbol specifying a control to query and set, as well as a symbol identifying which control property they wish to set or receive.<p>
+
+<a name="24134">&nbsp;</a><br>
+<b>IMuiPropertyPageInstance method summary</b><br>
+
+<code><a href="#24157">GetControlProp</a></code>&#32;Retrieves the value of a particular property for all currently targeted objects.<p>
+
+<code><a href="#24218">SetControlProp</a></code>&#32;Sets the value for a particular property for all currently targeted objects.<p>
+
+<a name="24157"></a>&nbsp;<br>
+<b>GetControlProp</b><p>
+
+<b>Syntax </b><br><code>GetControl(MoaMmSymbol</code>&#32;<code>controlID,</code>
+
+<code>&#32;MoaMmSymbol</code>&#32;<code>property,</code>
+
+<code>&#32;MoaMmValue</code>&#32;<code>pResult</code><code>)</code><p>
+
+<b>Parameters </b><br><code>controlID</code>&#32;The <code>MoaMmSymbol</code> identifying the control to query. This symbol is specified in the VDL information provided by the Xtra, or in the Xtra's VDL file in the props folder.<p>
+
+<code>property&#32;</code>The <code>MoaMmSymbol</code> identifying the property to retrieve. Predefined properties include: <code>#value</code>,<code> #enabled</code>, <code>#visible</code>, <code>#range</code>, <code>#min</code> and <code>#max</code>.<p>
+
+<code>pResult</code>&#32;Returns the value of the requested control's property. If the <code>#value</code> property is requested, and the control state cannot be determined, <code>pResult</code> is of type void.<p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to retrieve the state/value information on the Property page for the specified property. <p>
+
+<a name="24218"></a>&nbsp;<br>
+<b>SetControlProp</b><p>
+
+<b>Syntax </b><br><code>SetControl(MoaMmSymbol</code>&#32;<code>controlID,</code>
+
+<code>&#32;MoaMmSymbol</code>&#32;<code>property,</code>
+
+<code>&#32;ConstPMoaMmValue</code>&#32;<code>pValue</code><code>)</code><p>
+
+<b>Parameters </b><br><code>controlID</code>&#32;The <code>MoaMmSymbol</code> identifying the control to be set. This symbol is specified in the VDL information provided by the Xtra, or in the Xtra's VDL file in the props folder.<p>
+
+<code>property&#32;</code>The <code>MoaMmSymbol</code> identifying the property to retrieve. Predefined properties include: <code>#value</code>,<code> #enabled</code>, <code>#visible</code>, <code>#range</code>, <code>#min</code> and <code>#max</code>.<p>
+
+<code>pValue&#32;</code>A pointer to the value of the property being set. <p>
+
+<b>Returns </b><br><code>MoaError</code><p>
+
+<b>Description </b><br>Call this method to set the state/value of a control on the Property page. This method is typically called from the <code><a href="#23892">UpdateItems</a></code> method.
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1999-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

@@ -1,0 +1,58 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaMmCuePointCallback</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+<P> <A HREF="../mmdg/index.htm">MM Developer's Guide</A> <BR>
+  <A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A> | <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<HR width=45% align=left>
+<H2><A NAME="IMoaMmCuePointCallback"></A>IMoaMmCuePointCallback</H2>
+<HR width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaMmCuePointCallback<BR>
+  </CODE>Pointer type: <CODE>PIMoaMmCuePointCallback<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A> <BR>
+<P> This interface supports sending cue point notification to a multimedia
+  application.  It consists of one method, GenerateCuePoint(). 
+  This interface is provided as a callback interface, available
+  by calling <CODE>QueryInterface()</CODE> on a MOA object's <CODE>pCallback</CODE> instance variable. <BR>
+<H3>Methods</H3>
+<DL>
+  <DT>
+  <DD><A HREF = "#GenerateCuePoint">GenerateCuePoint()</A>
+</DL>
+<HR width=45% align=left>
+<H3><A NAME="GenerateCuePoint">GenerateCuePoint()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT><CODE>GenerateCuePoint(PIMoaMmCuePointCallback <I>This</I>,</CODE>
+  <DD><CODE>ConstPMoaMmCuePoint <I>pCuePoint) </I>)</CODE>
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmCuePointCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pCuePoint </I></CODE>
+  <DD>ConstPMoaMmCuePoint <BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE> <BR>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>This method provides an Xtra with a way to communicate cue
+    point information back to the host application.  To do so, you
+    allocate <CODE><I>pCuePoint</I></CODE>,
+    a <A HREF="../mmref/mmtypndx.htm#MoaMmCuePoint" >MoaMmCuePoint</A> structure, populate it with information specific to your cue point,
+    then pass it to the application by calling this method.
+</DL>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>

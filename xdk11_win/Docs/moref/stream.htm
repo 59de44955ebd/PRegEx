@@ -1,0 +1,453 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaStream</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaStream</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaStream<BR>
+  </CODE>Pointer type: <CODE>PIMoaStream<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>IMoaStream</TT> interface
+    is designed as a universal interface for streaming data to all
+    MOA-enabled documents. This interface may be implemented for accessing
+    data in a disk file, memory structure, internet site, etc. The <TT>IMoaStream</TT> interface
+    is designed to totally encapsulate the nature of the data being
+    read or written. It provides techniques for random access of the
+    data, though specific implementations may not enable these random
+    access techniques.<BR>
+    <BR>
+    Note: Specific providers of this interface may include certain
+    implementation details worth noting. These distinctions are documented
+    with the XDK for a specific implementation. <BR>
+    <BR>
+</DL>
+<h3>See also</h3>
+<DL>
+  <DT>
+  <DD><A href="motypndx.htm#MOSTRMTYPE">IMoaStream types</A>, <A href="motypndx.htm#MOSTRMCONST">IMoaStream constants</A>, <A href="motypndx.htm#MOSTRMERRS">IMoaStream errors</A>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Opening and closing </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Open">Open()</A> <BR>
+    <A HREF = "#Close">Close()</A>
+</DL>
+<h4>Accessing data </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Read">Read()</A> <BR>
+    <A HREF = "#ReadAhead">ReadAhead()</A>
+</DL>
+<h4>Writing data </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Write">Write()</A> <BR>
+    <A HREF = "#Flush">Flush()</A>
+</DL>
+<h4>Positioning </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetPosition">GetPosition()</A> <BR>
+    <A HREF = "#SetPosition">SetPosition()</A> <BR>
+    <A HREF = "#GetEnd">GetEnd()</A>
+</DL>
+<h4>Determining capabilities </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetModes">GetModes()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Close">Close()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Close(PIMoaStream<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method when through using the stream. It does not
+    necessarily flush the stream; you should explicitly call <TT>Flush()</TT>to
+    force a write of all data. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Flush">Flush()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Flush(PIMoaStream<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Flushes any buffered data stored in the stream. Call this
+    to ensure that data written to the stream is passed all the way
+    through. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetEnd">GetEnd()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetEnd(PIMoaStream<I>This</I>,
+  <DD><BR>
+    MoaStreamPosition FAR *<I>pPos</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pPos</I></CODE>
+  <DD><CODE>MoaStreamPosition FAR *</CODE>Offset of the end of the
+    data <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>The <TT>GetEnd()</TT> method
+    gets the position of the current end-of-stream. Attempting to
+    read past this position will fail. Attempting to write past this
+    position may or may not succeed, depending on the nature of the
+    media. Streams opened with <TT>kMoaStreamSetPositionType_None</TT> may return <TT>kMoaStreamErr_NoSetPosition</TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetModes">GetModes()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetModes(PIMoaStream<I>This</I>,
+  <DD><BR>
+    MoaLong FAR *<I>pAccessMode</I>, <BR>
+    MoaLong FAR *<I>pSetPositionType</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pAccessMode</I></CODE>
+  <DD><CODE>MoaLong FAR *</CODE>Returns the access mode <BR>
+    <BR>
+  <DT><CODE><I>pSetPositionType</I></CODE>
+  <DD><CODE>MoaLong FAR *</CODE>Returns the seek type <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to get the access mode (in <TT><I>pAccessMode</I></TT>)
+    and seek mode (in <TT><I>pSetPositionType</I></TT>)
+    that were specified when <TT>Open()</TT> was called on the <TT>IMoaStream <I>This</I></TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetPosition">GetPosition()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetPosition(PIMoaStream<I>This</I>,
+  <DD><BR>
+    MoaStreamPosition FAR *<I>pPos</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pPos</I></CODE>
+  <DD><CODE>MoaStreamPosition FAR *</CODE>Returns current position <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to acquire, in <TT><I>pPos</I></TT>,
+    the current position in the stream from which reads or writes
+    will take place. Note that this is a 32-bit unsigned integer that
+    is always an absolute offset from the start of the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Open">Open()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Open(PIMoaStream<I>This</I>,
+  <DD><BR>
+    MoaLong<I>accessMode</I>, <BR>
+    MoaLong<I>setPositionType</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>accessMode</I></CODE>
+  <DD><CODE>MoaLong</CODE>Constant specifying the access mode <BR>
+    <BR>
+  <DT><CODE><I>setPositionType</I></CODE>
+  <DD><CODE>MoaLong</CODE>Constant specifying the seek type <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>Open()</TT> method
+    opens the stream for reading or writing. You must open the stream
+    before calling other methods on it. The parameter <TT><I>pAccessMode</I></TT> specifies the access mode (read, write, or read/write). Use one
+    of the access mode constants described below for this parameter. <BR>
+    <BR>
+    The <TT><I>pSetPositionType</I></TT> parameter specifies the seekability provided by <TT>SetPosition()</TT>.
+    Use one of the set position constants described below for this
+    parameter. Providing the appropriate constant enables the stream
+    to optimize for particular seeking needs. However, not all streams
+    support all seekability modes. More specifically, a stream may
+    not support seeking at all, or may support only &quot;expensive&quot;
+    seeking. If you specify an unavailable seek mode, Open() returns
+    an error. <BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Read">Read()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Read(PIMoaStream<I>This</I>,
+  <DD><BR>
+    PMoaVoid<I>pBuf</I>, <BR>
+    MoaStreamCount<I>numToRead</I>, <BR>
+    MoaStreamCount FAR *<I>pNumActuallyRead</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD><CODE>PMoaVoid</CODE>Buffer to read data into <BR>
+    <BR>
+  <DT><CODE><I>numToRead</I></CODE>
+  <DD><CODE>MoaStreamCount</CODE>Data size requested <BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyRead</I></CODE>
+  <DD><CODE>MoaStreamCount FAR *</CODE>Data size delivered <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Call this method to read data from the stream. This method has
+    slightly different semantics depending on the <TT><I>pNumActuallyRead</I></TT> parameter:<BR>
+    <BR>
+    If you pass NULL for <TT><I>pNumActuallyRead</I></TT>,
+    then <TT>Read()</TT> attempts
+    to read exactly <TT>numToRead</TT> bytes from the current position in the stream and copy them into
+    the buffer. If there aren't enough bytes remaining (i.e., you
+    read past the end), <TT>kMoaStreamErr_ReadPastEnd</TT> is returned (whether or not data is copied into the buffer is
+    undefined).<BR>
+    <BR>
+    If you pass a value for <TT><I>pNumActuallyRead</I></TT>,
+    then <TT>Read()</TT> will read
+    as much as can be read &quot;quickly&quot;, perhaps returning <TT><I>pNumActuallyRead</I></TT> &lt; <TT><I>numToRead</I></TT> without an error indication. Reading past the end of the stream
+    will return <TT>kMoaStreamErr_ReadPastEnd</TT> with <TT><I>pNumActuallyRead</I></TT> set correctly. Note that &quot;quickly&quot; is implementation-defined. <BR>
+    <BR>
+    In all cases, if the return value is <TT>kMoaErr_NoErr</TT> or <TT>kMoaStreamErr_ReadPastEnd</TT>,
+    the stream position is set to the first byte past the data read;
+    otherwise, the stream position is unchanged. <BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ReadAhead">ReadAhead()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>ReadAhead(PIMoaStream<I>This</I>,
+  <DD><BR>
+    PMoaVoid<I>pBuf</I>, <BR>
+    MoaStreamCount<I>numToRead</I>, <BR>
+    MoaStreamCount FAR *<I>pNumActuallyRead</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD><CODE>PMoaVoid</CODE>Buffer to read data into <BR>
+    <BR>
+  <DT><CODE><I>numToRead</I></CODE>
+  <DD><CODE>MoaStreamCount</CODE>Data size requested <BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyRead</I></CODE>
+  <DD><CODE>MoaStreamCount FAR *</CODE>Data size delivered <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>This method is similar to <TT>Read()</TT>,
+    except that the stream position is never advanced, even if the
+    read is successful. This call is particularly useful with non-seek
+    (or expensive-seek) streams. Note that you are only guaranteed
+    to be able to read amounts of <TT>kMoaStreamReadAheadLimit</TT> or less (defined as 32); some streams may allow more, but it is
+    not guaranteed. If you ask for more than the stream supports,
+    it will return <TT>kMoaStreamErr_ReadAheadTooFar</TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetPosition">SetPosition()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetPosition(PIMoaStream<I>This</I>,
+  <DD><BR>
+    MoaStreamPosition<I>pos</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pos</I></CODE>
+  <DD><CODE>MoaStreamPosition</CODE>New position requested <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to set the position in the stream from which
+    subsequent reads or writes will begin. The <TT><I>pos</I></TT> specified is a 32-bit unsigned integer that is always an absolute
+    offset from the start of the stream. Note: it is legal to set
+    the position outside the end of the stream; however, an attempt
+    to read from such a position will return an error. Note: streams
+    opened with <TT>kMoaStreamSetPositionType_None</TT> will always return <TT>kMoaStreamErr_NoSetPosition</TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Write">Write()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Write(PIMoaStream<I>This</I>,
+  <DD><BR>
+    PMoaVoid<I>pBuf</I>, <BR>
+    MoaStreamCount<I>numToWrite</I>, <BR>
+    MoaStreamCount FAR *<I>pNumActuallyWritten</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD><CODE>PMoaVoid</CODE>Buffer to write data from <BR>
+    <BR>
+  <DT><CODE><I>numToWrite</I></CODE>
+  <DD><CODE>MoaStreamCount</CODE>Data size to be delivered <BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyWritten</I></CODE>
+  <DD><CODE>MoaStreamCount FAR *</CODE>Data size delivered <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to write data to the stream <TT><I>This</I></TT>.
+    This method attempts to write <TT><I>numToWrite</I></TT> bytes to the current position in the stream and advances the stream
+    position by that number of bytes. An attempt to write past the
+    end of the stream extends the stream length before writing (if
+    possible). If the write is successful, the stream position is
+    set to the first byte past the data written. If the write is unsuccessful,
+    the stream position is unchanged. If <TT><I>pNumActuallyWritten</I></TT> is not NULL, it will be set to the number of bytes actually written. <BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

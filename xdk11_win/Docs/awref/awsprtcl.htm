@@ -1,0 +1,214 @@
+<html><head><title>IMoaAwSpriteCallback</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<A HREF = "../awdg/index.htm"> AW Developer's Guide </A> | <A HREF = "index.htm"> AW Interfaces </A> | <A HREF = "awmthndx.htm"> AW Methods</A> | <A HREF = "awtypndx.htm">AW Types and Misc API </A><BR>
+
+<BR>
+
+<hr width=45% align=left>
+
+<h2><A name = "IMoaAwSpriteCallback">IMoaAwSpriteCallback</A></h2><hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaAwSpriteCallback</CODE><BR>
+
+Pointer type: <CODE>PIMoaAwSpriteCallback</CODE><BR>
+
+Inheritance: <A HREF = "../moref/unknown.htm"><CODE>IMoaUnknown</CODE></A><BR>
+
+Header file: <A HREF = "../../../includes/awiservc.h">awiservc.h</A><BR>
+
+
+
+<DL><DT><DD>This interface provides Authorware specific callback services for <A HREF = "../mmdg/mmdgc2.htm">Sprite Xtras</A>.  
+
+Specifically, it provides a mechanism for 
+
+Sprite Xtras to define Authorware events and to generate those events at runtime.  Any Sprite Xtra that
+
+uses this interface must implement the <A HREF = "awevntsn.htm">IMoaAwEventSender</A> interface 
+
+in its Asset class.  For more information on implementing
+
+authorware events, see the <A HREF = "../awdg/index.htm">Authorware Developer's Guide</A><BR>.
+
+</DL>
+
+
+
+<h3>Methods</h3>
+
+<!MethodListBegin>
+
+<h4>Accessing the piece
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#GetPiece">GetPiece()</A>
+
+</DL><!mcPiece>
+
+<!mcMiscBegin><h4>Event sending</h4>
+
+<DL>
+
+<DD><A HREF = "#SendSpriteEvent">SendSpriteEvent()</A>
+
+<BR><A HREF = "#SendSpriteEventWithReply">SendSpriteEventWithReply()</A>
+
+
+
+</DL><!mcMiscellaneou>
+
+<!MethodListEnd></DL>
+
+<hr width=45% align=left><h3><A name = "GetPiece">GetPiece()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetPiece(PIMoaAwSpriteCallback <I>This</I>, <BR>
+
+<DD>PIMoaAwPiece FAR *  <I>ppIMoaAwPiece</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwSpriteCallback</CODE> interface<BR><BR>
+
+<DT><CODE><I>ppIMoaAwPiece</I></CODE><DD>Pointer to the returned interface<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Returns an interface that can be used to access the piece to which this sprite belongs.
+</DL><BR>
+
+
+<hr width=45% align=left><h3><A name = "SendSpriteEvent">SendSpriteEvent()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SendSpriteEvent(PIMoaAwSpriteCallback <I>This</I>, <BR>
+
+<DD>MoaMmSymbol <I>eventName</I>, <BR>
+
+MoaLong <I>nArgs</I>, <BR>
+
+PMoaMmValue  <I>pArgs</I>)</CODE></DL><BR>
+
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwSpriteCallback</CODE> interface<BR><BR>
+
+<DT><CODE><I>eventName</I></CODE><DD>Symbol for this event; e.g., "#mouseClick"<BR><BR>
+
+<DT><CODE><I>nArgs</I></CODE><DD>Number of arguments in <tt><i>pArgs</i></tt><BR><BR>
+
+<DT><CODE><I>pArgs</I></CODE><DD>Pointer to list of arguments passed with the event<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR>
+
+</TABLE>
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Sends an event to Authorware without expecting a reply.
+
+
+
+</DL><BR>
+
+
+
+<hr width=45% align=left><h3><A name = "SendSpriteEventWithReply">SendSpriteEventWithReply()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SendSpriteEventWithReply(PIMoaAwSpriteCallback <I>This</I>, <BR>
+
+<DD>MoaMmSymbol <I>eventName</I>, <BR>
+
+MoaLong <I>nArgs</I>, <BR>
+
+PMoaMmValue  <I>pArgs</I>, <BR>
+
+PMoaVoid   <I>replyRefcon</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwSpriteCallback</CODE> interface<BR><BR>
+
+<DT><CODE><I>eventName</I></CODE><DD>Symbol naming this event; for example, #mouseClick"<BR><BR>
+
+<DT><CODE><I>nArgs</I></CODE><DD>Number of arguments in <tt><i>pArgs</i></tt><BR><BR>
+
+<DT><CODE><I>pArgs</I></CODE><DD>Pointer to list of arguments passed with the event<BR><BR>
+
+<DT><CODE><I>replyRefcon</I></CODE><DD>Data passed back to <tt>HandleReply</tt> method of <tt><i>pSender</i></tt><BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+</TD></TR>
+</TABLE>
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+Sends an event to Authorware, expecting a reply.  The reply is sent by calling the
+
+<A HREF="awevntsn.htm#HandleReply">HandleReply()</A> method of the <CODE>IMoaAwEventSender</CODE> interface implemented by the sender's Asset class.
+</DL><BR>
+
+
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1996-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

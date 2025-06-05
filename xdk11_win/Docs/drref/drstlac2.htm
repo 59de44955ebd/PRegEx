@@ -1,0 +1,91 @@
+<html><head><title>IMoaDrStyleAccess2</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body  bgcolor = "#ffffff" link = "#337299" slink = "000000" vlink="b24c00">
+
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A>
+<BR>
+<A HREF = "index.htm"> DR Interfaces</A> | 
+<A HREF = "drmthndx.htm">DR Methods</A> | 
+<A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+
+<H2><A name = "IMoaDrStyleAccess2">IMoaDrStyleAccess2</A></H2>
+
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaDrStyleAccess2</CODE><BR>
+Pointer type: <CODE>PIMoaDrStyleAccess2</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/driservc.h">driservc.h</A><BR>
+
+<DL><DT><h4>Methods</H4>
+<DD><!MethodListBegin>
+<DD><A HREF = "#GetFontNumber">GetFontNumber()</A>
+<BR><A HREF = "#GetFontName">GetFontName()</A>
+
+<!mcMiscellaneou>
+
+<!MethodListEnd></DL>
+
+
+
+<hr width=45% align=left><h3><A name = "GetFontName">GetFontName()</A></H3>
+<DL><DT><h4>Syntax</H4><DD><CODE>
+<DL><DT>GetFontName(PIMoaDrStyleAccess2 <I>This</I>, <BR>
+<DD>MoaLong <I>fontNumber</I>, <BR>
+PMoaChar <I>pFontName</I>, <BR>
+MoaLong <I>maxLen</I>, <BR>
+PIMoaDrCast   <I>pCast)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</H4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrStyleAccess2</CODE> interface<BR><BR>
+<DT><CODE><I>fontNumber</I></CODE><DD>Number of the font of interest<BR><BR>
+<DT><CODE><I>pFontName</I></CODE><DD>Pointer to a buffer to receive a null-terminated C string for the name of the font<BR><BR>
+<DT><CODE><I>maxLen</I></CODE><DD>Size of the string buffer at <tt>pFontName</tt><BR><BR>
+<DT><CODE><I>pCast)</I></CODE><DD>pointer to the director cast storing the font information we are accessing<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</H4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</H4><DD>
+
+Gets the font name associated with a font identification number.  This
+identification number corresponds to values in the <tt>"scrpFont" </tt>field of
+the <tt>ScrpSTElement</tt> sub-structure in <tt>moaTEStyles</tt>. This method
+is equivalent to Macintosh <tt>GetFontName()</tt> toolbox call.
+</DL><BR>
+
+
+
+<hr width=45% align=left><h3><A name = "GetFontNumber">GetFontNumber()</A></H3>
+<DL><DT><h4>Syntax</H4><DD><CODE>
+<DL><DT>GetFontNumber(PIMoaDrStyleAccess2 <I>This</I>, <BR>
+<DD>PMoaChar <I>pFontName</I>, <BR>
+MoaLong FAR * <I>pFontNumber</I>, <BR>
+PIMoaDrCast   <I>pCast)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</H4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrStyleAccess2</CODE> interface<BR><BR>
+<DT><CODE><I>pFontName</I></CODE><DD>Pointer to a C null-terminated C string containing the name of the font of interest. Case is not significant.<BR><BR>
+<DT><CODE><I>pFontNumber</I></CODE><DD>Pointer to a <tt>MoaLong</tt>  to receive the font number corresponding with <tt>pFontName</tt><BR><BR>
+<DT><CODE><I>pCast)</I></CODE><DD>pointer to the director cast storing the font information we are accessing<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</H4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</H4><DD>
+
+Gets the font identification number associated with a font name string.  This
+identification number corresponds to values in the <tt>"scrpFont"</tt> field of
+the <tt>ScrpSTElement </tt>sub-structure in <tt>moaTEStyles</tt>.  This method
+is equivalent to the Macintosh <tt>GetFNum() </tt>toolbox call.  Currently this
+method always returns <tt>kMoaErr_NoErr</tt>.
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>
+

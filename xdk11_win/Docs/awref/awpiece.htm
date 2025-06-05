@@ -1,0 +1,930 @@
+<html><head><title>IMoaAwPiece</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<A HREF = "../awdg/index.htm"> AW Developer's Guide </A> | <A HREF = "index.htm"> AW Interfaces </A> | <A HREF = "awmthndx.htm"> AW Methods</A> | <A HREF = "awtypndx.htm">AW Types and Misc API </A><BR>
+
+<BR>
+
+<hr width=45% align=left>
+
+<h2><A name = "IMoaAwPiece">IMoaAwPiece</A></h2>
+
+<hr width=45% align=left>
+
+<BR>
+
+
+
+Interface ID: <CODE>IID_IMoaAwPiece</CODE><BR>
+
+Pointer type: <CODE>PIMoaAwPiece</CODE><BR>
+
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+
+Header file: <A HREF = "../../../includes/awiservc.h">awiservc.h</A><BR>
+
+
+
+<DL><DT><h3>Description</h3><DD>
+
+
+
+The <tt>IMoaAwPiece</tt> interface provides the Authorware piece specific
+
+MOA services. These include methods which deal with expressions, variables,
+
+palettes, file location, and imaging support.
+
+
+
+</DL><BR>
+
+
+
+<h3>Methods</h3>
+
+<!MethodListBegin>
+
+<h4>Media
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#GetMediaBitmap">GetMediaBitmap()</A>
+
+<BR><A HREF = "#GetMediaImage">GetMediaImage()</A>
+
+
+
+</DL><!mcMedia>
+
+
+
+<h4>Expressions
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#EvalExpression">EvalExpression()</A>
+
+<BR><A HREF = "#GetIconId">GetIconId()</A>
+
+
+
+</DL><!mcExpressions>
+
+
+
+<h4>Variables
+
+
+
+</h4>
+
+<dl>
+
+<DD><A HREF = "#GetVariable">GetVariable()</A>
+
+<BR><A HREF = "#SetVariable">SetVariable()</A>
+
+
+
+</DL><!mcVariables>
+
+
+
+<h4>Palette
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#GetPalette">GetPalette()</A>
+
+<BR><A HREF = "#SetPalette">SetPalette()</A>
+
+
+
+<BR><A HREF = "#ResetPalette">ResetPalette()</A>
+
+
+
+</DL><!mcPalette>
+
+
+
+<h4>File Location
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#ResolveFileName">ResolveFileName()</A>
+
+</DL><!mcFileLocation>
+
+
+
+<h4>Imaging support
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#GetPresentationWindowGC">GetPresentationWindowGC()</A>
+
+</DL><!mcImagingsupport>
+
+<!mcMiscBegin><DD><DL><DT><h4>Event sending</h4>
+
+
+
+<DD><A HREF = "#SendEvent">SendEvent()</A>
+
+<BR><A HREF = "#SendEventWithReply">SendEventWithReply()</A>
+
+
+
+</DL><!mcMiscellaneou>
+
+
+
+<!MethodListEnd></DL>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "EvalExpression">EvalExpression()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>EvalExpression(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>ConstPMoaChar  <I>pExpression</I>, <BR>
+
+PMoaMmValue  <I>pResult</I>, <BR>
+
+MoaAwExprFlags  <I>exprAttribs</I>, <BR>
+
+MoaLong  FAR  <I>*pErrStart</I>, <BR>
+
+MoaLong  FAR  <I>*pErrEnd</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>pExpression</I></CODE><DD>Pointer to string containing expression<BR><BR>
+
+<DT><CODE><I>pResult</I></CODE><DD>Pointer for returning result of texpression<BR><BR>
+
+<DT><CODE><I>exprAttribs</I></CODE><DD>Flag trepresenting  attributes of expression including <tt>kMoaAwExprFlag_IsScript</tt><BR><BR>
+
+<DT><CODE><I>*pErrStart</I></CODE><DD>Pointer to starting location of invalid text in the expression<BR><BR>
+
+<DT><CODE><I>*pErrEnd</I></CODE><DD>Pointer to ending location of invalid text in the expression<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355> Function call succeeded
+
+</TD></TR></TABLE>
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Evaluates an expression or script supplied as a string and returns the result.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetIconId">GetIconId()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetIconId(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>ConstPMoaChar  <I>pIconTitle</I>, <BR>
+
+PMoaAwIconId  <I>pIconId</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>pIconTitle</I></CODE><DD>Pointer to string containing icon title<BR><BR>
+
+<DT><CODE><I>pIconId</I></CODE><DD>Pointer to icon ID<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Looks up the unique identificaiton number assigned to the icon whose title
+
+is at <tt>pIconTitle</tt>.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetMediaBitmap">GetMediaBitmap()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetMediaBitmap(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>MoaMmWinHandle <I>*bitmap</I>, <BR>
+
+MoaMmHpal  <I>palette</I>, <BR>
+
+MoaAwIconId  <I>iconId</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>*bitmap</I></CODE><DD>Handle for returning the bitmap<BR><BR>
+
+<DT><CODE><I>palette</I></CODE><DD>Handle to the palette for the bitmap (Windows only)<BR><BR>
+
+<DT><CODE><I>iconId</I></CODE><DD>ID of icon whose media is being accessed<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD>kMoaErr_NoErr if function call succeeded
+
+
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Return the media of the given display icon in bitmap format, as a dib on windows or a pict on the mac.
+
+The palette parameter is ignored on the Macintosh.
+
+On windows if no palette is passed it will use the default palette.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetMediaImage">GetMediaImage()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetMediaImage(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>MoaMmWinHandle <I>*image</I>, <BR>
+
+MoaAwIconId  <I>iconId</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>*image</I></CODE><DD>Handle to the image<BR><BR>
+
+<DT><CODE><I>iconId</I></CODE><DD>ID of icon whose media is being accessed<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Return the media of the given display icon in vector format, as a metafile on windows or a 
+
+pict on the mac
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetPalette">GetPalette()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetPalette(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>PMoaMmHpal  <I>phPal</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>phPal</I></CODE><DD>Pointer to handle of currently active palette<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Gets a handle of the currently active palette.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetPresentationWindowGC">GetPresentationWindowGC()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetPresentationWindowGC(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>PIMoaMmGC FAR *  <I>ppWindowGC</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>ppWindowGC</I></CODE><DD>Pointer to graphics context interface of presentation window<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Returns the graphic context for the presentation window.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetVariable">GetVariable()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetVariable(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>ConstPMoaChar  <I>pVarName</I>, <BR>
+
+MoaAwIconId  <I>atIconId</I>, <BR>
+
+PMoaMmValue  <I>pValue</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>pVarName</I></CODE><DD>Pointer to string containing variable name<BR><BR>
+
+<DT><CODE><I>atIconId</I></CODE><DD>ID of an @-reference icon (optional)<BR><BR>
+
+<DT><CODE><I>pValue</I></CODE><DD>Pointer to value returned for the variable<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Gets the value of a variable, passing in its name and optionally the id of
+
+an @-reference icon.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "ResetPalette">ResetPalette()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>ResetPalette(PIMoaAwPiece <I>This</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "ResolveFileName">ResolveFileName()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>ResolveFileName(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>ConstPMoaChar  <I>pFileName</I>, <BR>
+
+PMoaChar  <I>pPathName</I>, <BR>
+
+MoaLong  <I>maxLen</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>pFileName</I></CODE><DD>Pointer to string containing file name<BR><BR>
+
+<DT><CODE><I>pPathName</I></CODE><DD>Pointer to path name<BR><BR>
+
+<DT><CODE><I>maxLen</I></CODE><DD>Maximum length of <tt><i>pPathName</i></tt><BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR>
+
+
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_FileNotFound</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>File not found
+
+</TD></TR>
+
+
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP"
+
+WIDTH=235><TT>kMoaErr_OutOfMem</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Out of memory
+
+</TD></TR>
+
+</TABLE>
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Tries to find the file specified in <tt><i>pFileName</i></tt> using the
+
+active search path and
+
+returns it in <tt><i>pPathName</i></tt> up to <tt><i>maxLen </i></tt>bytes.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "SendEvent">SendEvent()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SendEvent(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>MoaMmSymbol <I>eventName</I>, <BR>
+
+PIMoaAwEventSender <I>pSender</I>, <BR>
+
+MoaLong <I>nArgs</I>, <BR>
+
+PMoaMmValue <I>pArgs</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>eventName</I></CODE><DD>Event name symbol; e.g., #mouseClick<BR><BR>
+
+<DT><CODE><I>pSender</I></CODE><DD>Pointer to interface of event sender<BR><BR>
+
+<DT><CODE><I>nArgs</I></CODE><DD>Number of arguments provided in the <tt><i>pArgs</i></tt> list<BR><BR>
+
+<DT><CODE><I>pArgs</I></CODE><DD>Pointer to the first of the list of arguments to be passed to along with the event<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR></TABLE>
+
+
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Sends an event to the piece.  The sender icon id of this event will be
+
+tagged as coming from the icon
+
+associated with this sprite/asset.  Authorware queues up the event and
+
+processes it asynchronously.
+
+The call returns immediately.  No reply is expected by the sender and the
+
+sender's <tt>HandleReply()</tt> method
+
+will not be called for this event, even if a reply is generated for it from
+
+Authorware.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "SendEventWithReply">SendEventWithReply()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SendEventWithReply(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>MoaMmSymbol <I>eventName</I>, <BR>
+
+PIMoaAwEventSender <I>pSender</I>, <BR>
+
+MoaLong <I>nArgs</I>, <BR>
+
+PMoaMmValue <I>pArgs</I>, <BR>
+
+PMoaVoid <I>replyRefcon</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>eventName</I></CODE><DD>Event name symbol: e.g., #mouseClick<BR><BR>
+
+<DT><CODE><I>pSender</I></CODE><DD>Pointer to interface of event sender<BR><BR>
+
+<DT><CODE><I>nArgs</I></CODE><DD>Number of arguments in the <tt><i>pArgs</i></tt> list<BR><BR>
+
+<DT><CODE><I>pArgs</I></CODE><DD>Pointer to list of arguments passed with event<BR><BR>
+
+<DT><CODE><I>replyRefcon</I></CODE><DD>Data passed back to <tt>HandleReply</tt> method of <tt><i>pSender</i></tt><BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR></TABLE>
+
+
+
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Sends an event to the piece.  The sender icon id of this event will be
+
+tagged as coming from the icon
+
+associated with this sprite/asset.  Authorware queues up the event and
+
+processes it asynchronously.
+
+The call returns immediately.  The reply is returned by calling the <CODE><I>pSender</I></CODE> 
+
+interface's <A HREF = "awevntsn.htm#HandleReply"><tt>IMoaAwEventSender::HandleReply()</tt></A> method.
+
+
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "SetPalette">SetPalette()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SetPalette(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>MoaMmHpal  <I>hPal</I>, <BR>
+
+MoaBool  <I>raw</I>, <BR>
+
+MoaLong  <I>sysColors</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>hPal</I></CODE><DD>Handle to the palette<BR><BR>
+
+<DT><CODE><I>raw</I></CODE><DD>TRUE if the supplied palette is to be used as supplied<BR><BR>
+
+<DT><CODE><I>sysColors</I></CODE><DD>Value specifying how static system colors are handled:  SP_STATIC, SP_NOSTATIC, SP_PIECE, SP_DEFAULT<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Sets the current palette for the piece.  If <tt><i>raw</i></tt> is TRUE,
+
+the palette is used as supplied, otherwise Authorware applies its palette
+
+transformation. <tt><i>sysColors</i></tt> specifies how to handle
+
+the static system colors; it can have one of the following values:
+
+SP_STATIC, SP_NOSTATIC, SP_PIECE, SP_DEFAULT.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "SetVariable">SetVariable()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>SetVariable(PIMoaAwPiece <I>This</I>, <BR>
+
+<DD>ConstPMoaChar  <I>pVarName</I>, <BR>
+
+MoaAwIconId  <I>atIconId</I>, <BR>
+
+MoaBoolParam  <I>createVar</I>, <BR>
+
+PMoaMmValue  <I>pValue</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPiece</CODE> interface<BR><BR>
+
+<DT><CODE><I>pVarName</I></CODE><DD>Pointer to string containing a variable name<BR><BR>
+
+<DT><CODE><I>atIconId</I></CODE><DD>ID of an @-reference icon (optional)<BR><BR>
+
+<DT><CODE><I>createVar</I></CODE><DD>TRUE to create a new temporary variable, FALSE otherwise<BR><BR>
+
+<DT><CODE><I>pValue</I></CODE><DD>Pointer to value to which to set the variable<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Sets the value of a variable.  Pass in the variable name and optionally the
+
+id of an @-reference icon.
+
+If you want to create a new temporary variable, pass TRUE as
+
+<tt><i>createVar</i></tt>.
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1996-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

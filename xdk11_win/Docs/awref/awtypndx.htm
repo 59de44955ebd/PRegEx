@@ -1,0 +1,175 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>MacromediaOpen Architecture</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+
+</HEAD>
+<BODY>
+
+<P>
+<A HREF="index.htm">AW Interfaces</A> | <A HREF="awmthndx.htm">AW Methods</A>
+| <A HREF="../awdg/index.htm">AW Developer's Guide</A>
+<HR width=45% align=left>
+
+<H2><A NAME="_Toc350934112">Authorware
+API</A> Reference</H2>
+
+<HR width=45% align=left>
+
+<H3><A NAME="AWTYPS">Authorware Types</A>
+</H3>
+
+<P>
+Defined in: awtypes.h
+<HR width=45% align=left>
+
+<H4>Icon id types </H4>
+
+<H5><A NAME="MoaAwIconId">MoaAwIconId</A>,
+<BR>
+PMoaAwIconId</H5>
+
+<P>
+<TT>MoaAwIconId MoaLong</TT> representing the identifier of an
+icon
+<P>
+<TT>PMoaAwIconId </TT>Pointer to the <TT>MoaAwIconId</TT>
+<HR width=45% align=left>
+
+<H4>Palette types</H4>
+
+<P>
+Used for get/set palette operations.
+<H5><A NAME="MoaMmHpal">MoaMmHpal</A>,
+<BR>
+PMoaMmHpal</H5>
+
+<P>
+<TT>MoaMmHpal R</TT>epresents the palette type: <TT>HPALETTE </TT>for
+Windows, <TT>PaletteHandle</TT> for Macintosh
+<P>
+<TT>PMoaMmHpal</TT> Pointer to a <TT>MoaMmHpal<BR>
+</TT>
+<HR width=45% align=left>
+
+<H3><A NAME="AWNIDS">Authorware Notification
+IDs</A></H3>
+
+<P>
+Defined in: awiservc.h
+<HR width=45% align=left>
+
+<P>
+<TABLE  BORDER="2">
+<TR><TD WIDTH=252><B>Notification ID</B></TD><TD WIDTH=252><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=252>NID_AwNPaletteChanged</TD><TD WIDTH=252>Palette changed
+</TD></TR>
+
+<TR><TD WIDTH=252>NID_AwNStep</TD><TD WIDTH=252>Animation loop stepped
+</TD></TR>
+
+<TR><TD WIDTH=252>NID_AwNIdle</TD><TD WIDTH=252>Service background process 
+</TD></TR>
+
+</TABLE>
+
+<P>
+Notification events are sent to Xtras that implement the <A HREF="../moref/montfcln.htm">IMoaNotificationClient</A>
+interface and that subscribe to specific events through the <A HREF="../moref/montfctn.htm">IMoaNotification</A>
+callback interface. 
+<HR width=45% align=left>
+
+<H3><A NAME="AWCONS">Authorware Constants</A>
+</H3>
+
+<P>
+Defined in: awtypes.h
+<HR width=45% align=left>
+
+<H4>Expression compiler flags</H4>
+
+<P>
+Expression compiler flags for <TT>IMoaAwAssetCallback::StoreExpression()</TT>.
+<P>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=210><B>Name</B></TD><TD WIDTH=294><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=210><CODE>kMoaAwExprFlags_None</CODE></TD><TD WIDTH=294><TT>0</TT> 
+</TD></TR>
+
+<TR><TD WIDTH=210><TT>kMoaAwExprFlags_IsScript</TT></TD><TD WIDTH=294><TT>1</TT>
+</TD></TR>
+
+</TABLE>
+
+<HR width=45% align=left>
+
+<H3><A NAME="AWERRS">Authorware error
+codes</A> </H3>
+
+<P>
+Defined in: awtypes.h<BR>
+
+<HR width=45% align=left>
+
+<P>
+<TT>kMoaAwErr_Base</TT> Base value of Authorware error codes<BR>
+<TT>kMoaAwErr_ExprTooLong<BR>
+kMoaAwErr_TokenTooLong<BR>
+kMoaAwErr_MissingQuote<BR>
+kMoaAwErr_UnknownOperator<BR>
+kMoaAwErr_SyntaxError<BR>
+kMoaAwErr_OperatorError<BR>
+kMoaAwErr_BadTestFunction<BR>
+kMoaAwErr_MissingRParen<BR>
+kMoaAwErr_MissingLParen<BR>
+kMoaAwErr_StackOverflow<BR>
+kMoaAwErr_ExprNoMem<BR>
+kMoaAwErr_CantAssign<BR>
+kMoaAwErr_NeedAssign<BR>
+kMoaAwErr_OperandMissing<BR>
+kMoaAwErr_TooManyFcnArgs<BR>
+kMoaAwErr_VarRequired<BR>
+kMoaAwErr_NeedFcnOrAssign<BR>
+kMoaAwErr_InternalErr<BR>
+kMoaAwErr_ExprExpected<BR>
+kMoaAwErr_UcdCallbackError<BR>
+kMoaAwErr_UndefinedFunction<BR>
+kMoaAwErr_UndefinedVariable<BR>
+kMoaAwErr_UndefinedIcon<BR>
+kMoaAwErr_CantAtSysVar<BR>
+kMoaAwErr_CantAtUserVar<BR>
+kMoaAwErr_TitleNotUnique<BR>
+kMoaAwErr_NameTooLong<BR>
+kMoaAwErr_ReservedTitle<BR>
+kMoaAwErr_TooFewFcnArgs<BR>
+kMoaAwErr_NotEmbedable<BR>
+kMoaAwErr_ReservedWord<BR>
+kMoaAwErr_CantUseAtInLib<BR>
+kMoaAwErr_MissingStatement<BR>
+kMoaAwErr_MissingIf<BR>
+kMoaAwErr_MissingThen<BR>
+kMoaAwErr_MissingEnd<BR>
+kMoaAwErr_MissingEol<BR>
+kMoaAwErr_MissingWhileOrWith<BR>
+kMoaAwErr_MissingRepeat<BR>
+kMoaAwErr_BadRepeatWith<BR>
+kMoaAwErr_NotInRepeat<BR>
+kMoaAwErr_MissingArgList<BR>
+kMoaAwErr_BadSymbol<BR>
+kMoaAwErr_BadList<BR>
+kMoaAwErr_MissingRBracket<BR>
+kMoaAwErr_BadSubscript<BR>
+kMoaAwErr_MissingRecord<BR>
+kMoaAwErr_RecordManagerError<BR>
+</TT>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+
+</HTML>

@@ -1,0 +1,212 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaMmPropOwner</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<P> <A HREF="../mmdg/index.htm">MM Developer's Guide</A> <BR>
+  <A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A> | <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaMmPropOwner</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaMmPropOwner<BR>
+  </CODE>Pointer type: <CODE>PIMoaMmPropOwner<BR>
+  </CODE>Inheritance: <A HREF = "../moref/unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    <TT>IMoaMmPropOwner</TT> is
+    the base interface for multimedia interfaces that support properties.
+    This interface provides a general mechanism for defining and specifying
+    a variety of properties. Interfaces inheriting from <TT>IMoaMmPropOwner</TT> can be found throughout this API.<BR>
+    <BR>
+    The Xtra interfaces <TT>IMoaMmXAsset</TT> and <TT>IMoaMmXSpriteActor</TT> inherit from this interface. This enables Xtra developers to define
+    custom properties for their media assets.<BR>
+    <BR>
+    Various objects in Director provide interfaces that inherit from <TT>IMoaMmPropOwner</TT>. The
+    categories of properties defined in Director include:<BR>
+    <BR>
+    <UL>
+      <LI>player
+      <LI>movie
+      <LI>cast properties
+      <LI>cast member
+      <LI>score access
+      <LI>score frame
+      <LI>score sound
+      <LI>score sprite <BR>
+    </UL>
+    <BR>
+    For a complete listing of Director properties and their values,
+    see &quot;Properties&quot; in the <A HREF="../drref/drtypndx.htm"><I>Director Types and Miscellaneous API</I></A>. <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Property owner methods </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetProp">GetProp()</A> <BR>
+    <A HREF = "#SetProp">SetProp()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetProp">GetProp()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetProp(PIMoaMmPropOwner<I>This</I>,
+  <DD>MoaMmSymbol<I>symbol</I>, <BR>
+    PMoaMmValue<I>pPropValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmPropOwner</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>symbol</I></CODE>
+  <DD><CODE>MoaMmSymbol</CODE>Symbol representing the property whose
+    value to retrieve <BR>
+    <BR>
+  <DT><CODE><I>pPropValue</I></CODE>
+  <DD><CODE>PMoaMmValue</CODE>Pointer to <TT>MoaMmValue</TT> to retrieve property value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <TABLE BORDER="2">
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_NoErr</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Property exists and value was returned </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_BadParam</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Invalid <TT><I>pPropValue</I></TT> passed in </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Property isn't supported by this class </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_InternalError</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Property exists but couldn't get due to internal error </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_NoMemForString</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Couldn't allocate memory for string value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_OutOfMem</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=377>Couldn't allocate memory for other value data </TD>
+      </TR>
+    </TABLE>
+</DL>
+<BR>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the current value of the property represented by <TT><I>symbol</I></TT>,
+    and returns it in <TT><I>pPropValue</I></TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetProp">SetProp()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetProp(PIMoaMmPropOwner<I>This</I>,
+  <DD>MoaMmSymbol<I>symbol</I>, <BR>
+    ConstPMoaMmValue<I>pPropValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmPropOwner</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>symbol</I></CODE>
+  <DD><CODE>MoaMmSymbol</CODE>Symbol representing the property whose
+    value to retrieve <BR>
+    <BR>
+  <DT><CODE><I>pPropValue</I></CODE>
+  <DD><CODE>ConstPMoaMmValue</CODE>Pointer to <TT>MoaMmValue</TT> to retrieve property value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <TABLE BORDER="2">
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaErr_NoErr</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Property exists and value was set </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaErr_BadParam</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Invalid <TT><I>pPropValue</I> </TT>passed in </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_PropertyNotFound</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Property isn't supported by this class </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_InternalError</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Property exists, value ok, failed due to internal error </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_NoMemForString</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Couldn't allocate memory for setting string value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaErr_OutOfMem</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Couldn't allocate memory for setting other value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_IntegerExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: integer value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_SymbolExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: symbol value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_FloatExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: float value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_StringExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: string value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_PointExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: point value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_RectExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: rect value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaMmErr_ValueTypeMismatch</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Type mismatch: other value expected (non-specific) </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=211><TT>kMoaDrErr_CastMemberExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=374>Director only. Type mismatch: <TT>CMRef</TT> expected </TD>
+      </TR>
+    </TABLE>
+</DL>
+<BR>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the current value of the property represented by <TT><I>symbol</FONT></I></TT> to the value passed in <TT><I>pPropValue</FONT></I></TT>.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

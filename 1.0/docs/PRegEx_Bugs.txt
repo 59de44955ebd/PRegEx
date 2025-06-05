@@ -1,0 +1,88 @@
+=================================================
+PRegEx Version 1.0 Bugs and Issues List
+
+	- This document last updated 2001-06-04
+=================================================
+
+
+=============== CURRENT ISSUES ============
+
+Current Known Bugs:
+
+- None
+
+
+Current Suspected Bugs:
+
+- None
+
+
+Current To Do Items:
+
+- None
+
+
+=============== KNOWN GENERAL ISSUES ============
+
+- Efficiency with large buffers: Operating memory usage
+
+  MOA unfortunately allows no way to directly access and modify the
+  contents of a string buffer contained in a list, without making
+  several in-memory copies of the data along the way.  To manipulate a
+  very large buffer, then, we recommend that you have at least 4x the
+  length of the buffer available as free memory, before you start
+  (check the freeBytes).  If you are doing a search-and-replace that
+  involves lots of data, you may need up to 5x.
+
+
+- Efficiency with large buffers: Persistent storage
+
+  PRegEx keeps a copy of the most recently-matched buffer in memory
+  (because all high-level functions call PRegEx_SetSearchString
+  internally).  It also keeps a second buffer of the entire last
+  matched portion of the string, which could be as large again as the
+  string itself.  This is needed to support getting backreferences.
+  If you are using large buffers and want to free up some memory
+  before your next match, call PRegEx_Clear to release all these
+  buffers.
+
+
+- Trailing unmatched backreferences
+
+  A bug in PCRE causes the number of available back references to be
+  underreported when the last of a set of backrefs did not match.  For
+  example, both of these should set 3 back refs, but in the second
+  case, the (Chris) capturing subexpression did not match, so PCRE
+  acts as if there had only been two back refs.  This behavior is
+  understandable, but it is inconsistent with Perl's behavior.
+
+  PRegEx_Search(["Chris"], "((Ravi)|(Chris))") -- sets 3 back refs
+  PRegEx_Search(["Ravi"] , "((Ravi)|(Chris))") -- sets 2 back refs
+
+  Philip Hazel, the creator of PCRE, has been notified of this issue.
+
+
+=============== KNOWN LIMITATIONS ============
+
+- Symbol to string conversion
+
+  Anywhere PRegEx converts symbols to strings, the maximum length of
+  the resulting string is 255 characters.
+
+
+- String to symbol conversion
+
+  Anywhere PRegEx converts strings to symbols, it is simply making the
+  corresponding MOA call, which may allow the creation of symbols with
+  characters that are not technically within the legal set of allowec
+  characters for symbol names.
+
+
+- Optimizations on Windows builds
+
+  We have found that turning on most available optimizations in the
+  Windows builds using MS VC++ 6.0 causes failures in the Xtra.  We
+  consider this a flaw in VC++ and it is apparently not an uncommon
+  problem. Consequently, the "Release" build has most compiler
+  optimizations turned OFF.
+

@@ -1,0 +1,900 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaFile</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaFile</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaFile<BR>
+  </CODE>Pointer type: <CODE>PIMoaFile<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moafile.h">moafile.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>IMoaFile</TT> interface
+    is provided by the <TT>MoaFile</TT> Xtra. This interface provides platform-independent methods to
+    represent a specific file in a directory structure.<BR>
+    <BR>
+    <TT>MoaFile</TT> is packaged
+    as an independent Xtra, containing just the <TT>CMoaFile</TT> class. <TT>CMoaFile</TT> implements
+    the <TT>IMoaFile</TT> interface,
+    as well as an <TT>IMoaStream</TT> interface used in conjunction with <TT>IMoaFile</TT> (see the <TT>IMoaFile::GetStream()</TT> method for details).<BR>
+    <BR>
+    Call the method <A HREF = "callback.htm#MoaCreateInstance">IMoaCallback::MoaCreateInstance()</A> using the arguments <TT>&amp;CLSID_CMoaFile</TT> and <TT>&amp;IID_IMoaFile</TT> to create a new instance of <TT>IMoaFile</TT> for your use. After creating it, use <TT>SetSpec()</TT>, <TT>SetSysSpec()</TT>, or <TT>SetPathnameSpec()</TT> to fill in the file information.<BR>
+    <BR>
+    To access a stream to the given file, call the <TT>GetStream()</TT> method. Remember that both the <TT>MoaStream</TT> and the <TT>MoaFile</TT> belong
+    to you; you must release both. The <TT>MoaStream</TT> may or may not be an interface onto the same object as the <TT>MoaFile</TT>;
+    this is an implementation detail that is undefined.<BR>
+    <BR>
+</DL>
+<P>
+<h3>See also</h3>
+<DL>
+  <DT>
+  <DD><A href="motypndx.htm#MOFILETYPE">IMoaFile types</A>, <A href="motypndx.htm#MOFILECONST">IMoaFile constants</A>, <A href="motypndx.htm#MOFILEERRS">IMoaFile errors</A>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>File specification </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#SetSpec">SetSpec()</A> <BR>
+    <A HREF = "#SetNewTempSpec">SetNewTempSpec()</A> <BR>
+    <A HREF = "#GetSysSpec">GetSysSpec()</A> <BR>
+    <A HREF = "#SetSysSpec">SetSysSpec()</A> <BR>
+    <A HREF = "#GetPathnameSpec">GetPathnameSpec()</A> <BR>
+    <A HREF = "#SetPathnameSpec">SetPathnameSpec()</A>
+</DL>
+<h4>Creating and deleting files </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#CreateFile">CreateFile()</A> <BR>
+    <A HREF = "#CreateDirectory">CreateDirectory()</A> <BR>
+    <A HREF = "#Delete">Delete()</A> <BR>
+    <A HREF = "#Clone">Clone()</A>
+</DL>
+<h4>Exchanging files </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#SwapFile">SwapFile()</A>
+</DL>
+<h4>Naming files </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetFilename">GetFilename()</A> <BR>
+    <A HREF = "#SetFilename">SetFilename()</A> <BR>
+    <A HREF = "#Rename">Rename()</A>
+</DL>
+<h4>File information </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetSize">GetSize()</A> <BR>
+    <A HREF = "#SetSize">SetSize()</A> <BR>
+    <A HREF = "#GetAccess">GetAccess()</A> <BR>
+    <A HREF = "#GetDates">GetDates()</A> <BR>
+    <A HREF = "#GetDirectory">GetDirectory()</A> <BR>
+    <A HREF = "#IsDirectory">IsDirectory()</A> <BR>
+    <A HREF = "#IsExisting">IsExisting()</A>
+</DL>
+<h4>Comparing files </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#IsSameFile">IsSameFile()</A>
+</DL>
+<h4>Iterating </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#EachFile">EachFile()</A>
+</DL>
+<h4>Accessing file data </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetStream">GetStream()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Clone">Clone()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Clone(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR * FAR *<I>ppFile</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>ppFile</I></CODE>
+  <DD>struct IMoaFile FAR * FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>Clone()</TT> returns
+    a copy of the <TT>MoaFile</TT> with the same file spec. It does NOT duplicate, copy, or modify
+    the underlying file in any way; it's just a utility method used
+    to make a new <TT>MoaFile</TT> and assign the same file spec to it. The caller must <TT>Release()</TT> the newly returned <TT>MoaFile</TT> when done. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="CreateDirectory">CreateDirectory()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>CreateDirectory(PIMoaFile<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a directory matching the current spec. If a file or
+    directory matching that spec already exists, an error is returned. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="CreateFile">CreateFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>CreateFile(PIMoaFile<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a file matching the current spec. If a file or directory
+    matching that spec already exists, an error is returned. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Delete">Delete()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Delete(PIMoaFile<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Deletes the file or directory matching the current spec. If
+    the spec is a directory, all files and directories contained will
+    be deleted. If there is no file or directory, an error is returned. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="EachFile">EachFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>EachFile(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaBoolParam<I>resolveAlias</I>, <BR>
+    MoaFileEachProc<I>proc</I>, <BR>
+    PMoaVoid<I>refCon</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>resolveAlias</I></CODE>
+  <DD>MoaBoolParam<BR>
+    <BR>
+  <DT><CODE><I>proc</I></CODE>
+  <DD>MoaFileEachProc<BR>
+    <BR>
+  <DT><CODE><I>refCon</I></CODE>
+  <DD>PMoaVoid<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>EachFile()</TT> is
+    used to iterate the files and directories in a given directory.
+    If the file spec is a directory, the files and directories will
+    be enumerated. If the file spec is a file, just that file will
+    be enumerated. If resolveAlias is TRUE, all alias/shortcut files
+    will be resolved prior to passing them to the enumeration proc
+    (note that in this case, some enumerated files might not actually
+    be &quot;in&quot; the directory!). <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetAccess">GetAccess()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetAccess(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaLong FAR *<I>pAccessPerm</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pAccessPerm</I></CODE>
+  <DD>MoaLong FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>GetAccess()</TT> returns
+    the access privileges allowable for this file (in the form of
+    a bit mask). <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetDates">GetDates()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetDates(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaWide FAR *<I>pCreate</I>, <BR>
+    MoaWide FAR *<I>pModify</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCreate</I></CODE>
+  <DD>MoaWide FAR *<BR>
+    <BR>
+  <DT><CODE><I>pModify</I></CODE>
+  <DD>MoaWide FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>GetDates()</TT> returns
+    the creation and modification dates of this file. This method
+    does not operate on directories (an error is returned). <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetDirectory">GetDirectory()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetDirectory(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR * FAR *<I>pDir</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDir</I></CODE>
+  <DD>struct IMoaFile FAR * FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>GetDirectory()</TT> returns a <TT>PIMoaFile</TT> for this file's parent directory. The caller must <TT>Release()</TT> it when done. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetFilename">GetFilename()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetFilename(PIMoaFile<I>This</I>,
+  <DD><BR>
+    PMoaChar<I>pNameBuf</I>, <BR>
+    MoaLong<I>nameBufSize</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf</I></CODE>
+  <DD>PMoaChar<BR>
+    <BR>
+  <DT><CODE><I>nameBufSize</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the file/directory name from the current spec. <TT>SetFilename()</TT> changes the filename portion of the file spec without renaming
+    the file. In other words, you can use this call to change just
+    the &quot;leaf&quot; portion of the file spec. Note that this
+    call causes the <TT>MoaFile</TT> to refer to another file, while <TT>Rename()</TT> causes the <TT>MoaFile</TT> to rename the given file and refer to the file by the given name. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetPathnameSpec">GetPathnameSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetPathnameSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    PMoaChar<I>pNameBuf</I>, <BR>
+    MoaLong<I>nameBufSize</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf</I></CODE>
+  <DD>PMoaChar<BR>
+    <BR>
+  <DT><CODE><I>nameBufSize</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Takes the file description from a pathname on all platforms. <TT>GetPathnameSpec</TT> returns
+    the existing file description in similar form. <TT>SetPathnameSpec</TT> and <TT>GetPathnameSpec</TT> will return errors if directories in the path are missing, but
+    not if the file is missing. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetSize">GetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetSize(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaLong FAR *<I>pFileLen</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pFileLen</I></CODE>
+  <DD>MoaLong FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>GetSize()</TT> returns
+    the size, in bytes, of the data fork of a file. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetStream">GetStream()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetStream(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaLong<I>bufferSize</I>, <BR>
+    PIMoaStream FAR *<I>ppStream</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>bufferSize</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+  <DT><CODE><I>ppStream</I></CODE>
+  <DD>PIMoaStream FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>GetStream()</TT> creates
+    an <TT>IMoaStream</TT> to the
+    given file. If the spec is a directory, an error is returned.
+    The caller must <TT>Release()</TT> the stream when done. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetSysSpec">GetSysSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetSysSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    PMoaSystemFileSpec<I>pSpec</I>, <BR>
+    MoaLong<I>specBufSize</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pSpec</I></CODE>
+  <DD>PMoaSystemFileSpec<BR>
+    <BR>
+  <DT><CODE><I>specBufSize</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Takes the file description from an FSSpec (Macintosh) or pathname
+    (Windows). It optionally resolves alias/shortcut files. <TT>GetSysSpec()</TT> returns the existing file description in a similar form. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="IsDirectory">IsDirectory()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>IsDirectory(PIMoaFile<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>IsDirectory()</TT> is used to determine if the <TT>IMoaFile</TT> specifies a directory (vs. a file); <TT>kMoaErr_NoErr</TT> is returned if the spec is a directory. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="IsExisting">IsExisting()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>IsExisting(PIMoaFile<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>IsExisting()</TT> is
+    used to determine if the <TT>IMoaFile</TT> specifies an existing file entity; <TT>kMoaErr_NoErr</TT> is returned if the spec exists. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="IsSameFile">IsSameFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>IsSameFile(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR *<I>pOther</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOther</I></CODE>
+  <DD>struct IMoaFile FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>IsSameFile()</TT> is
+    used to determine if to <TT>IMoaFiles</TT> refer to the same file entity; <TT>kMoaErr_NoErr</TT> is returned if they do. The file entities need not exist for the
+    result to be valid. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Rename">Rename()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Rename(PIMoaFile<I>This</I>,
+  <DD><BR>
+    ConstPMoaChar<I>pNameBuf</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Returns the file/directory name from the current spec. <TT>SetFilename()</TT> changes the filename portion of the file spec without renaming
+    the file. In other words, you can use this call to change just
+    the &quot;leaf&quot; portion of the file spec. Note that this
+    call causes the <TT>MoaFile</TT> to refer to another file, while <TT>Rename()</TT> causes the <TT>MoaFile</TT> to rename the given file and refer to the file by the given name.
+    Rename() renames the file.<BR>
+    <BR>
+    Note that this call will NOT move the file (ie, the argument is
+    a filename, not a pathname). The <TT>MoaFile's</TT> internal file spec is updated to reflect the new name.<BR>
+    <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetFilename">SetFilename()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetFilename(PIMoaFile<I>This</I>,
+  <DD><BR>
+    ConstPMoaChar<I>pNameBuf</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the file/directory name from the current spec. <TT>SetFilename()</TT> changes the filename portion of the file spec without renaming
+    the file. In other words, you can use this call to change just
+    the &quot;leaf&quot; portion of the file spec. Note that this
+    call causes the <TT>MoaFile</TT> to refer to another file, while <TT>Rename()</TT> causes the <TT>MoaFile</TT> to rename the given file and refer to the file by the given name. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetNewTempSpec">SetNewTempSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetNewTempSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR *<I>pDir</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDir</I></CODE>
+  <DD>struct IMoaFile FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a unique file description that matches no existing
+    file. It does not create the file itself. The file description
+    is in pDir, or an arbitrary directory if pDir is NULL. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetPathnameSpec">SetPathnameSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetPathnameSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    ConstPMoaChar<I>pNameBuf</I>, <BR>
+    MoaBoolParam<I>resolveAlias</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+  <DT><CODE><I>resolveAlias</I></CODE>
+  <DD>MoaBoolParam<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Takes the file description from a pathname on all platforms. <TT>GetPathnameSpec</TT> returns
+    the existing file description in similar form. <TT>SetPathnameSpec</TT> and <TT>GetPathnameSpec</TT> will return errors if directories in the path are missing, but
+    not if the file is missing. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetSize">SetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetSize(PIMoaFile<I>This</I>,
+  <DD><BR>
+    MoaLong<I>fileLen</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>fileLen</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>SetSize()</TT> sets
+    the size, in bytes, of the data fork of a file; if the file is
+    shorter, enough space is reserved for the given number of bytes;
+    if the file is longer, all extra bytes are removed. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetSpec">SetSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR *<I>pDir</I>, <BR>
+    ConstPMoaChar<I>pFileName</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDir</I></CODE>
+  <DD>struct IMoaFile FAR *<BR>
+    <BR>
+  <DT><CODE><I>pFileName</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Takes the file description from a file name and directory
+    specifier; the directory is provided by another <TT>IMoaFile</TT>.
+    NULL can be passed for the directory spec, in which case the file
+    will be specified in the &quot;current&quot; directory (implementation
+    defined). <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetSysSpec">SetSysSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetSysSpec(PIMoaFile<I>This</I>,
+  <DD><BR>
+    ConstPMoaSystemFileSpec<I>pSpec</I>, <BR>
+    MoaBoolParam<I>resolveAlias</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pSpec</I></CODE>
+  <DD>ConstPMoaSystemFileSpec<BR>
+    <BR>
+  <DT><CODE><I>resolveAlias</I></CODE>
+  <DD>MoaBoolParam<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Takes the file description from an FSSpec (Macintosh) or pathname
+    (Windows). It optionally resolves alias/shortcut files. <TT>GetSysSpec()</TT> returns the existing file description in a similar form. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SwapFile">SwapFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SwapFile(PIMoaFile<I>This</I>,
+  <DD><BR>
+    struct IMoaFile FAR *<I>pOther</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOther</I></CODE>
+  <DD>struct IMoaFile FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><TT>SwapFile()</TT>: If
+    this and other are both existing files (not directories), the
+    files are swapped such that the spec for &quot;this&quot; now
+    points to &quot;other&quot; and vice versa. If &quot;this&quot;
+    exists, but &quot;other&quot; does not, &quot;this&quot; is moved
+    (not copied) to &quot;other&quot;. If this doesn't exist but other
+    does, it's an error. <TT>SwapFile()</TT> only works if this and other are on the same volume. <TT>SwapFile()</TT> doesn't work if either this or other are directories. <BR>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

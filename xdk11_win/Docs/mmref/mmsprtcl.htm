@@ -1,0 +1,230 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>IMoaMmSpriteCallback</TITLE>
+
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+
+<P>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+
+<h2>IMoaMmSpriteCallback</h2>
+
+<hr width=45% align=left>
+
+<P>
+Interface ID: <CODE>IID_IMoaMmSpriteCallback<BR>
+</CODE>Pointer type: <CODE>PIMoaMmSpriteCallback<BR>
+</CODE>Inheritance: <A HREF = "../moref/unknown.htm">IMoaUnknown</A>
+<BR>
+Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A>
+<BR>
+
+<h3>Description</h3>
+
+<DL>
+<DT>
+<DD><BR>
+This interface is the callback interface for multimedia sprites.
+It is supplied to a sprite by calling the <TT>IMoaMmXSprite::SetCallback(</TT>)
+method after the sprite has been instantiated. All multimedia
+host applications support the multimedia sprite callback. <BR>
+<BR>
+
+Director also supports application-specific sprite callbacks through the <A HREF="../drref/drsprtcl.htm"><TT>IMoaDrSpriteCallback</TT></A> interface. This interface is provided by the same object that provides the <TT>IMoaMmSpriteCallback</TT> interface. Call <TT>QueryInterface()</TT> on this interface using the interface identifier <TT>IID_IMoaDrSpriteCallback</TT> to get the Director-specific sprite callback.<BR>
+<BR>
+
+</DL>
+
+<P>
+
+<h3>Methods</h3>
+
+<DL>
+<DT>
+<DD>
+</DL>
+
+<h4>Change notification </h4>
+
+<DL>
+<DT>
+<DD><A HREF = "#InvalSpriteRect">InvalSpriteRect()</A> <BR>
+<A HREF = "#InvalSpriteCaps">InvalSpriteCaps()</A> 
+</DL>
+
+<h4>Asset interaction </h4>
+
+<DL>
+<DT>
+<DD><A HREF = "#NotifyAsset">NotifyAsset()</A> 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="InvalSpriteCaps">InvalSpriteCaps()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL>
+<CODE><DT>InvalSpriteCaps(PIMoaMmSpriteCallback<I>This</I>)
+</CODE>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL>
+<DT>
+<DD>
+<DT><CODE><I>This</I></CODE>
+<DD>Pointer to the <CODE>IMoaMmSpriteCallback</CODE> interface
+<BR>
+<BR>
+
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL>
+<DT>
+<DD>Invalidates the sprite's capabilities. Normally, a sprite's
+<TT>GetCaps()</TT> method is
+called just after the instance is created. However, you might
+want to change the capabilities for the sprite in mid-span without
+destroying the instance and recreating it. Call this method to
+invalidate the sprite's capabilities. The next time the animation
+loop runs, the host application calls the <TT>GetCaps()</TT>
+method to get the new capabilities. For example, use this when
+switching direct and offscreen image modes on-the-fly. You can
+also use this to change your event mask, for example, to turn
+on or off keyboard/focus events. <BR>
+
+</DL>
+
+<P>
+
+<hr width=45% align=left>
+
+<h3><A NAME="InvalSpriteRect">InvalSpriteRect()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL>
+<CODE><DT>InvalSpriteRect(PIMoaMmSpriteCallback<I>This</I>)
+</CODE>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL>
+<DT>
+<DD>
+<DT><CODE><I>This</I></CODE>
+<DD>Pointer to the <CODE>IMoaMmSpriteCallback</CODE> interface
+<BR>
+<BR>
+
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL>
+<DT>
+<DD>Invalidates the sprite rectangle on the display window (stage).
+At authoring time, this method may be called wehn the movie isn't
+playing and the sprite needs to be updated. Static sprites may
+call this method at any time if they need to have their image
+updated. The effect of this method is to cause the host application
+to call an asset's <TT>CollectChanges()</TT>
+and <TT>Image()</TT> methods,
+which will also be called on any sprites intersecting the sprite's
+rectangle. <BR>
+
+</DL>
+
+<P>
+
+<hr width=45% align=left>
+
+<h3><A NAME="NotifyAsset">NotifyAsset()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL>
+<CODE>
+<DT>NotifyAsset(PIMoaMmSpriteCallback<I>This</I>, 
+<DD>MoaLong<I>msgCode</I>, <BR>
+PMoaVoid<I>refCon</I>)
+</CODE>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL>
+<DT>
+<DD>
+<DT><CODE><I>This</I></CODE>
+<DD>Pointer to the <CODE>IMoaMmSpriteCallback</CODE> interface
+<BR>
+<BR>
+
+<DT><CODE><I>msgCode</I></CODE>
+<DD>MoaLong<BR>
+<BR>
+
+<DT><CODE><I>refCon</I></CODE>
+<DD>PMoaVoid<BR>
+<BR>
+
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL>
+<DT>
+<DD><BR>
+Sends an arbitrary message to the parent asset. This calls the
+asset's <TT>Notify() </TT>method
+with the <TT><I>msgCode </I></TT>and
+<TT><I>refCon </I></TT>you
+supply. You can make up your own message code constants. <TT><I>refCon
+</I></TT>is used to supply any additional data.<BR>
+<BR>
+<B>Note: </B>Xtra developers may specify values in the range of
+0 to 65535 for their notification codes. Higher values are reserved
+by Macromedia for future use.
+
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

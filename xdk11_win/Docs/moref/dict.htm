@@ -1,0 +1,411 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaDict</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaDict</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDict<BR>
+  </CODE>Pointer type: <CODE>PIMoaDict<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    This standard MOA callback interface is provided by the application
+    for use in registering an Xtra. The description of the <TT>IMoaCache</TT> interface (earlier in this section) provides a detailed discussion
+    of the Xtra registry.<BR>
+    <BR>
+    The Xtra cache is organized into hierarchies of dictionaries,
+    all represented by instances of the <TT>IMoaDict</TT> interface. Within the cache, each file is represented by a <TT>PIMoaFileEntryDict</TT>,
+    each Xtra in a file is represented by a <TT>PIMoaXtraEntryDict</TT>,
+    and each class/interface combination in an Xtra is represented
+    by a <TT>PIMoaRegistryEntryDict</TT>.
+    All these types are synonyms for <TT>PIMoaDict</TT>. <BR>
+    <BR>
+    Each entry in a dictionary consists of three parts: a key, a type,
+    and a value. The key is used to locate a specific entry. Keys
+    for certain entries may be specified by an application. If an
+    Xtra adds its own data to the cache, it can specify the keys to
+    associate with particular values. A number of value types can
+    be stored in a dictionary. The <TT>IMoaDict</TT> interface defines a set of constants to specify these types; these
+    are documented in <A href="motypndx.htm#MODICTCONST">IMoaDict constants</A>. <BR>
+    <BR>
+    Xtras register themselves and add other entries to their registry
+    dictionary by implementing the <TT>IMoaRegister</TT> interface. They can initialize themselves from information in
+    the registry dictionary by implementing the <TT>IMoaInitFromDict</TT> interface. The <TT>IMoaDict</TT> interface is used to get and set individual entries in a dictionary. <BR>
+    <BR>
+</DL>
+<P>
+<h3>See also</h3>
+<DL>
+  <DT>
+  <DD><A href="motypndx.htm#MODICTCONST">IMoaDict constants</A>, <A href="motypndx.htm#MODICTERRS">IMoaDict errors</A>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Creating and initializing </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#SetSize">SetSize()</A> <BR>
+    <A HREF = "#MakeDict">MakeDict()</A>
+</DL>
+<h4>Accessing entries </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Get">Get()</A> <BR>
+    <A HREF = "#Count">Count()</A> <BR>
+    <A HREF = "#GetNth">GetNth()</A> <BR>
+    <A HREF = "#GetInfo">GetInfo()</A> <BR>
+    <A HREF = "#FindKey">FindKey()</A>
+</DL>
+<h4>Modifying entries </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Put">Put()</A> <BR>
+    <A HREF = "#Remove">Remove()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Count">Count()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Count(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaUlong FAR *<I>pCount</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCount</I></CODE>
+  <DD><CODE>MoaUlong FAR *</CODE>Integer pointer for return value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Internal lookup key
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns how many (key, type, value) tuples are in a dictionary. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="FindKey">FindKey()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>FindKey(PIMoaDict<I>This</I>,
+  <DD><BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for the entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Internal lookup key
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>The method <TT>FindKey()</TT> returns the &quot;magic&quot; key used internally by the cache
+    for fast access to a dictionary entry. Calling this method and
+    storing the return value can provide much faster dictionary access
+    to frequently accessed values. NULL will be returned when out
+    of memory. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Get">Get()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Get(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaDictTypeID<I>type</I>, <BR>
+    PMoaVoid<I>pValueBuffer</I>, <BR>
+    MoaLong<I>bufferSize</I>, <BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>type</I></CODE>
+  <DD><CODE>MoaDictTypeID</CODE><TT>MoaDictTypeID</TT> of the value <BR>
+    <BR>
+  <DT><CODE><I>pValueBuffer</I></CODE>
+  <DD><CODE>PMoaVoid</CODE>Pointer to buffer for the returned value <BR>
+    <BR>
+  <DT><CODE><I>bufferSize</I></CODE>
+  <DD><CODE>MoaLong</CODE>Size of buffer for returned value <BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for the entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns a value from a dictionary given its key. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetInfo">GetInfo()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetInfo(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaDictTypeID FAR *<I>pType</I>, <BR>
+    MoaLong FAR *<I>pValueSize</I>, <BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pType</I></CODE>
+  <DD><CODE>MoaDictTypeID FAR *</CODE>Returns the type of the value <BR>
+    <BR>
+  <DT><CODE><I>pValueSize</I></CODE>
+  <DD><CODE>MoaLong FAR *</CODE>Returns the size of the value <BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns information on the entry for the specified key in
+    a dictionary. Pass NULL for pType or pValueSize if you're not
+    interested in the specific information. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetNth">GetNth()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetNth(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaUlong<I>index</I>, <BR>
+    MoaDictTypeID FAR *<I>pType</I>, <BR>
+    MoaLong FAR *<I>pValueSize</I>, <BR>
+    ConstPMoaChar FAR *<I>pKey</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>index</I></CODE>
+  <DD><CODE>MoaUlong</CODE>Entry number to access <BR>
+    <BR>
+  <DT><CODE><I>pType</I></CODE>
+  <DD><CODE>MoaDictTypeID FAR *</CODE>Returns the type of the value <BR>
+    <BR>
+  <DT><CODE><I>pValueSize</I></CODE>
+  <DD><CODE>MoaLong FAR *</CODE>Returns the size of the value <BR>
+    <BR>
+  <DT><CODE><I>pKey</I></CODE>
+  <DD><CODE>ConstPMoaChar FAR *</CODE>Returns the key of the value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns information about entry number index in a dictionary.
+    Pass NULL for pType, pValueSize, or pKey if you're not interested
+    in the specific information. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="MakeDict">MakeDict()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>MakeDict(PIMoaDict<I>This</I>,
+  <DD><BR>
+    struct IMoaDict FAR * FAR *<I>pNewDict</I>, <BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNewDict</I></CODE>
+  <DD><CODE>struct IMoaDict FAR * FAR *</CODE>Allocated pointer
+    to <TT>IMoaDict</TT> <BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for the entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to create a new instance of <TT>IMoaDict</TT> and place it in the dictionary represented by This under the specified
+    key. Pass an allocated <TT>PIMoaDict</TT> as pNewDict to get a pointer to the new instance; otherwise, pass
+    NULL. The newly created dictionary is &quot;owned&quot; by This;
+    the caller need not call <TT>Release()</TT> on it. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Put">Put()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Put(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaDictTypeID<I>type</I>, <BR>
+    ConstPMoaVoid<I>pValueBuffer</I>, <BR>
+    MoaLong<I>bufferSize</I>, <BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>type</I></CODE>
+  <DD><CODE>MoaDictTypeID</CODE><TT>MoaDictTypeID</TT> of the value <BR>
+    <BR>
+  <DT><CODE><I>pValueBuffer</I></CODE>
+  <DD><CODE>ConstPMoaVoid</CODE>Pointer to buffer for the value <BR>
+    <BR>
+  <DT><CODE><I>bufferSize</I></CODE>
+  <DD><CODE>MoaLong</CODE>Size of buffer for value <BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for the entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Inserts the value pValueBuffer of the specified type, bufferSize,
+    and key into the dictionary This. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Remove">Remove()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Remove(PIMoaDict<I>This</I>,
+  <DD><BR>
+    ConstPMoaChar<I>key</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>key</I></CODE>
+  <DD><CODE>ConstPMoaChar</CODE>Key for the entry <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Looks up the value associated with key and removes it from
+    a dictionary. For reference counted types (interfaces), the count
+    will simply be decremented. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="SetSize">SetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SetSize(PIMoaDict<I>This</I>,
+  <DD><BR>
+    MoaUlong<I>numEntries</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>numEntries</I></CODE>
+  <DD><CODE>MoaUlong</CODE>Integer representing number of entries <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to pre-allocate space in a dictionary. 
+  This makes adding to the dictionary more efficient if the size is more-or-less known before hand. <BR>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

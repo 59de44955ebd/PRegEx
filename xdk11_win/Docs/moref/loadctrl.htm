@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaXtraLoadControl</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaXtraLoadControl</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaXtraLoadControl<BR>
+  </CODE>Pointer type: 
+<CODE>PIMoaXtraLoadControl<BR>
+<BR>
+Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD>
+    Describes an interface that an Xtra can use to control
+    its load/unload status. This is core code, but really only
+    useful on the Macintosh. <BR>
+    An Xtra should register this interface using the normal
+    technique (in IMoaRegister). It can also register an
+    additional long in its registry dict to request that it
+    be preloaded at launch, and/or that it never be unloaded
+    once it is loaded. (Note that Macintosh Xtras that install
+    callback routines with the MacOS should set both of these bits.) <BR>
+    Note also that certain earlier apps using MOA (namely SoundEdit 16 2.0 and FreeHand 5.5)
+    don't implement this.
+    <p> Registry keys: <BR>
+      kMoaRegKey_XtraLoadControlOptions <BR>
+      kMoaRegType_XtraLoadControlOptions
+    <p> Registry options: <BR>
+      kMoaXlc_PreloadAtLaunch <BR>
+      kMoaXlc_NeverUnload
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

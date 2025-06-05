@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaInitFromDict</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaInitFromDict</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaInitFromDict<BR>
+  </CODE>Pointer type: <CODE>PIMoaInitFromDict<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    This optional Xtra interface is implemented by an Xtra for use
+    in initializing classes and interfaces from cached information. <BR>
+    <BR>
+    Xtras can place initialization information in the cache by implementing
+    the <TT>IMoaRegister</TT> interface.
+    Each class/interface combination implemented by an Xtra must be
+    registered by calling the <TT>AddRegistryEntry()</TT> method of <TT>IMoaCache</TT>.
+    Through that method, a registry dictionary is provided to the
+    Xtra for use in adding other information from the cache. The Xtra
+    can store any information it needs in the registry dictionary,
+    including information to be used by the when the specific interface
+    and class are initialized. <BR>
+    <BR>
+    By implementing this interface, the class/interface combination
+    can get access to its registry dictionary at initialization time,
+    enabling it to perform custom initialization based on values it
+    has previously cached. <BR>
+    <BR>
+</DL>
+<P>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD>
+  <DT>
+  <DD><A HREF = "#InitFromDict">InitFromDict()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="InitFromDict">InitFromDict()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DT>
+  <DD>
+  <DT>InitFromDict(PIMoaInitFromDict<I>This</I>,
+  <DD><BR>
+    PIMoaRegistryEntryDict<I>pRegistryDict</I>)
+  <DT>
+  <DD>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DT>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaInitFromDict</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pRegistryDict</I></CODE>
+  <DD><CODE>PIMoaRegistryEntryDict</CODE>Registry dictionary for
+    a specific class and interface <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    This method is called automatically whenever MOA initializes an
+    instance of an Xtra class and interface. Xtra classes can implement
+    this method to perform any custom initialization they require
+    based on information previously cached in the registry dictionary
+    pRegistryDic. <BR>
+    <BR>
+    When an application creates an instance of a class by calling
+    either <TT>GetInstanceFromRegistry()</TT> or <TT>CreateNewInstanceFromRegistry()</TT>,
+    MOA calls <TT>QueryInterface()</TT> to see if the class implements the <TT>IMoaInitFromDict</TT> interface. If so, MOA calls this method, passing it the registry dictionary for the class and interface being instantiated.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

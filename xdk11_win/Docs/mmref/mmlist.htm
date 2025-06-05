@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>IMoaMmList</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+
+<P>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A><BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+
+<h3>IMoaMmList</h3>
+
+<P>
+Interface ID: <CODE>IID_IMoaMmList<BR>
+</CODE>Pointer type: <CODE>PIMoaMmList<BR>
+</CODE>Inheritance: <A HREF = "../moref/unknown.htm">IMoaUnknown</A><BR>
+Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A>
+
+<DL>
+<DT class="heading4">Description</DT>
+  <DD>
+Lists are a type of value used to represent a collection of elements.
+Lists can contain elements of multiple types, so it is possible
+to have a single list containing any combination of integer, float,
+string, and other values. In general, there are two types of lists:
+linear and property. Linear lists contain an ordered sequence
+of values which are referred to by index. Property lists contain
+a sequence of <TT>propertyName </TT>value
+pairs. Elements of a property list are referred to by property
+name.<BR>
+<BR>
+A list is a type of <TT>MoaMmValue</TT>.
+Since lists are <TT>MoaMmValues</TT>,
+they can be used as properties of objects (such as assets and
+sprites) obtained and set using the standard <TT>IMoaMmPropowner::GetProp()
+</TT>and <TT>SetProp() </TT>methods,
+just like strings, integers, and other simple value types. The
+elements of lists are also <TT>MoaMmValues</TT>.
+Thus, a list can itself contain lists (sublists).<BR>
+<BR>
+When adding to or modifying elements in a list, the value supplied
+by the caller automatically calls<TT>
+IMoaMmValue::ValueAddRef() </TT>before it is added to the
+list. In effect, the value is copied and then placed in the list.
+The caller continues to maintain ownership of the supplied element
+value and is responsible for releasing it.<BR>
+<BR>
+When retrieving elements from a list, the value in the list automatically
+calls<TT> IMoaMmValue::ValueAddRef()
+</TT>when it is returned. For example, when you call <TT>GetValueByIndex()
+</TT>to retrieve a value, <TT>ValueAddRef()
+</TT>is called. In effect, the list value is copied, then
+returned to the caller. The caller owns the returned value and
+is responsible for releasing it.<BR>
+<BR>
+When you dispose of the list, elements within the list are disposed
+recursively.<BR>
+<BR>
+To add or release values, use the <TT>IMoaMmValue::ValueAddRef()
+</TT>and <TT>ValueRelease()
+</TT>methods.
+</DL>
+
+<h4>Methods</h4>
+<DL>
+<DT class="heading5">Adding values</DT>
+<DD><A HREF = "#NewListValue">NewListValue()</A> <BR>
+<A HREF = "#AppendValueToList">AppendValueToList()</A> <BR>
+<A HREF = "#NewPropListValue">NewPropListValue()</A> <BR>
+<A HREF = "#AppendValueToPropList">AppendValueToPropList()</A>
+</DL>
+
+<DL>
+<DT class="heading5">List management</DT>
+<DD><A HREF = "#CountElements">CountElements()</A> 
+</DL>
+
+<DL>
+<DT class="heading5">Accessing values</DT>
+<DD><A HREF = "#GetValueByIndex">GetValueByIndex()</A> <BR>
+<A HREF = "#SetValueByIndex">SetValueByIndex()</A> <BR>
+<A HREF = "#GetValueByProperty">GetValueByProperty()</A> <BR>
+<A HREF = "#GetPropertyNameByIndex">GetPropertyNameByIndex()</A>
+</DL>
+
+<DL>
+<DT class="heading5">Editing values</DT>
+<DD><A HREF = "#SetValueByProperty">SetValueByProperty()</A> 
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="AppendValueToList">AppendValueToList</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<DT><CODE>AppendValueToList(PMoaMmValue <I>pListValue</I>, 
+PMoaMmValue <I>pElementValue</I>)</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DD>
+<DT><CODE><I>pListValue</I></CODE>
+  <DD>Pointer to a pre-existing <TT>MoaMmValue</TT> linear list <BR>
+<DT><CODE><I>pElementValue</I></CODE>
+  <DD>Pointer to the<TT><I> </I>MoaMmValue </TT>to add 
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Adds a value to the end of the linear list stored in <TT><I>pListValue</I></TT>.
+<TT><I>pListValue </I></TT>must
+be a pointer to a preexisting linear list-type <TT>MoaMmValue</TT>.
+To create a new, empty list value, use <TT>IMoaMmList::NewListValue()</TT>.
+<TT><I>pElementValue </I></TT>is
+a pointer to the <TT>MoaMmValue </TT>to
+add to the list. Values added to lists are copied; therefore,
+the caller maintains ownership of <TT><I>pElementValue
+</I></TT>and is responsible for releasing it.
+</DL>
+<hr width=45% align=left>
+
+<h4><A NAME="AppendValueToPropList">AppendValueToPropList()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<DT><CODE>AppendValueToPropList(PMoaMmValue <I>pListValue</I>, 
+PMoaMmValue <I>pElementProp</I>, 
+PMoaMmValue <I>pElementValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DD>
+<DT><CODE><I>pListValue</I></CODE>
+  <DD>Pointer to a pre-existing<TT><I> </I>MoaMmValue 
+    </TT>property list <BR>
+
+<DT><CODE><I>pElementProp</I></CODE>
+  <DD>Pointer to the<TT><I> </I>MoaMmValue </TT>that represents 
+    the property to add to the list <BR>
+<DT><CODE><I>pElementValue</I></CODE>
+  <DD>Pointer to the<TT><I> </I>MoaMmValue </TT>that represents 
+    the property value to add to the list
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Adds a value to the end of a the property list stored in <TT><I>pListValue</I></TT>.
+<TT><I>pListValue</I></TT>
+must be a pointer to a preexisting property list-type <TT>MoaMmValue</TT>.
+To create a new, empty property list value, use <TT>IMoaMmList::NewPropListValue()</TT>.
+<TT><I>pElementValue </I></TT>is
+a pointer to the <TT>MoaMmValue</TT>
+to add to the list. Values added to lists are copied; the caller
+maintains ownership of <TT><I>pElementValue
+</I></TT>and is responsible for releasing it.
+
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="CountElements">CountElements()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<DT><CODE>CountElements(ConstPMoaMmValue <I>pListValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DD>
+<DT><CODE><I>pListValue</I></CODE>
+  <DD>Pointer to the <TT>ConstPMoaMmValue </TT>for the list whose elements to count
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><TT>Returns the number of elements in <I>pListValue</I>.
+If <I>pListValue</I> is not a list, then -1 is returned.</TT> 
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD><TT><I>pListValue </I></TT>can
+be either a linear-list or a property list. The list elements
+are <I>not</I> counted recursively; that is, only the top-level
+values are counted, not sublists.
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="GetPropertyNameByIndex">GetPropertyNameByIndex()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>GetPropertyNameByIndex(ConstPMoaMmValue <I>pListValue</I>,
+MoaLong <I>index</I>,
+PMoaMmValue <I>pResultValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD>Pointer to the <TT>ConstPMoaMmValue </TT>for the list <BR>
+
+<DT><CODE><I>index</I></CODE>
+<DD>Ordinal number of element in the list <BR>
+
+<DT><CODE><I>pResultValue</I></CODE>
+<DD>Pointer to the symbol-type value representing the 
+    property name
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Returns the property name associated with an element in a
+property list. <TT><I>index</I></TT>
+specifies the element of interest, the first element in the list
+has an index of 1. The property name is returned as a symbol-type
+value in <TT><I>pResultValue</I></TT>.
+To convert symbols to strings, use the <TT>IMoaMmUtils::SymbolToString()</TT>
+method.
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="GetValueByIndex">GetValueByIndex()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<DT><CODE>GetValueByIndex(ConstPMoaMmValue <I>pListValue</I>,
+MoaLong <I>index</I>, 
+PMoaMmValue <I>pResultValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD>Pointer to the <TT>ConstPMoaMmValue </TT>for 
+    the list <BR>
+
+<DT><CODE><I>index</I></CODE>
+<DD> Ordinal number of element in the list <BR>
+
+<DT><CODE><I>pResultValue</I></CODE>
+<DD> Pointer to the value of the element
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Obtains the value of an element in a list by index. <TT><I>index
+</I></TT>specifies the element of interest, the first element
+in the list has an index of 1. This call populates a <TT>MoaMmValue
+</TT>at <TT><I>pResultValue
+</I></TT>with the list element. The caller is responsible
+for releasing the value returned. This call overwrites any current
+value at <TT><I>pResultValue</I></TT>,
+so if the current value is valid, make sure to release it before
+making this call. </DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="GetValueByProperty">GetValueByProperty()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>GetValueByProperty(ConstPMoaMmValue <I>pListValue</I>, 
+PMoaMmValue <I>pPropNameValue</I>, 
+PMoaMmValue <I>pResultValue</I>)
+</CODE></DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD> Pointer to the <TT>ConstPMoaMmValue </TT>for 
+    the list <BR>
+
+<DT><CODE><I>pPropNameValue</I></CODE>
+<DD> Pointer to a symbol-type value representing the property 
+    name of the element <BR>
+
+<DT><CODE><I>pResultValue</I></CODE>
+<DD>Pointer to the value of the element
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Obtains the value of an element in a list by property name.
+<TT><I>pPropNameValue </I></TT>must
+contain a symbol-type value specifying the property name of the
+element of interest. This call populates a <TT>MoaMmValue
+</TT>at <TT><I>pResultValue
+</I></TT>with the list element. The caller is responsible
+for releasing the value returned. This call overwrites any current
+value at <TT><I>pResultValue</I></TT>,
+so if the current value is valid, make sure to release it before
+making this call.
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="NewListValue">NewListValue()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>NewListValue(PMoaMmValue <I>pListValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD>Pointer to the<TT><I> </I>MoaMmValue </TT>for the 
+    new linear list
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Creates a new linear list-type value. This call populates the value at <TT><I>pListValue 
+    </I></TT>with the result. This call overwrites any current value at <TT><I>pListValue</I></TT>, 
+    so if the current value is valid, make sure to release it before making this 
+    call. The caller owns the newly created value and is responsible for releasing 
+    it.
+</DL>
+<hr width=45% align=left>
+
+<h4><A NAME="NewPropListValue">NewPropListValue()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>NewPropListValue(PMoaMmValue <I>pListValue</I>)
+</CODE></DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD>Pointer to the <TT>MoaMmValue</TT> for the new property 
+    list
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><CODE>MoaError</CODE> 
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <dd>Creates a new property list-type value. This call populates the value 
+    at <tt><i>pListValue </i></tt>with the result. This call overwrites any current 
+    value at <tt><i>pListValue</i></tt>, so if the current value is valid, make 
+    sure to release it before making this call. The caller owns the newly created 
+    value and is responsible for releasing it. 
+</dl>
+<hr width=45% align=left>
+
+<h4><A NAME="SetValueByIndex">SetValueByIndex()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>SetValueByIndex(PMoaMmValue <I>pListValue</I>, 
+MoaLong <I>index</I>,
+PMoaMmValue <I>pNewValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD>Pointer to the<TT>MoaMmValue</TT>for the existing 
+    list <BR>
+
+<DT><CODE><I>index</I></CODE>
+<DD> Ordinal number of the element to modify in the list <BR>
+
+<DT><CODE><I>pNewValue</I></CODE>
+<DD> Pointer to the <TT>MoaMmValue </TT>to add to the 
+    list
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Sets the value of a list element by index. <TT><I>pListValue</I></TT>
+specifies an existing list to modify. <TT><I>index
+</I></TT>specifies the element to be modified, the first
+element in the list has an index of 1. <TT><I>pNewValue
+</I></TT>is a pointer to a caller-owned value to be added
+to the list. This call copies the value at <TT><I>pNewValue</I></TT>,
+and replaces the current value in position <TT><I>index
+</I></TT>with the copy. Since the value is copied, the
+caller maintains ownership of the <TT><I>pNewValue
+</I></TT>and is responsible for releasing it.
+
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="SetValueByProperty">SetValueByProperty()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+<CODE><DT>SetValueByProperty(PMoaMmValue <I>pListValue</I>,
+PMoaMmValue <I>pPropNameValue</I>,
+PMoaMmValue <I>pNewValue</I>)
+</CODE>
+</DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+<DT><CODE><I>pListValue</I></CODE>
+<DD> Pointer to the<TT>MoaMmValue </TT>for the existing 
+    list <BR>
+
+<DT><CODE><I>pPropNameValue</I></CODE>
+<DD>Pointer to the symbol-type value representing the 
+    property name of the element to modify <BR>
+
+<DT><CODE><I>pNewValue</I></CODE>
+<DD> Pointer to the <TT>MoaMmValue </TT>to add to the 
+    list
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+<DD>Sets the value of a list element by property name. <TT><I>pListValue
+</I></TT>specifies an existing property list to modify.
+<TT><I>pPropNameValue </I></TT>is
+a symbol-type value specifying the property name of the element
+to be modified. <TT><I>pNewValue </I></TT>is
+a pointer to a caller-owned <TT>MoaMmValue
+</TT>to be added to the list. This call copies the value
+at <TT><I>pNewValue</I></TT>,
+and replaces the current value in the list associated with property
+<TT><I>pPropNameValue </I></TT>with
+the copy. Since the value is copied, the caller maintains ownership
+of the <TT><I>pNewValue </I></TT>and
+is responsible for releasing it.
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

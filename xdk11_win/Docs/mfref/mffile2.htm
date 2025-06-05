@@ -1,0 +1,970 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaFile2</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<P> <A HREF="../mfdg/index.htm" >MF Developer's Guide</A> <BR>
+  <A HREF="index.htm">MF Interfaces</A> | <A HREF="mfmthndx.htm">MF Methods</A> | <A HREF="mftypndx.htm">MF Types and Misc API</A>
+<hr width=45% align=left>
+<H2><A NAME="IMoaFile2">IMoaFile2</A></H2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaFile2<BR>
+  </CODE>Pointer type: <CODE>PIMoaFile2<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/moafile2.h">moafile2.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD>The IMoaFile2 interface provides high level cross platform
+    access to the filesystem via MOA. It is functionally a superset
+    of the original IMoaFile interface, but not a direct superset
+    of IMoaFile. <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#SetSpec">SetSpec()</A> <BR>
+    <A HREF = "#SetPathName">SetPathName()</A> <BR>
+    <A HREF = "#GetPathName">GetPathName()</A> <BR>
+    <A HREF = "#GetStream">GetStream()</A> <BR>
+    <A HREF = "#GetSize">GetSize()</A> <BR>
+    <A HREF = "#SetSize">SetSize()</A> <BR>
+    <A HREF = "#GetAccess">GetAccess()</A> <BR>
+    <A HREF = "#SetAccess">SetAccess()</A> <BR>
+    <A HREF = "#GetDates">GetDates()</A> <BR>
+    <A HREF = "#SetDates">SetDates()</A> <BR>
+    <A HREF = "#GetCachePriority">GetCachePriority()</A> <BR>
+    <A HREF = "#SetCachePriority">SetCachePriority()</A> <BR>
+    <A HREF = "#IsDirectory">IsDirectory()</A> <BR>
+    <A HREF = "#IsExisting">IsExisting()</A> <BR>
+    <A HREF = "#GetMoaIOAttributeDict">GetMoaIOAttributeDict()</A> <BR>
+    <A HREF = "#CreateFile">CreateFile()</A> <BR>
+    <A HREF = "#CreateDirectory">CreateDirectory()</A> <BR>
+    <A HREF = "#Delete">Delete()</A> <BR>
+    <A HREF = "#SwapFile">SwapFile()</A> <BR>
+    <A HREF = "#IsSameFile">IsSameFile()</A> <BR>
+    <A HREF = "#EnumFiles">EnumFiles()</A> <BR>
+    <A HREF = "#Rename">Rename()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CreateDirectory">CreateDirectory()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CreateDirectory(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> File not found </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Create failed, unknown </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_DiskFull</TT> </td>
+        <td> Create failed, disk is full </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_DuplicateSpec</TT> </td>
+        <td> Directory already exists </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a new directory. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CreateFile">CreateFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CreateFile(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_DiskFull</TT> </td>
+        <td> Create failed, disk is full </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Create failed, unknown I/O error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> File not found </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a new file. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Delete">Delete()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Delete(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Delete failed, unknown </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> File not found </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_DirectoryNotEmpty</TT> </td>
+        <td> Directory specified for deletion was not empty </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Deletes the file or directory specifed by the underlying pathname <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="EnumFiles">EnumFiles()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>EnumFiles(PIMoaFile2 <I>This</I>,
+  <DD>MoaBoolParam <I>resolveAlias</I>, <BR>
+    MoaFileEnumProc <I>proc</I>, <BR>
+    PMoaVoid <I>pClientData)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>resolveAlias</I></CODE>
+  <DD>resolve flag<BR>
+    <BR>
+  <DT><CODE><I>proc</I></CODE>
+  <DD>proc pointer to be called for each file/directory<BR>
+    <BR>
+  <DT><CODE><I>pClientData)</I></CODE>
+  <DD>client data<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_BadParam</TT> </td>
+        <td> You passed me a bogus argument </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Enumerates all entries in the current directory. For each
+    entry in the current directory, the procedure provided via proc
+    is called. The following data are passed to the callback procedure:
+    pIMoaPathName - IMoaPathName interface to the current file isDirectory
+    - TRUE if the file is a directory pLastModDate - The last modified
+    date of the file pFileType - The file type as a &quot;C&quot;
+    string (implementation dependent) e.g. for MAC files: &quot;TEXT&quot;
+    for WIN files: &quot;txt&quot; for remote files: &quot;text/html&quot;
+    pClientData - The client data passed in to EnumFiles <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetAccess">GetAccess()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetAccess(PIMoaFile2 <I>This</I>,
+  <DD>MoaUlong FAR * <I>pAccessPerm)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pAccessPerm)</I></CODE>
+  <DD>on return contains access perm for the current file<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the access permissions for the current file in pAccessPerm. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetCachePriority">GetCachePriority()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetCachePriority(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>MoaCachePriority
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the cache priority of the current file. Cache priorities
+    include: kMoaCachePriority_Always kMoaCachePriority_IfYouCan kMoaCachePriority_Never
+    These are only useful if the underlying path object references
+    a remote file. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetDates">GetDates()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetDates(PIMoaFile2 <I>This</I>,
+  <DD>MoaWide FAR * <I>pCreate</I>, <BR>
+    MoaWide FAR * <I>pModify</I>, <BR>
+    MoaWide FAR * <I>pAccess)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCreate</I></CODE>
+  <DD>on return contains creation date<BR>
+    <BR>
+  <DT><CODE><I>pModify</I></CODE>
+  <DD>on return contains last modified date<BR>
+    <BR>
+  <DT><CODE><I>pAccess)</I></CODE>
+  <DD>on return contains last access date<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the various date attributes of the current file. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetMoaIOAttributeDict">GetMoaIOAttributeDict()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetMoaIOAttributeDict(PIMoaFile2 <I>This</I>,
+  <DD>PIMoaIOAttributeDict FAR <I>*ppIDict)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>*ppIDict)</I></CODE>
+  <DD>on return contains pointer to an IMoaDict interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success or standard MOA QueryInterface errors </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns an interface the an IMoaIOAttribute interface. This
+    interface is used to access the various file attributes of the
+    object pointed to by the underlying pathname. This interface is
+    identical to IMoaDict. The client is responsible for releasing
+    this interface when done. See <A HREF="mftypndx.htm#IOAttributes"> Types and Miscellaneous API</A><BR>
+    for a complete listing of the
+    attribute dictionary entries and their values. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetPathName">GetPathName()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetPathName(PIMoaFile2 <I>This</I>,
+  <DD><BR>
+    PIMoaPathName FAR * <I>ppIMoaPathName)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>ppIMoaPathName)</I></CODE>
+  <DD>on return contains a pointer to an IMoaPathName instance<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success or standard MOA QueryInterface errors </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns a pointer to an instance of the IMoaPathName interface.
+    This interface is a clone of the underlying PathName interface.
+    It can be used to set the filename, path and other details of
+    the target file using the SetPathName() method. The client is
+    responsible for releasing this interface when done. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetSize">GetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetSize(PIMoaFile2 <I>This</I>,
+  <DD>MoaUlong FAR * <I>pFileLen</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pFileLen</I></CODE>
+  <DD>on return contains file size<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the size of the current file in *pFileLen. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetStream">GetStream()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetStream(PIMoaFile2 <I>This</I>,
+  <DD>MoaUlong <I>bufferSize</I>, <BR>
+    PIMoaStream2 FAR * <I>ppStream</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>bufferSize</I></CODE>
+  <DD>buffer size of the stream<BR>
+    <BR>
+  <DT><CODE><I>ppStream</I></CODE>
+  <DD>on return contains a pointer to an IMoaStream2 interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success or standard MOA QueryInterface errors </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Used to acquire an IMoaStream2 interface to the current file.
+    The client is responsible for releasing this interface when done. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="IsDirectory">IsDirectory()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>IsDirectory(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>MoaBoolParam
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns TRUE if the underlying pathname points to a directory. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="IsExisting">IsExisting()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>IsExisting(PIMoaFile2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>MoaBoolParam
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns TRUE if the object pointed to by the underlying pathname
+    exists. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="IsSameFile">IsSameFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>IsSameFile(PIMoaFile2 <I>This</I>,
+  <DD>PIMoaFile2 <I>pOther</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOther</I></CODE>
+  <DD>pointer to an IMoaFile2 interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>MoaBoolParam
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns TRUE if the current IMoaFile instance and the instance
+    pointer passed in via pOther point to the same file or directory. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Rename">Rename()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Rename(PIMoaFile2 <I>This</I>,
+  <DD>ConstPMoaChar <I>pNameBuf</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pNameBuf)</I></CODE>
+  <DD>point to string containing new name<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> File not found </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_FileBusy</TT> </td>
+        <td> File in use </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Renames the file or directory currently pointed to by the
+    underlying pathname. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetAccess">SetAccess()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetAccess(PIMoaFile2 <I>This</I>,
+  <DD>MoaUlong <I>accessPerm</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>accessPerm</I></CODE>
+  <DD>new access permissions for current file<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Used to set the access perms of the current file. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetCachePriority">SetCachePriority()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetCachePriority(PIMoaFile2 <I>This</I>,
+  <DD>MoaCachePriority <I>cacheVal)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>cacheVal)</I></CODE>
+  <DD>new cache priority constant<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_BadParam</TT> </td>
+        <td> You passed me a bogus argument </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the cache priority of the current file. Cache priorities
+    include: kMoaCachePriority_Always kMoaCachePriority_IfYouCan kMoaCachePriority_Never
+    These are only useful if the underlying path object references
+    a remote file. All implementations are required to support get/set
+    cache priority even if the implementation doesn't deal with remote
+    files. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetDates">SetDates()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetDates(PIMoaFile2 <I>This</I>,
+  <DD>const MoaWide FAR * <I>pCreate</I>, <BR>
+    const MoaWide FAR * <I>pModify</I>, <BR>
+    const MoaWide FAR * <I>pAccess)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCreate</I></CODE>
+  <DD>creation date<BR>
+    <BR>
+  <DT><CODE><I>pModify</I></CODE>
+  <DD>modified date<BR>
+    <BR>
+  <DT><CODE><I>pAccess)</I></CODE>
+  <DD>access date<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the various date attributes of the current file. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetPathName">SetPathName()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetPathName(PIMoaFile2 <I>This</I>,
+  <DD>const PIMoaPathName <I>pIMoaPathName)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pIMoaPathName</I></CODE>
+  <DD>pointer to an instance of IMoaPathname<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> @@@ </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the MoaFile object's underlying pathName using a previously
+    resolved IMoaPathname object. The given PathName interface is
+    cloned so the client doesn't have a reference to the same interface
+    as the MoaFile2 implementation. The client should release this
+    interface after calling SetPathName() <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetSize">SetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetSize(PIMoaFile2 <I>This</I>,
+  <DD>MoaUlong <I>fileLen</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>fileLen)</I></CODE>
+  <DD>new size of file<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> Could not find the file </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> underlying pathname is invalid </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_DiskFull</TT> </td>
+        <td> Create failed, disk is full </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_IoError</TT> </td>
+        <td> Unknown I/O error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the current file's length to fileLen. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetSpec">SetSpec()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetSpec(PIMoaFile2 <I>This</I>,
+  <DD>ConstPMoaChar <I>pFullPathName)</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pFullPathName</I></CODE>
+  <DD>pointer to a pathName string<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Used to set the underlying pathName. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SwapFile">SwapFile()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SwapFile(PIMoaFile2 <I>This</I>,
+  <DD>PIMoaFile2 <I>pOther</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaFile2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOther</I></CODE>
+  <DD>pointer to an IMoaFile2 instance<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaErr_FileNotFound</TT> </td>
+        <td> File not found </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaFileErr_BadFileSpec</TT> </td>
+        <td> One of files is a directory </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Exchanges the files specified by the two IMoaFile2 instances
+    (this and pOther). If pOther doesn't exist, the file specified
+    by &quot;this&quot; is moved to the pathname specified by pOther.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

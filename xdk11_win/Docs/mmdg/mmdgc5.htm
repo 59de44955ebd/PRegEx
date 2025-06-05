@@ -1,0 +1,538 @@
+<HTML>
+
+<HEAD><TITLE>Multimedia Support API</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+
+<P>
+<A NAME="RTFToC2"></A><A HREF="index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="../mmref/index.htm">MM Interfaces</A> | <A HREF="../mmref/mmmthndx.htm">MM Methods</A>
+| <A HREF="../mmref/mmtypndx.htm">MM Types and Misc API</A>
+<HR width=45% align=left>
+
+<H3>Director Xtra Development Kit: Multimedia Developer's Guide</H3>
+
+<H2>Multimedia Support API</H2>
+
+<HR width=45% align=left>
+
+<H3>Introduction</H3>
+
+<P>
+The Multimedia support API is defined by various interfaces. Some
+of these are callback interfaces, that provide services through
+the callback object of the host application. Others are general
+purpose interfaces that can be implemented by either the host
+application or by an Xtra.
+
+<H3>Multimedia Services</H3>
+
+<P>
+Multimedia services are provided to Xtras through a set of standard
+interfaces. Director provides the multimedia service
+callbacks for use by the various types of multimedia Xtras it
+supports, such as Asset, Tool, and Scripting Xtras.
+
+<H4>Value access and data conversion </H4>
+
+<P> Values, including properties, arguments to functions, and other data, are 
+  passed to and from the host application through object-like entities of type 
+  <CODE>MoaMmValue</CODE>. The <A HREF="../mmref/mmprpown.htm"><code>IMoaMmPropOwner</code></A> 
+  interface provides a general mechanism for getting and setting data values from 
+  an object. This interface is supported by media assets and by the Director callback 
+  interfaces for accessing movie and media data. The <A HREF="../mmref/mmvalue.htm"><code>IMoaMmValue</code></A> 
+  service interface supports converting data from <CODE>MoaMmValue</CODE> types 
+  to standard C types. In addition , the <a href="../mmref/mmcolor.htm"><code>IMoaMmColor</code></a> 
+  interface supports conversion of colors to values and starting with D8.5 the 
+  <a href="../mmref/mmvaluevector.htm"><code>IMoa3dVectorValueUtils</code></a> 
+  is used to convert between values and vectors. The <A HREF="../mmref/mmlist.htm"><code>IMoaMmList</code></A> 
+  interface supports creating, maintaining, and accessing lists of values. These 
+  lists can be useful to chunk data for passing between a host application and 
+  an Xtra. <BR>
+  <BR>
+  For asset Xtras, the <CODE>IMoaMmPropOwner</CODE> interface is discussed in 
+  &quot;<A HREF="mmdgc2.htm">Asset Xtras</A>.&quot; For Director media data access, 
+  <CODE>IMoaMmPropOwner</CODE> is discussed in &quot;<A HREF="mmdgc5.htm">Director 
+  Support API</A>.&quot;
+<H4>Imaging support</H4>
+
+<P> Provided through various methods of the multimedia API, the <CODE><A HREF="../mmref/mmgc.htm">IMoaMmGC</A></CODE> 
+  interface represents a graphics context for Xtras to use to draw. This platform-independent 
+  interface provides access to platform-specific information about the drawing 
+  environment. The <A HREF="../mmref/mmutils2.htm"><CODE>IMoaMmUtils2</CODE></A> 
+  and <a href="../mmref/mmcolor.htm"><code>IMoaMmColor</code></a> interfaces provide 
+  methods for converting between index values and color values in the current 
+  color palette. Starting with Director 8.5, the <code><a href="../mmref/mmimage.htm">IMoaMmImage</a></code> 
+  interface provides access to the image interface used to create and manipulate 
+  image objects.
+
+<H4>User interface support</H4>
+
+<P> The <A HREF="../mmref/mmwndmac.htm"><CODE>IMoaMmWndMac</CODE></A> and <A HREF="../mmref/mmwndwin.htm"><CODE>IMoaMmWndWin</CODE></A> 
+  interfaces provides a number of methods for presenting and managing platform-specific 
+  windows and dialog boxes.
+<H4>Asset support </H4>
+
+<P>
+The <A HREF="../mmref/mmasstc2.htm"><CODE>IMoaMmAssetCallback2</CODE></A>
+and <A HREF="../mmref/mmsprtcl.htm"><CODE>IMoaMmSpriteCallback</CODE></A>
+interfaces are provided to media asset and sprite actor objects
+when they are created. These enable the asset or actor to inform
+the host application of changes that require the application to
+draw or save it. These interfaces are discussed in &quot;<A HREF="mmdgc2.htm">Asset Xtras</A>.&quot;
+<BR>
+The remainder of this discussion focuses on the multimedia API
+that supports data conversion, imaging, and user interface management.
+It begins by describing how to acquire the service interfaces
+described in throughout.
+
+<H3><A NAME="RTFToC5">Acquiring
+services interfaces</A>
+</H3>
+
+<P>
+Many of the multimedia services are provided by interfaces implemented
+in the callback class of the host application. To acquire an instance
+of the interface, your MOA objects can call <CODE>QueryInterface()</CODE>
+on their <CODE>pCallback</CODE> instance variable, which represents
+the application's callback interface. For example, to acquire
+the <CODE>IMoaMmUtils2</CODE> interface in C++:<BR>
+<BR>
+<CODE>pCallback-&gt;QueryInterface(&amp;IID(IMoaMmUtils2), (PPMoaVoid)&amp;pMmUtils2)</CODE>
+
+<H3><A NAME="RTFToC6">Property access
+and data conversion</A></H3>
+
+<P>
+The multimedia interface <CODE>IMoaMmPropOwner</CODE> provides the
+methods <CODE>GetProp()</CODE> and <CODE>SetProp()</CODE> for accessing
+data provided by objects of various types. A number of interfaces
+inherit from <CODE>IMoaMmPropOwner</CODE>, including the <CODE>IMoaMmXAsset</CODE>
+and <CODE>IMoaMmXSpriteActor</CODE> multimedia Xtra interfaces and
+a number of Director-specific callabck interface (described in
+the next chapter). This allows the objects within an application
+and the objects provided by your Xtras to pass internal data in
+a uniform way.
+
+<H4><A NAME="RTFToC8">The MoaMmValue type</A>
+</H4>
+
+<P>
+When using the <CODE>IMoaMmPropOwner</CODE> interface, you pass values
+back and forth to the application using <A HREF="../mmref/mmtypndx.htm#MoaMmValue"><CODE>MoaMmValue</CODE></A>
+structures. <CODE>MoaMmValue</CODE> types are object-like entities
+used to represent various types of data, including simple types
+such as integers, arrays such as strings, and complex types such
+as <CODE>MoaPoints</CODE> and <CODE>MoaRects</CODE>. The <A HREF="../mmref/mmlist.htm"><CODE>IMoaMmList</CODE></A>
+interface is provided to manipulate a special type of <CODE>MoaMmValue</CODE>
+that supports creating, maintaining, and accessing lists of values.
+These list values are useful for representing complex types and
+variable length argument lists for passing between a host application
+and an Xtra. 
+<P>
+Unlike data provided by a pointer or handle, you never access
+data provided by a <CODE>MoaMmValue</CODE> directly. Instead, you
+use methods provided by the <A HREF="../mmref/mmvalue.htm"><CODE>IMoaMmValue</CODE></A>
+interface to test value types and convert data. <BR>
+Because you access <CODE>MoaMmValue</CODE> data procedurally, you
+need not lock and unlock data to access it. Like MOA interfaces,
+the <CODE>MoaMmValue</CODE> mechanism uses reference counting to determine
+when a value is in use and when it may be purged from memory.
+
+<H4><A NAME="RTFToC9">Using MoaMmValues</A>
+</H4>
+
+<P>
+Note: The methods discussed in this section can be implemented
+by Xtras or by objects within an application, and ownership of
+the MoaMmValues being passed depends on who's calling the method
+that passes the value. The <A HREF="mmdgtg.htm">&quot;Tips, Tricks, and Gotcha's&quot;</A>
+discussion provides a general guidelines for ownership responsibilities
+for <CODE>MoaMmValues</CODE>. <BR>
+<BR>
+<CODE>MoaMmValue</CODE> types are used as parameters in a number of
+callback and Xtra interfaces, most commonly through the <CODE>GetProp()</CODE>
+and <CODE>SetProp()</CODE> methods of <A HREF="../mmref/mmprpown.htm"><CODE>IMoaMmPropOwner</CODE></A>,
+from which many of these interfaces inherit. <BR>
+<BR>
+When calling these methods, you convert between Moa and <CODE>MoaMmValue</CODE>
+types using <A HREF="../mmref/mmvalue.htm"><CODE>IMoaMmValue</CODE></A>
+methods such as <CODE>ValueToFloat()/FloatToValue()</CODE> and so
+on. The following table lists all <CODE>IMoaMmValue</CODE> methods
+for converting between Moa and <CODE>MoaMmValue</CODE> types:
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=168><B>Native type </B></TD><TD WIDTH=213><B>Passing to an object </B>
+</TD><TD WIDTH=229><B>Receiving from an object</B></TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaDouble </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#FloatToValue"><CODE>FloatToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToFloat"><CODE>ValueToFloat()</CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaLong </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#IntegerToValue"><CODE>IntegerToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToInteger"><CODE>ValueToInteger() </CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaPoint </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#PointToValue"><CODE>PointToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToPoint"><CODE>ValueToPoint()</CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaRect </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#RectToValue"><CODE>RectToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToRect"><CODE>ValueToRect()</CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaChar </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#StringToValue"><CODE>StringToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToString"><CODE>ValueToString()</CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=168></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#StringHandleToValue"><CODE>StringHandleToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToStringPtr"><CODE>ValueToStringPtr()</CODE></A><CODE>*</CODE>
+</TD></TR>
+
+<TR><TD WIDTH=168><CODE>MoaMmSymbol** </CODE></TD><TD WIDTH=213><A HREF="../mmref/mmvalue.htm#SymbolToValue"><CODE>SymbolToValue()</CODE></A>
+</TD><TD WIDTH=229><A HREF="../mmref/mmvalue.htm#ValueToSymbol"><CODE>ValueToSymbol()</CODE></A>
+
+</TD></TR>
+
+</TABLE>
+
+<P>
+*use <CODE>IMoaMmValue::ValueReleaseStringPtr()</CODE> to release
+<BR>
+<BR>
+**use <CODE>IMoaMmValue::StringToSymbol() </CODE>to create the symbol
+<BR>
+<BR>
+In addition to these types, the Director callback interface <A HREF="../drref/drvalue.htm"><CODE>IMoaDrValue</CODE></A>
+  provides methods for converting certain Director-specific types. Other value 
+  conversion methods are available in the color and vector interfaces.<BR>
+<BR>
+NOTE: palettes can be either <CODE>CastMemRef</CODE> (if they are
+in the cast) or symbol (built in) data types.<BR>
+<BR>
+  Xtras may receive a <CODE>MoaMmValue</CODE> of unknown type, for example, as 
+  an argument to a function they support in the host application's native scripting 
+  language. The <A HREF="../mmref/mmvalue.htm#ValueType">IMoaMmValue::ValueType()</A> 
+  method can test the type of a value before attempting to convert it.
+
+<H3><A NAME="RTFToC10">Imaging support</A></H3>
+
+<P> To support imaging in Xtras, the <A HREF="../mmref/mmutils2.htm"><CODE>IMoaMmUtils2</CODE></A> 
+  interface provides several methods for creating graphics contexts and for color 
+  palette lookup. In addition, the <A HREF="../mmref/mmgc.htm"><CODE>IMoaMmGC</CODE></A> 
+  interface provides a platform-independent representation of platform-specific 
+  drawing information and imaging operations. The image interface <a href="../mmref/mmimage.htm"><code>IMoaMmImage</code></a> 
+  provides a way to manipulate image objects - this is available in Director 8.5 
+  and later.
+<H4><A NAME="RTFToC11">The graphics context
+interface</A>
+</H4>
+
+<P>
+The <A HREF="../mmref/mmgc.htm"><CODE>IMoaMmGC</CODE></A>
+interface provides a graphics context for Xtras that need to draw
+themselves. This interface is provided through methods of several
+interfaces.
+
+<H5><A NAME="RTFToC12">Acquiring
+a graphics context </A>
+</H5>
+
+<P>
+Among the Xtra interface methods that get instances of <CODE>IMoaMmGC</CODE>
+are the thumbnail drawing methods of <A HREF="../mmref/mmxasset.htm"><CODE>IMoaMmXAsset</CODE></A>,
+the <A HREF="../mmref/mmxsprta.htm#Image"><CODE>IMoaMmXSpriteActor::Image()</CODE></A>
+method, and the transition drawing methods of <CODE>IMoaMmXTransitionActor</CODE>.
+These methods are discussed in the previous chapter, &quot;Asset
+Xtras.&quot; <BR>
+<BR>
+In addition, an Xtra can acquire an instance of this interface
+for drawing in an arbitrary window or offscreen bitmap through
+the <A HREF="../mmref/mmutils2.htm#NewGC"><CODE>IMoaMmUtils2::NewGC()</CODE></A>
+method. Call this method after acquiring a reference to the window
+or offscreen bitmap you wish to draw in using standard system
+calls. <BR>
+<BR>
+When you call <CODE>IMoaMmUtils2::NewGC()</CODE>, you provide a <A HREF="../mmref/mmtypndx.htm#MoaMmNativeGCInfo"><CODE>MoaMmNativeGCInfo</CODE></A>
+structure that describes the system specific window or bitmap
+you have acquired for drawing. This union provides a way to specify
+details of windows, DIBs, and DDBs in Windows, and windows and
+GWorlds on the Macintosh. <BR>
+<BR>
+When you acquire an <CODE>IMoaMmGC</CODE> interface by calling <CODE>IMoaMmUtils2::NewGC()</CODE>,
+it belongs to your Xtra. Be sure to call <CODE>IMoaUnknown::Release()</CODE>
+on it when you are through using it.
+<H5><A NAME="RTFToC13">Drawing in
+a graphics context </A>
+</H5>
+
+<P>
+One of the main uses for the <CODE>IMoaMmGC</CODE> interface is to
+enable an Xtra to draw into its own offscreen buffer, then copy
+the buffer into a graphics context of the host application. To
+do so, you set up your offscreen buffer using standard system
+calls, then create an <CODE>IMoaMmGC</CODE> for it using <CODE>IMoaMmUtils2::NewGC()</CODE>.
+You can then draw in your buffer using platform-specific graphics
+operations. When drawing is complete, you can transfer it to another
+graphics context by calling <A HREF="../mmref/mmgc.htm#Blit"><CODE>IMoaMmGC::Blit()</CODE></A>
+on the destination context, providing your context as the source.
+<BR>
+<BR>
+Blitting between contexts is particularly useful in the animation
+loop of an sprite asset Xtra. In its <A HREF="../mmref/mmxsprta.htm#Event"><CODE>IMoaMmXAsset::Event()</CODE></A>
+method, your sprite actor could respond to step events by updating
+the image in its offscreen buffer. Within your <A HREF="../mmref/mmxsprta.htm#Image"><CODE>Image()</CODE></A>
+method, you would use <CODE>IMoaMmGC::Blit()</CODE> to copy pixels
+from the offscreen buffer into the graphics context passed to
+you by <CODE>Image()</CODE>. You could use a similar technique to
+copy the contents of a window rectangle--for example, a media
+editor window--into another <CODE>IMoaMmGC</CODE>. <BR>
+<BR>
+  The <CODE>Blit()</CODE> method supports various ink modes. Some of the pixel 
+  transfer behavior provided by this method may be application-specific.
+
+<H4><A NAME="RTFToC14">Color palette lookup</A></H4>
+
+<P>
+The <CODE>IMoaMmUtils2</CODE> interface provides two methods for converting
+between index values and color values in the current color palette:
+<A HREF="../mmref/mmutils2.htm#IndexToRGB"><CODE>IndexToRGB()</CODE></A>
+and <A HREF="../mmref/mmutils2.htm#RGBToIndex"><CODE>RGBToIndex()</CODE></A>.
+These methods work reliably only when system pixel depth is set
+to less than or equal to 8 bits. They don't support direct-color
+systems. <BR>
+<BR>
+  <CODE>IndexToRGB()</CODE> takes a color palette index and returns the RGB value 
+  located at the corresponding position in the palette. <CODE>RGBToIndex()</CODE> 
+  takes an RGB value and returns the index of the closes matching color in the 
+  current palette. You must use these instead of the platform-specific palette 
+  lookup API (such as <CODE>Color2Index()</CODE> and <CODE>Index2Color()</CODE> 
+  on the Macintosh). This ensures that your Xtra gets the proper color palette 
+  lookup results regardless of any behind-the-scene palette manipulation going 
+  on in the host application.
+
+<H3><A NAME="RTFToC15">User interface
+support</A>
+</H3>
+
+<P>
+The <A HREF="../mmref/mmwndmac.htm"><CODE>IMoaMmWndMac</CODE></A>
+and <A HREF="../mmref/mmwndwin.htm"><CODE>IMoaMmWndWin</CODE></A>
+interface provides a number of methods for presenting and managing
+platform-specific windows and dialog boxes. 
+Methods of the <CODE>IMoaMmWndMac</CODE> and <CODE>IMoaMmWndWin</CODE>
+interface allow you to present standard system dialog boxes, both
+Macintosh and Windows. Director also implements methods that support
+non-modal windows. <BR>
+<BR>
+Note: You must use the API described here rather than standard
+platform-specific API for dialog and windows management. This
+ensures that your Xtra's windows synchronize with the window management
+capabilities provided by the host application.
+
+<P>
+Note: You may want to use the <A HREF="../mudg/index.htm">MUI Xtra API</A>
+to implement user interface dialogs. This API provides a platform-independent
+way to display dialogs and to respond to user events. Consult
+the MUI Xtra API documentation for information on which applications
+support it.
+
+<H4><A NAME="RTFToC16">Macintosh dialogs</A>
+</H4>
+
+<P>
+On the Macintosh, modal dialogs are handled through the <CODE>IMoaMmWndMac</CODE>
+and <CODE>IMoaMmWndWin</CODE> methods <A HREF="../mmref/mmwndmac.htm#MacPrepareModalDialog"><CODE>MacPrepareModalDialog()</CODE></A>,
+<A HREF="../mmref/mmwndmac.htm#MacModalDialog"><CODE>MacModalDialog()</CODE></A>,
+and <A HREF="../mmref/mmwndmac.htm#MacUnprepareModalDialog"><CODE>MacUnprepareModalDialog()</CODE></A>.
+You call these methods in sequence to coordinate event handling
+and window display with the host application. The <CODE>MacPrepareModalDialog()</CODE>
+method returns a <CODE>dialogCookie</CODE> parameter that you must
+in turn pass to the <CODE>MacModalDialog()</CODE> method.<BR>
+<BR>
+  <CODE>MacModalDialog()</CODE> replaces the standard Macintosh system call <CODE>ModalDialog()</CODE>, 
+  providing similar parameters. Be sure to call <A HREF="../moref/callback.htm#MoaBeginUsingResources"><CODE>IMoaCallback::MoaBeginUsingResources()</CODE></A> 
+  and <CODE>IMoaMmWndMac::MacPrepareModalDialog()</CODE> before calling <CODE>MacModalDialog()</CODE>. 
+  Call <CODE>IMoaMmWndMac::MacPrepareModalDialog()</CODE> and <A HREF="../moref/callback.htm#MoaEndUsingResources"><CODE>IMoaCallback::MoaEndUsingResources()</CODE></A> 
+  after exiting the dialog's event handling loop and hiding the dialog.
+
+<H4><A NAME="RTFToC17">Windows dialog boxes</A></H4>
+
+<P>
+In Windows, modal dialogs are handled through the <A HREF="../mmref/mmwndwin.htm"><CODE>IMoaMmWndWin</CODE></A>
+methods <A HREF="../mmref/mmwndwin.htm#WinDialogBox"><CODE>WinDialogBox()</CODE></A>
+or <A HREF="../mmref/mmwndwin.htm#WinDialogBoxParam">WinDialogBoxParam()</A>,
+which replace the standard Windows system calls <CODE>DialogBox()</CODE>
+and <CODE>DialogBoxParam()</CODE>. <CODE>WinDialogBoxParam()</CODE> enables
+you to pass in an arbitrary 32-bit value as a parameter. Use this
+method to pass a data structure or interface to your dialog process
+if you need to access information of the Xtra. Be sure to call
+<A HREF="../moref/callback.htm#MoaBeginUsingResources"><CODE>IMoaCallback::MoaBeginUsingResources()</CODE></A>
+before calling <CODE>WinDialogBox()</CODE>or <CODE>WinDialogBoxParam()</CODE>,
+and call <A HREF="../moref/callback.htm#MoaEndUsingResources"><CODE>IMoaCallback::MoaEndUsingResources()</CODE></A>
+after exiting these methods.<BR>
+<BR>
+Windows supports a variety of dialog box creation functions. The
+methods <A HREF="../mmref/mmwndwin.htm#WinPrepareDialogBox"><CODE>WinPrepareDialogBox()</CODE></A>
+and <A HREF="../mmref/mmwndwin.htm#WinUnprepareDialogBox"><CODE>WinUnprepareDialogBox()</CODE></A>
+are provided as brackets to let you call any of these standard
+Windows dialog box calls. When you use the standard Windows creation
+API, you call these methods to coordinate event handling and window
+display with the host application. Call <CODE>WinPrepareDialog()</CODE>
+before calling a Windows dialog box function, then call <CODE>WinUnprepareDialogBox()</CODE>
+after hiding the dialog box. 
+<P> Note: The methods <CODE>WinPrepareDialog()</CODE> and <CODE>WinUnprepareDialogBox()</CODE> 
+aren't required when you call the methods <CODE>IMoaMmWndWin::WinDialogBox()</CODE>
+  and <CODE>IMoaMmWndWin::WinDialogBoxParam()</CODE>, which are implemented to 
+  handle the housekeeping internally.
+
+<H4><A NAME="RTFToC18">Macintosh non-modal
+windows</A>
+</H4>
+
+<P>
+<A HREF="../mmref/mmwndmac.htm"><CPDE>IMoaMmWndMac</A>
+provides a number of methods that support standard (non-modal)
+Macintosh windows. This enables an Xtra to put up floating palettes,
+interactive editors, and other independent user interfaces. In
+their general order of use, the methods provided are <CODE>MacRegisterWindow()</CODE>,
+<CODE>MacXShowWindow()</CODE>, <CODE>MacSelectWindow()</CODE>, <CODE>MacDragWindow()</CODE>,
+<CODE>MacHideWindow()</CODE> and <CODE>MacUnregisterWindow()</CODE>. 
+<BR>
+<BR>
+<B>Note: </B>To synchronize your Xtra's windows with the window
+management provided by the host application, you must always use
+these methods, rather than the standard Mac toolbox calls, to
+display modeless windows on the Macintosh. <BR>
+<BR>
+In addition to these methods the multimedia API defines the <CODE>IMoaMacEventHandler</CODE>
+Xtra interface. This interface is implemented by an Xtra to provide
+an event handling routine to Macintosh windows.
+
+<H5><A NAME="RTFToC19">Implementing
+IMoaMacEventHandler </A>
+</H5>
+
+<P>
+The <A HREF="../mmref/mmmcevnt.htm">IMoaMmMacEventHandler</A>
+interface needs to be implemented by Xtras that display non-modal
+Macintosh windows. For example, a media asset Xtra could implement
+this interface to support non-modal media editing, with the implementation
+provided by the class the implements <A HREF="../mmref/mmxasset.htm"><CODE>IMoaMmXAsset</CODE></A>.
+However, be aware that if several non-modal windows are displayed
+simultaneously, each requires its own instance of this interface
+(and thus should be implemented in a separate class). This interface
+consists of two methods, <CODE>SetRegistered()</CODE> and <CODE>HandleEvent()</CODE>.
+<BR>
+<BR>
+<A HREF="../mmref/mmmcevnt.htm#SetRegistered"><CODE>IMoaMmMacEventHandler::SetRegistered()</CODE></A>
+is called to notify your event handler when your window is registered
+and unregistered. Implementation of this method is optional; implement
+it if you need to initialize and dispose of memory required by
+your <CODE>HandleEvent()</CODE> method. An arbitrary data handle,
+<CODE>refCon</CODE>, is passed in to <CODE>SetRegistered()</CODE> and
+subsequently passed to your <CODE>HandleEvent()</CODE> method each
+time it is called. <BR>
+<BR>
+<A HREF="../mmref/mmmcevnt.htm#HandleEvent">IMoaMmMacEventHandler::HandleEvent()</A>
+is called by the host application to pass events that occur in
+your window to your Xtra. Implement this method to interpret the
+standard Macintosh event record--passed in as a parameter--and
+perform the appropriate actions in response to the event.
+
+<H5><A NAME="RTFToC20">Creating,
+registering, and showing windows </A>
+</H5>
+
+<P>
+Before you begin using a window on the Macintosh, you create it
+using the standard Macintosh toolbox window creation calls <CODE>NewWindow()</CODE>,
+<CODE>NewCWindow()</CODE>, <CODE>GetNewWindow()</CODE>, or <CODE>GetNewCWindow()</CODE>.
+Create your window as <I><B>hidden</B></I>. <BR>
+<BR>
+Before you actually use the window, you register it with the host
+application by calling <A HREF="../mmref/mmwndmac.htm#MacRegisterWindow"><CODE>IMoaMmWndMac::MacRegisterWindow()</CODE></A>.
+In this method, you pass the <CODE>IMoaMacEventHandler</CODE> interface,
+to enable the host application to call it to handle events in
+your window. Registering enables the host to coordinate event
+handling and window display with your Xtra. <BR>
+<BR>
+After creating and registering your window, you can display it
+and bring it to the front by calling <A HREF="../mmref/mmwndmac.htm#MacXShowWindow"><CODE>IMoaMmWndMac::MacXShowWindow()</CODE></A>
+and <A HREF="../mmref/mmwndmac.htm#MacSelectWindow"><CODE>IMoaMmWndMac::MacSelectWindow()</CODE></A>.
+Don't use the standard system calls <CODE>ShowWindow()</CODE> and
+<CODE>SelectWindow()</CODE> for these operations.
+
+<H5><A NAME="RTFToC21">Handling events </A></H5>
+
+<P>
+Once you've registered and displayed your window, your <A HREF="../mmref/mmmcevnt.htm#HandleEvent"><CODE>IMoaMmMacEventHandler::HandleEvent()</CODE></A>
+method is called each time a significant event occurs in the window.
+In general, your implementation of <CODE>HandleEvent()</CODE> uses
+standard techniques for handling the events. However, for correct
+behavior, you should use methods of <CODE>IMoaMmWndMac</CODE> to handle
+window dragging and event passing. <BR>
+<BR>
+Call <A HREF="../mmref/mmwndmac.htm#MacDragWindow"><CODE>IMoaMmWndMac::MacDragWindow()</CODE></A>
+to drag the window. This method replaces the standard Mac toolbox
+<CODE>DragWindow()</CODE> call, to ensure that other windows belonging
+to the host application interact correctly with your window as
+it moves. <BR>
+<BR>
+Call <A HREF="../mmref/mmwndmac.htm#MacHideWindow"><CODE>IMoaMmWndMac::MacHideWindow()</CODE></A>
+to hide the window. This method replaces the standard Mac toolbox
+<CODE>HideWindow()</CODE> call, to ensure that other windows belonging
+to the host application interact correctly with your window when
+it is hidden. <BR>
+<BR>
+Call <A HREF="../mmref/mmwndmac.htm#MacXShowWindow"><CODE>IMoaMmWndMac::MacXShowWindow()</CODE></A>
+to display your window. This method replaces the standard Mac
+toolbox <CODE>ShowWindow()</CODE> call, to ensure that other windows
+belonging to the host application interact correctly with your
+window when it is displayed. <BR>
+<BR>
+(Note that <A HREF="../mmref/mmwndmac.htm#MacHandleEvent"><CODE>IMoaMmWndMac::MacHandleEvent()</CODE></A>
+is not intented for use with the modeless dialog API. If you were
+to implement <CODE>IMoaMmMacEventHandler::HandleEvent()</CODE> to
+call this method, you could get stuck in an infinite loop. This
+method is intended primarily for passing update events to the
+host application in other contexts.)
+
+<H5><A NAME="RTFToC22">Disposing of windows </A></H5>
+
+<P>
+To close and dispose of a window, call the Macintosh <CODE>DisposeWindow()</CODE>
+routine <I><B>after</B></I> the window is hidden and unregistered.
+The sequence for disposing a window would be:<BR>
+<BR>
+<CODE>pUtils-&gt;lpVtbl-&gt;MacHideWindow(pUtils, theWindow)<BR>
+<BR>
+pUtils-&gt;lpVtbl-&gt;MacUnregisterWindow(pUtils,
+pMyEventHandler) <BR>
+<BR>
+DisposeWindow(theWindow)<BR>
+<BR>
+</CODE>If you don't call <CODE>MacHideWindow()</CODE> before
+the other calls, the host application's window management code
+may be put in an inconsistent state.<BR>
+<BR>
+<B>Note:</B> Never dispose of a window before unregistering it,
+as this can cause the host application to crash.
+
+<H3>Cue Point Callbacks</H3>
+
+<P>
+The <A HREF="../mmref/mmcpntcl.htm"><CODE>IMoaMmCuePointCallback</CODE></A>
+interface provides a mechanism for sending notification to the
+host application when an Xtra encounters a specific cue point.
+This is useful to enable sprite Xtras and others to implement
+their internal mechanisms for recognizing cue points and informing
+the host.
+
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+
+</HTML>

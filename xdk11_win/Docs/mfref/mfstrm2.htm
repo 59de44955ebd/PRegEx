@@ -1,0 +1,938 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaStream2</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../mfdg/index.htm" >MF Developer's Guide</A> <BR>
+<A HREF="index.htm">MF Interfaces</A> | <A HREF="mfmthndx.htm">MF Methods</A> | <A HREF="mftypndx.htm">MF Types and Misc API</A>
+<hr width=45% align=left>
+<H2><A NAME="IMoaStream2">IMoaStream2</A></H2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaStream2<BR>
+  </CODE>Pointer type: <CODE>PIMoaStream2<BR>
+  </CODE>Inheritance: <A HREF="../moref/stream.htm"><CODE>IMoaStream<BR>
+  </A> </CODE>Header file: <A HREF = "../../include/moastr2.h">moastr2.h</A> <BR>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#Open">Open()</A> <BR>
+    <A HREF = "#Close">Close()</A> <BR>
+    <A HREF = "#Read">Read()</A> <BR>
+    <A HREF = "#ReadAhead">ReadAhead()</A> <BR>
+    <A HREF = "#Write">Write()</A> <BR>
+    <A HREF = "#GetPosition">GetPosition()</A> <BR>
+    <A HREF = "#SetPosition">SetPosition()</A> <BR>
+    <A HREF = "#GetEnd">GetEnd()</A> <BR>
+    <A HREF = "#Flush">Flush()</A> <BR>
+    <A HREF = "#GetModes">GetModes()</A> <BR>
+    <A HREF = "#SetPositionRelative">SetPositionRelative()</A> <BR>
+    <A HREF = "#SetEnd">SetEnd()</A> <BR>
+    <A HREF = "#GetCurrentLength">GetCurrentLength()</A> <BR>
+    <A HREF = "#CloseWithError">CloseWithError()</A> <BR>
+    <A HREF = "#GetMoaIOAttributeDict">GetMoaIOAttributeDict()</A> <BR>
+    <A HREF = "#ReadOperation">ReadOperation()</A> <BR>
+    <A HREF = "#WriteOperation">WriteOperation()</A> <BR>
+    <A HREF = "#ReleaseStreamBuffer">ReleaseStreamBuffer()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Close">Close()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Close(PIMoaStream2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamAlreadyOpen</TT> </td>
+        <td> Stream is already open </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Closes the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CloseWithError">CloseWithError()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CloseWithError(PIMoaStream2 <I>This</I>,
+  <DD>MoaError <I>err</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>err</I></CODE>
+  <DD>error code<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Closes the stream with an error condition of err. Used for
+    closing streams used as pipes or as transformers between pull-mode
+    and push-mode streams. The producer should call CloseWithError
+    with a termination error, which in turn will be passed to the
+    consumer on the next stream operation. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Flush">Flush()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Flush(PIMoaStream2 <I>This</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Forces any data not written to the stream to be written. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetCurrentLength">GetCurrentLength()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetCurrentLength(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition FAR *pPos) <I>PURE; </I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>PURE; </I></CODE>
+  <DD>MoaStreamPosition FAR *pPos)<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the available length of the stream, which might be different
+    from its total length, esp. for streams on remote objects. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetEnd">GetEnd()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetEnd(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition FAR * <I>pPos</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pPos</I></CODE>
+  <DD>on return contains stream position<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the position of the end of the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetMoaIOAttributeDict">GetMoaIOAttributeDict()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetMoaIOAttributeDict(PIMoaStream2 <I>This</I>,
+  <DD>PIMoaIOAttributeDict FAR <I>*ppIDict</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>*ppIDict</I></CODE>
+  <DD>on return contains IMoaIOAttributeDict pointer<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success or standard MOA QueryInterface errors </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns an IMoaIOAttributeDict interface which is used to
+    enumerate through various stream and file attributes. This interface
+    is identical to IMoaDict. The client is responsible for releasing
+    this interface when done. For a list of IO attributes, see <A HREF="mftypndx.htm#IOAttributes">Types and Miscellaneous API</A>.<BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetModes">GetModes()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetModes(PIMoaStream2 <I>This</I>,
+  <DD>MoaLong FAR * <I>pAccessMode</I>, <BR>
+    MoaLong FAR * <I>pSetPositionType</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pAccessMode</I></CODE>
+  <DD>on return contains access mode<BR>
+    <BR>
+  <DT><CODE><I>pSetPositionType</I></CODE>
+  <DD>on return contains set position type<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the access mode and set position type for the current
+    stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetPosition">GetPosition()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetPosition(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition FAR * <I>pPos</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pPos</I></CODE>
+  <DD>on return contains stream position<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the current position in the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Open">Open()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Open(PIMoaStream2 <I>This</I>,
+  <DD>MoaLong <I>accessMode</I>, <BR>
+    MoaLong <I>setPositionType</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>accessMode</I></CODE>
+  <DD>access mode for the stream<BR>
+    <BR>
+  <DT><CODE><I>setPositionType</I></CODE>
+  <DD>set position type for the stream<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamAlreadyOpen</TT> </td>
+        <td> Stream is already open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadAccessMode</TT> </td>
+        <td> not an allowable r/w perm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadSetPositionMode</TT> </td>
+        <td> not an allowable seek perm </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Opens the stream. The access mode paramater indicates the
+    type of access required for the stream. Valid access modes are:
+    Read - Stream will only be read from Write - Stream will only
+    be written to ReadWrite - Stream will be read from and written
+    to The set position parameter determines what set position mode
+    to use with the stream. Valid set position modes are: None - SetPosition
+    will never be called. Cheap - Set position will be called often
+    Expensive - Set position will be called occasionally <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Read">Read()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Read(PIMoaStream2 <I>This</I>,
+  <DD>PMoaVoid <I>pBuf</I>, <BR>
+    MoaStreamCount <I>numToRead</I>, <BR>
+    MoaStreamCount FAR * <I>pNumActuallyRead</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD>pointer to buffer for data<BR>
+    <BR>
+  <DT><CODE><I>numToRead</I></CODE>
+  <DD>number of bytes to read from stream<BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyRead</I></CODE>
+  <DD>number of bytes actually read<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> returned by everything but Open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadParameter</TT> </td>
+        <td> you passed me bad parm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_ReadPastEnd</TT> </td>
+        <td> attempted to read past end </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_DataNotAvail</TT> </td>
+        <td> attempted to read past current length (partially downloaded streams) </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Attempts to read numToRead bytes from the stream and write
+    them into the buffer passed in. The number of bytes actually read
+    from the stream is return in numActuallyRead. The position will
+    be incremented to reflect the number of bytes read from the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ReadAhead">ReadAhead()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ReadAhead(PIMoaStream2 <I>This</I>,
+  <DD>PMoaVoid <I>pBuf</I>, <BR>
+    MoaStreamCount <I>numToRead</I>, <BR>
+    MoaStreamCount FAR * <I>pNumActuallyRead</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD>pointer to buffer for data<BR>
+    <BR>
+  <DT><CODE><I>numToRead</I></CODE>
+  <DD>number of bytes to read from stream<BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyRead</I></CODE>
+  <DD>number of bytes actually read<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> returned by everything but Open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadParameter</TT> </td>
+        <td> you passed me bad parm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_ReadPastEnd</TT> </td>
+        <td> attempted to read past end </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_ReadAheadTooFar</TT> </td>
+        <td> you asked for too much ReadAhead </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_DataNotAvail</TT> </td>
+        <td> attempted to read past current length (partially downloaded streams) </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Attempts to read numToRead bytes from the stream and write
+    them into the buffer passed in. The number of bytes actually read
+    from the stream is return in numActuallyRead. The position is
+    not incremented when performing a ReadAhead(). <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ReadOperation">ReadOperation()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ReadOperation(PIMoaStream2 <I>This</I>,
+  <DD>PMoaStreamIOOperation <I>pOperation</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOperation</I></CODE>
+  <DD>pointer to an MoaStreamIOOperation structure<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> returned by everything but Open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadParameter</TT> - </td>
+        <td> you passed me bad parm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_ReadPastEnd</TT> </td>
+        <td> attempted to read past end </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_DataNotAvail</TT> </td>
+        <td> attempted to read past current length (partially downloaded streams) Sets output fields of MoaStreamIOOperation structure. </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Performs a READ operation using parameters specified by the
+    MoaStreamIOOperation structure. There are 4 basic modes of I/O
+    specified using the ioFlags parameter: IOOperations that are synchronous
+    (blocking) and un-bufferred IOOperations that are asynchronous
+    (non-blocking) IOOperations that are bufferred IOOperations that
+    are provide direct access to a stream's buffer The asynchronous,
+    bufferred and direct-access modes are optional per implementation.
+    Their availability can be queried using the MoaDict returned by
+    GetMoaIOAttributeDict(). The asynchronous and buffered modes can
+    be combined to request async, buffered I/O. The direct-access
+    mode can be used to bypass memory copies that would normally result
+    in bufferred operation between a stream's buffer and a client's
+    buffer. Direct-Access mode cannot be combined with any other modes.
+    The client must also specify other inputs in MoaStreamIOOperation
+    structure: - ioFlags: the I/O mode (as described above) - ioRequestCount:
+    the number of bytes to be transferred or for direct-access mode,
+    bytes to be accessed in the stream buffer - pClientBuffer: the
+    destination for the data that will be read, ignored for direct-access
+    mode - pCompletionProc: a function to be called when an asynchronous
+    read has completed only called if the read was actually asynchronous.
+    - pClientData: any piece of data to be passed to the pCompletionProc.
+    Upon return, the output fields of the MoaStreamIOOperation structure
+    are set as follows: - ioResult: the result of the I/O operation
+    (should match return value on synchronous reads) - actualIOCount:
+    the actual number of bytes transferred or for direct-access mode,
+    bytes made available in the stream buffer - pStreamBuffer: a pointer
+    to a region of the stream's buffer, the size of the region is
+    returned in the actualIOCount field. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ReleaseStreamBuffer">ReleaseStreamBuffer()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ReleaseStreamBuffer(PIMoaStream2 <I>This</I>,
+  <DD>PMoaStreamIOOperation <I>pOperation</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOperation</I></CODE>
+  <DD>pointer to an MoaStreamIOOperation structure<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>This method will only be supported by stream implementations
+    that support direct-access mode MoaIOStreamOperations. After a
+    MoaStream2 client has acquired a region of a stream's buffer for
+    read or write, the client will read from (or write to) the buffer,
+    then the client must return that region of the stream's buffer
+    back to the stream implementation. This method returns the stream
+    buffer region specified by the pOperation parameter back to the
+    stream implementation. The pOperation structure must have been
+    used by the client for a direct-access read or write to the stream's
+    buffer. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetEnd">SetEnd()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetEnd(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition <I>pos</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pos</I></CODE>
+  <DD>new stream extent<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the end of the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetPosition">SetPosition()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetPosition(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition <I>pos</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pos</I></CODE>
+  <DD>new stream position<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the current stream position to pos. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetPositionRelative">SetPositionRelative()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetPositionRelative(PIMoaStream2 <I>This</I>,
+  <DD>MoaStreamPosition <I>pos</I>, <BR>
+    MoaStreamPositionMode <I>mode</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pos</I></CODE>
+  <DD>new stream position offset<BR>
+    <BR>
+  <DT><CODE><I>mode</I></CODE>
+  <DD>new stream position mode<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> Stream no open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Sets the stream position relative to the stream position mode.
+    Valid stream position modes are: kMoaStreamPositionMode_FromStart
+    kMoaStreamPositionMode_FromCurrent kMoaStreamPositionMode_FromEnd <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Write">Write()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Write(PIMoaStream2 <I>This</I>,
+  <DD>PMoaVoid <I>pBuf</I>, <BR>
+    MoaStreamCount <I>numToWrite</I>, <BR>
+    MoaStreamCount FAR * <I>pNumActuallyWritten</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pBuf</I></CODE>
+  <DD>buffer to be written in to stream<BR>
+    <BR>
+  <DT><CODE><I>numToWrite</I></CODE>
+  <DD>number of bytes to write<BR>
+    <BR>
+  <DT><CODE><I>pNumActuallyWritten</I></CODE>
+  <DD>number of bytes written<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> returned by everything but Open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadParameter</TT> </td>
+        <td> you passed me bad parm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_WrotePastEnd</TT> </td>
+        <td> attempted to write past end </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Attempts to write numToWrite bytes into the stream. The number
+    of bytes actually written to the stream is returned in numActuallyWritten.
+    The stream position is updated to reflect the number of bytes
+    written to the stream. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WriteOperation">WriteOperation()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WriteOperation(PIMoaStream2 <I>This</I>,
+  <DD>PMoaStreamIOOperation <I>pOperation</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaStream2</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pOperation</I></CODE>
+  <DD>pointer to an MoaStreamIOOperation structure<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <table border="1">
+      <tr>
+        <td><TT>kMoaErr_NoErr</TT> </td>
+        <td> Success </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_StreamNotOpen</TT> </td>
+        <td> returned by everything but Open </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_BadParameter</TT> </td>
+        <td> you passed me bad parm </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_IoError</TT> </td>
+        <td> catch-all r/w/pos error </td>
+      </tr>
+      <tr>
+        <td><TT>kMoaStreamErr_WrotePastEnd</TT> </td>
+        <td> attempted to write past end </td>
+      </tr>
+    </table>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Performs a WRITE operation using parameters specified by the
+    MoaStreamIOOperation structure. There are 4 basic modes of I/O
+    specified using the ioFlags parameter: IOOperations that are synchronous
+    (blocking) and un-bufferred IOOperations that are asynchronous
+    (non-blocking) IOOperations that are bufferred IOOperations that
+    are provide direct access to a stream's buffer The asynchronous,
+    bufferred and direct-access modes are optional per implementation.
+    Their availability can be queried using the MoaDict returned by
+    GetMoaIOAttributeDict(). The asynchronous and buffered modes can
+    be combined to request async, buffered I/O. The direct-access
+    mode can be used to bypass memory copies that would normally result
+    in bufferred operation between a stream's buffer and a client's
+    buffer. Direct-Access mode cannot be combined with any other modes.
+    The client must also specify other inputs in MoaStreamIOOperation
+    structure: - ioFlags: the I/O mode (as described above) - ioRequestCount:
+    the number of bytes to be transferred or for direct-access mode,
+    bytes to be accessed in the stream buffer - pClientBuffer: the
+    source for the data that will be written, ignored for direct-access
+    mode. - pCompletionProc: a function to be called when an asynchronous
+    write has completed only called if the write was actually asynchronous.
+    - pClientData: any piece of data to be passed to the pCompletionProc.
+    Upon return, the output fields of the MoaStreamIOOperation structure
+    are set as follows: - ioResult: the result of the I/O operation
+    (should match return value on synchronous writes) - actualIOCount:
+    the actual number of bytes transferred or for direct-access mode,
+    bytes made be available in the stream buffer - pStreamBuffer:
+    a pointer to a region of the stream's buffer, the size of the
+    region is returned in the actualIOCount field.
+</DL>
+<hr width=45% align=left>
+</BODY>
+</html>

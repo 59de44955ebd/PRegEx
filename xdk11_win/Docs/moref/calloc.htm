@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaCalloc</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaCalloc</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaCalloc<BR>
+  </CODE>Pointer type: <CODE>PIMoaCalloc<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moaxtra.h">moaxtra.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD>This standard MOA callback interface is implemented by the
+    every MOA application for the use of Xtras. It provides methods
+    for use in allocating fixed memory. All MOA objects have an instance
+    variable, <TT>pCalloc</TT>,
+    that refers to this interface.<BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#NRAlloc">NRAlloc()</A> <BR>
+    <A HREF = "#NRFree">NRFree()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="NRAlloc">NRAlloc()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>NRAlloc(PIMoaCalloc<I>This</I>,
+  <DD><BR>
+    MoaUlong<I>cb</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaCalloc</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>cb</I></CODE>
+  <DD><CODE>MoaUlong</CODE>Integer representing the size of the
+    memory block to allocate <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Pointer to allocated memory
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns a fixed block of memory at least cb bytes in size.
+    The memory is zeroed out. If the request cannot be satisfied,
+    NULL is returned. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="NRFree">NRFree()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>NRFree(PIMoaCalloc <I>This</I>,
+  <DD><BR>
+    PMoaVoid <I>pv</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaCalloc</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pv</I></CODE>
+  <DD><CODE>PMoaVoid</CODE>Pointer to the allocated memory block <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><TT>void</TT>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Frees memory previously allocated with the <TT>NRAlloc()</TT> method.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

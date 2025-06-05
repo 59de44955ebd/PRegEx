@@ -1,0 +1,323 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaAwAssetCallback</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+<P> <A HREF="../awdg/index.htm" >AW Developer's Guide</A> | <A HREF = "index.htm">AW Interfaces</A> | <A HREF = "awmthndx.htm">AW Methods</A> | <A HREF = "awtypndx.htm">AW Types and Misc API </A>
+<HR width=45% align=left>
+<H2><A NAME="IMoaAwAssetCallback">IMoaAwAssetCallback</A> </H2>
+<HR width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaAwAssetCallback<BR>
+  </CODE>Pointer type: <CODE>PIMoaAwAssetCallback<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../../includes/awiservc.h">awiservc.h</A> <BR>
+<H3>Methods</H3>
+<H4>Icon Access </H4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetIconId">GetIconId()</A> <BR>
+</DL>
+<H4>Expressions </H4>
+<DL>
+  <DT>
+  <DD><A HREF = "#StoreExpression">StoreExpression()</A> <BR>
+    <A HREF = "#GetExpressionLength">GetExpressionLength()</A> <BR>
+    <A HREF = "#GetExpression">GetExpression()</A> <BR>
+    <A HREF = "#DeleteExpression">DeleteExpression()</A> <BR>
+    <A HREF = "#EvalExpression">EvalExpression()</A> <BR>
+    <A HREF = "#WatchExpression">WatchExpression()</A> <BR>
+    <A HREF = "#StopWatchExpression">StopWatchExpression()</A>
+</DL>
+<HR width=45% align=left>
+<H3><A NAME="DeleteExpression">DeleteExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>DeleteExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of the expression<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Removes an expression. The expression must have been stored
+    previously with <CODE>StoreExpression()</CODE>. This method only works
+    at authoring time. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="EvalExpression">EvalExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>EvalExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>, <BR>
+    PMoaMmValue <I>pResult</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of expression<BR>
+    <BR>
+  <DT><CODE><I>pResult</I></CODE>
+  <DD>Pointer to result of expression evaluation<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Evaluates a stored expression. <CODE><I>pResult</I></CODE> contains the result in the specified format. The expression must
+    have been stored previously with <CODE>StoreExpression()</CODE>. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="GetExpression">GetExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>GetExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>, <BR>
+    PMoaChar <I>pExpression</I>, <BR>
+    MoaLong <I>maxLen</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of expression<BR>
+    <BR>
+  <DT><CODE><I>pExpression</I></CODE>
+  <DD>Pointer to string containing expression text<BR>
+    <BR>
+  <DT><CODE><I>maxLen</I></CODE>
+  <DD>Maximum length of <CODE><I>pExpression </I></CODE>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Retrieves the text for a previously stored expression. The
+    expression must have been stored previously with <CODE>StoreExpression()</CODE>.
+    This method only works at authoring time. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="GetExpressionLength">GetExpressionLength()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>GetExpressionLength(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>, <BR>
+    MoaLong FAR * <I>pLength</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of the expression<BR>
+    <BR>
+  <DT><CODE><I>pLength</I></CODE>
+  <DD>Pointer to length of expression text in bytes (excluding null
+    terminator)<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Returns the length (in bytes, not including the terminating
+    null character) of the expression text associated with the stored
+    expression. The expression must have been stored previously with <CODE>StoreExpression()</CODE>. This method only works at authoring
+    time. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="GetIconId">GetIconId()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>GetIconId(PIMoaAwAssetCallback <I>This</I>,
+  <DD> PMoaAwIconId <I>pIconId</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pIconId</I></CODE>
+  <DD>Pointer to icon ID for the asset<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Puts the unique identification number assigned to this asset's
+    icon into <CODE><I>*pIconId</I></CODE>.
+    This identification number is persistent across sessions. Authorware
+    currently reassigns identification numbers when files are packaged,
+    so don't store hard references to identification numbers in your
+    property or media data. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="StopWatchExpression">StopWatchExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>StopWatchExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of expression<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Stops a watch that has been started previously. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="StoreExpression">StoreExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>StoreExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> ConstPMoaChar <I>pExpression</I>, <BR>
+    MoaLong <I>expressionId</I>, <BR>
+    MoaAwExprFlags <I>exprAttribs</I>, <BR>
+    MoaBoolParam <I>errorUI</I>, <BR>
+    MoaLong FAR <I>*pErrStart</I>, <BR>
+    MoaLong FAR <I>*pErrEnd</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pExpression</I></CODE>
+  <DD>Pointer to string containing expression<BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>Constant specified by Xtra to identify the expression<BR>
+    <BR>
+  <DT><CODE><I>exprAttribs</I></CODE>
+  <DD>Flag representing attributes of expression, including <CODE>kMoaAwExprFlag_IsScript <BR>
+    <BR>
+    </CODE>
+  <DT><CODE><I>errorUI</I></CODE>
+  <DD>FALSE if error values are returnedsilently.<BR>
+    <BR>
+  <DT><CODE><I>*pErrStart</I></CODE>
+  <DD>Pointer to start of invalid text in expression<BR>
+    <BR>
+  <DT><CODE><I>*pErrEnd</I></CODE>
+  <DD>Pointer to the end of invalid text in expression<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Called at authoring time to compile and store an expression. <CODE><I>pExpression</I></CODE>is
+    a pointer to a string containing the expression. <CODE><I>expressionId</I></CODE> is an Xtra-specified constant (between 1 and 100) used to track
+    a particular expression. <CODE><I>exprAttribs</I></CODE> is a flag that represents attributes of the expression including. <CODE>kMoaAwExprFlag_IsScript</CODE>. <BR>
+    If <CODE><I>errorUI</I></CODE> is FALSE, any error value is returned silently; if it is TRUE
+    and an error occurs, this method puts up an error dialog, dialogs
+    allowing undefined variables or functions to be defined, or both.
+    If an error occurs <CODE><I>pErrStart</I></CODE> and <CODE><I>pErrEnd</I></CODE> will contain the start and end of the invalid text in the expression.
+    This method only works at authoring time. <BR>
+</DL>
+<P>
+<HR width=45% align=left>
+<H3><A NAME="WatchExpression">WatchExpression()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>WatchExpression(PIMoaAwAssetCallback <I>This</I>,
+  <DD> MoaLong <I>expressionId</I>, <BR>
+    PMoaMmValue <I>pInitialValue</I>)
+  </DL>
+<H4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>expressionId</I></CODE>
+  <DD>ID of expression<BR>
+    <BR>
+  <DT><CODE><I>pInitialValue</I></CODE>
+  <DD>Pointer to initial value of expression<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>Set a watch on a given expression. The expression must have
+    been stored previously with <CODE>StoreExpression()</CODE>. When the
+    expression value changes, the Xtra's <CODE>Notify()</CODE> procedure
+    will be called. If an initial value is not specified (<CODE><I>pInitialValue</I></CODE> is null), this method evaluates the expression once to establish
+    its initial value. <BR>
+</DL>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1996-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>

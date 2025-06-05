@@ -1,0 +1,1955 @@
+<HTML>
+<HEAD>
+<TITLE>Asset Xtras</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+
+<P>
+<A NAME="RTFToC2"></A><A HREF="index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="../mmref/index.htm">MM Interfaces</A> | <A HREF="../mmref/mmmthndx.htm">MM Methods</A>
+| <A HREF="../mmref/mmtypndx.htm">MM Types and Misc API</A> <BR>
+<HR width=45% align=left>
+
+<H3>Director Xtra Development Kit: Multimedia Developer's Guide</H3>
+
+<H2>Asset Xtras</H2>
+
+<HR width=45% align=left>
+
+<H3>Introduction<BR>
+</H3>
+
+<P>
+This chapter describes the MOA API for asset Xtras. It begins
+with a conceptual discussion of the two types of assets--transitions
+and sprites. It then describes the lifetime of assets in a multimedia
+application. Finally, it steps through the interfaces and methods
+you implement to create an asset Xtra. <BR>
+
+<H4><A NAME="RTFToC9">Asset Xtra concepts</A>
+</H4>
+
+<H5>Application presentation and
+authoring models <BR>
+</H5>
+
+<P>
+In Director, a multimedia production is called a <I>movie</I>.
+A movie is a sequence of <I>frames</I> collectively referred to
+as the <I>score</I>. Each frame contains a number of <I>cells</I>
+to present media. Most cells in a frame present visual media--<I>sprites</I>.
+Each frame also contains cells for transitions, sounds, scripts,
+and other content of the movie. As a movie plays, it generally
+presents each frame in the score in sequence. Visual media appears
+in a window called the <I>stage</I>. In addition to the score,
+the content of the movie resides in the <I>cast</I>--effectively
+a database for the movie's content. Entries in the cast are called
+<I>cast members</I>. To create a Director movie, the developer
+adds members to the cast and places them in specific frames in
+the score. One cast member can exist in any number of places in
+the score. <BR>
+<BR>
+
+<H4>What are assets?<BR>
+</H4>
+
+<P>
+An <I>asset </I>can be any of the objects contained in an interactive
+multimedia production. An asset can present media or perform a
+behavior. The asset API supports two types of assets: transitions
+and sprites. Transition assets provide behaviors for moving from
+scene to scene, and sprite assets provide ways to present media
+in a production. 
+<P>
+Every asset Xtra contains two fundamental classes: <I>asset</I>
+and <I>actor</I>. The asset class provides general and authoring
+behavior of the asset. The actor class provides the runtime behavior
+of the asset in a production. <BR>
+
+<H5><A NAME="RTFToC7">Sprite</A>
+assets<BR>
+</H5>
+
+<P>
+The term sprite is derived from Director, where sprites represent
+visual elements in a movie. A sprite Xtra generally provides a
+visible asset that supports a particular graphics library or data
+type, such as QuickDraw 3D or MPEG. All sprites have a bounding
+box, position, and size. However, sprites aren't necessarily visual.
+A sprite Xtra may provide invisible hot spots in the presentation,
+or support a sound format, or even manipulate properties of other
+media in a presentation. <BR>
+<BR>
+Sprites may have a variety of properties and behaviors. For example,
+your sprite can handle mouse, keyboard, and other events. You
+can implement your sprite to support standard effects, such as
+color, ink modes, and blend amount. You can also implement custom
+properties and behaviors for a sprite, accessible through the
+scripting language of the host application. <BR>
+<BR>
+A sprite's asset class supports authoring behavior--such as editing
+and setting general properties of the media it presents. The actor
+provides the playback behavior of the asset, with properties such
+as a variable lifetime and the ability to interact with user events.
+<BR>
+<BR>
+In Director, an occurrence of a cast member in a sequence of frames
+in a score channel is known as a <I>sprite span</I>. A sprite
+asset is represented in the cast, and its actors are represented
+by particular sprite spans. A sprite actor is created when a movie
+enters its span, and released when the movie exits. Like other
+sprites in Director, Xtra sprite actors can be manipulated programatically
+using the &quot;puppetSprite&quot; feature and associated Lingo
+commands. 
+
+<H5><A NAME="RTFToC8">Transition</A>
+assets<BR>
+</H5>
+
+<P>
+Transitions are visual segues from a <I>source image</I> to a
+<I>destination image</I> over time. At the beginning, the source
+image is entirely visible. At the end, it is completely replaced
+by the destination image. Examples of transitions are wipes, dissolves,
+pushes, and cross-fades. 
+<P>
+In Director, the transition asset appears in the cast, and the
+actor in the transition channel of the score. Transitions are
+generally associated with a particular frame in the score; however,
+they can also be triggered spontaneously using the <CODE>puppetTransition</CODE>
+Lingo command.<BR>
+
+<H3><A NAME="RTFToC10">Life cycle
+of an asset</A> Xtra <BR>
+</H3>
+
+<P>
+This section describes authoring and playback scenarios for
+Director, and the various features implemented by an asset
+Xtra to perform in those scenarios. <BR>
+
+<H4><A NAME="RTFToC11">Registration</A>
+<BR>
+</H4>
+
+<P>
+When the user starts a Macromedia application, it searches for
+all new Xtras in specific Xtra directories. Each application performs
+registration independently of the others. Assets register themselves
+by implementing the <CODE>IMoaRegister</CODE> interface, informing
+the application of any classes that implement the <CODE>IMoaMmXAsset</CODE>
+interface, along with other registry entries informing the host
+application of its capabilities. <BR>
+<BR>
+
+<H4><A NAME="RTFToC12">Initialization</A></H4>
+
+<P>
+As an application starts, it looks for Xtras that need to perform
+startup initialization through the <CODE>IMoaMmInterrogate</CODE>
+Xtra interface. Any Xtra can implement this interface to initialize
+libraries or allocate large blocks of memory that it requires.
+<BR>
+
+<H4><A NAME="RTFToC13">Adding asset</A>s
+to a presentation </H4>
+
+<P>
+A developer creates a presentation by placing the assets for its
+contents in a structure provided by the application. 
+<P>
+To add a sprite asset in either Director, the user
+selects from the Insert menu. Each Xtra registers a category string,
+which appears in the Insert menu, and a name string, which appears
+in a submenu. When the user selects a sprite Xtra from the menu
+in Director, it's inserted in the cast. The user can then put
+it wherever it's needed in the score. 
+<P>
+To add a transition asset to a Director movie, the user double-clicks
+the Transitions channel at the frame where the transition applies,
+bringing up the Transitions dialog.<BR>
+<BR>
+
+<H5><A NAME="RTFToC14">The Transitions
+dialog </A><BR>
+</H5>
+
+<P>
+The user selects both built-in and Xtra transitions through the
+Transition dialog. This dialog presents two alphabetized scrolling
+lists side-by-side. The left presents transition categories, including
+registered names for transition Xtra categories. The right presents
+transitions belonging to the selected category, including registered
+names for transition Xtras. <BR>
+<BR>
+The Transition dialog presents three standard controls:<BR>
+
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=211><B>Control</B></TD><TD WIDTH=451><B>Purpose</B>
+</TD>
+</TR>
+
+<TR><TD WIDTH=211>Duration slider</TD><TD WIDTH=451>Sets the length of the transition. 
+</TD>
+</TR>
+
+<TR><TD WIDTH=211>Smoothness slider</TD><TD WIDTH=451>Sets the amount of change for each step of the transition.
+</TD>
+</TR>
+
+<TR><TD WIDTH=211>Transition Area radio buttons</TD><TD WIDTH=451>Select whether to affect just the change area or the entire stage.
+</TD>
+</TR>
+
+</TABLE>
+
+<P>
+<BR>
+
+<P>
+Neither built-in nor Xtra transitions need to support all three
+standard controls. When the user selects a transition, the controls
+are activated for those properties the transition supports. If
+a transition Xtra provides default values for the standard properties,
+they are automatically set when the dialog is first displayed;
+otherwise the application sets its own defaults.<BR>
+<BR>
+Note that the Smoothness value (aka chunk size in the API) doesn't
+have an absolute meaning. For some transitions it relates directly
+to the number of pixels changed per step. For others, the value
+is just taken as a relative indicator of each step. The meaning
+may depend on the size of the area being transitioned. <BR>
+<BR>
+The transition dialog has two buttons, Option and About, enabled
+if a transition Xtra has registered support for these features.
+The Option button displays the Xtra's properties editing dialog,
+and the About button displays the About box. <BR>
+<BR>
+When the user chooses a transition and dismisses the dialog, the
+host application maintains values for the standard transition
+controls. When it saves a presentation, the host application automatically
+saves these values. Transition Xtras don't need to manage these
+properties; however, they are called to stream out any other property
+values they have. <BR>
+
+<H4><A NAME="RTFToC15">Editing the asset</A></H4>
+
+<P>
+As developers refine a presentation, they may edit media or set
+other properties of its contents. Like internal media assets,
+asset Xtras can provide ways for the user to edit their playback
+characteristics and behavior. <BR>
+
+<H5><A NAME="RTFToC16">Media editor
+</A></H5>
+
+<P>
+An Xtra can display an editor to let the user manipulate the media
+it presents. Like the internal media editors, the application
+displays an asset's media editor when the user double clicks the
+object (in Director's cast or score).
+The media editor is generally a dialog box containing controls
+for manipulating the media. For example, the media editor of a
+bezier paths Xtra could provide the user with a drawing area for
+creating paths and manipulating their control points. <BR>
+
+<H5><A NAME="RTFToC17">Properties
+editor </A></H5>
+
+<P>
+An asset can display a properties editor to let the user manipulate
+properties. For sprite assets, the user gets to this editor-if
+offered by the Xtra-through the Options button of the application's
+properties editor. For transitions, this editor is accessible
+through the Options button of the Transitions dialog. As an example
+of editable properties, the bezier paths Xtra could let the user
+set line width, line color, fill state, fill color, and other
+drawing properties. A transition asset Xtra may allow the user
+to set features such as the shape or boundary color. <BR>
+
+<H5><A NAME="RTFToC18">Asset properties
+and scripting </A></H5>
+
+<P>
+An asset Xtra can give users access to their properties through
+Lingo in Director. You decide which
+of your asset's properties to expose through the editor or through
+the scripting language, which to make editable, and which to make
+read only. Your asset can also export functions to be called in
+the application's scripting language. 
+<P>
+In Director, the Lingo scripter uses standard syntax to get and
+set the properties or call the functions of an asset.<BR>
+
+<H4><A NAME="RTFToC19">Creating the actor</A>
+</H4>
+
+<P>
+While the user creates an asset and places it in a presentation
+using standard techniques provided by the application, the actor
+associated with an asset is created only when required by the
+presentation. 
+<P>
+In Director, if the user drags an asset from the cast into the
+current frame, an instance of the actor is created immediately.
+If the asset is dragged to another frame, the actor is created
+only when the playback head moves to that frame. <BR>
+<BR>
+At playback time, an actor instance is created when the presentation
+enters the section where the asset appears, and may be released
+when the presentation moves beyond the asset. In Director, the
+actor instance exists only while a movie is in the sprite span
+of an asset.<BR>
+
+<H4><A NAME="RTFToC20">Playing the actor</A></H4>
+
+<P>
+After a sprite actor has been instantiated, it remains in memory
+throughout its presentation time. During the course of its presentation,
+the actor provides the behavior defined by its code. The actor
+can redraw itself each time it is asked to by the application.
+The actor can respond to events such as a mouse down in its bounding
+area or a step event indicating the presentation has entered a
+new frame. The actor can also inform the host application when
+it needs to be redrawn, for example, to indicate a response to
+a user event. <BR>
+<BR>
+A transition actor plays by repeatedly generating frames representing
+incremental differences between two scenes. As part of its presentation,
+a transition can incorporate other media such as bitmaps or sounds.
+Using the standard transition properties editor, the user can
+affect the actor's elapsed time and smoothness-the proportion
+of change between each frame. <BR>
+
+<H4><A NAME="RTFToC21">Saving and retrieving
+assets</A></H4>
+
+<P>
+When the developer saves a presentation created by a multimedia
+authoring tool, the asset Xtra is responsible for saving any data
+it needs to recreate itself in its current state. When the developer
+or user retrieves a presentation, the asset Xtra restores itself
+to its previous state, so that it can then be presented as part
+of the overall presentation. <BR>
+<BR>
+Asset Xtras can be cut, copied, and pasted through the standard
+user interface. The application uses the saving and retrieving
+capabilities in the Xtra to support these operations. The application
+can also perform memory management through the asset's storage
+and retrieval mechanism. 
+
+<H3><A NAME="RTFToC22">Implementing
+an asset Xtra</A></H3>
+
+<P>
+You implement an asset Xtra in three classes: registration class,
+asset class, and actor class. The registration class supports
+the standard <CODE>IMoaRegister</CODE> interface and may support
+<CODE>IMoaMmInterrogate</CODE>. The asset class supports the <CODE>IMoaMmXAsset</CODE>
+interface, and may support <CODE>IMoaInitFromDict</CODE>. The
+actor class supports either <CODE>IMoaMmXSpriteActor</CODE> or
+<CODE>IMoaMmXTransitionActor</CODE> interface.<BR>
+
+<H4>The registration class</H4>
+
+<P>
+Xtras implement the <A HREF="../MOREF/REGISTER.HTM">IMoaRegister</A>
+interface to inform the host application of their features and
+capabilities. At start-up, if the host application does not have
+up-to-date registration information about an Xtra found in its
+standard Xtra directories, it creates an instance of every class
+in the Xtra that supports the <CODE>IMoaRegister</CODE> interface.
+It then calls each instance's <A HREF="../MOREF/REGISTER.HTM#Register">IMoaRegister::Register()</A>
+method, passing in an instance of <CODE>IMoaDict</CODE> for the
+Xtra to use in registering itself. 
+<P>
+Each asset Xtra registers the following information:
+<UL>
+<LI>Unique identifiers (CLSID and IID) of all classses implementing
+<CODE>IMoaMmXAsset</CODE>
+<LI>Symbol string to identify the asset in Director's Lingo language
+<LI>Category string to categorize the asset in the Insert menu
+or Transitions dialog
+<LI>Name string to identify the asset in the Insert menu or Transitions
+dialog
+<LI>Actor type to identify whether the asset is a sprite or transition
+<LI>Asset capabilities to identify features supported by the Xtra
+<LI>Icons to display for the Xtra in the user interface
+<LI>Transition capabilities to identify the standard transition
+features supported by the Xtra
+</UL>
+
+<P>
+Note: All of these registry entries are required for an asset
+Xtra, except the icons and certain transition entries (as noted
+in the following descriptions)
+<H5>The asset class identifier
+</H5>
+
+<P>
+Each asset registry entry contains a class ID (CLSID) and interface
+ID (IID) for a class implementing the <CODE>IMoaMmXAsset</CODE>
+interface. To create an entry, you call <A HREF="../MOREF/CACHE.HTM#AddRegistryEntry">IMoaCache::AddRegistryEntry()</A>
+on the cache passed to the <A HREF="../MOREF/REGISTER.HTM#Register">IMoaRegister::Register()</A>
+method, as follows: 
+<PRE>
+                if ((err = pCache-&gt;AddRegistryEntry(pXtraDict,
+                        &amp;CLSID_COvalSpriteAsset,
+                        &amp;IID_IMoaMmXAsset,
+                        &amp;pRegDict))
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<H5><A NAME="RTFToC25">The asset
+symbol string </A></H5>
+
+<P>
+The symbol string, registered with the <CODE>kMoaMmDictKey_SymbolString</CODE>
+key, is used to refer to your asset type in Lingo. The string
+must be unique and a valid Lingo symbol; it must begin with a
+letter (&quot;a&quot;-&quot;z&quot; or &quot;A&quot;-&quot;Z&quot;),
+not contain any spaces, and be less than 32 characters in length.
+Symbol strings are not case-sensitive, so strings with identical
+letters (but different capitalization) are treated as identical
+by the host application. To register a symbol string, call <A HREF="../moref/dict.htm#Put">IMoaDict::Put()</A>
+method passing the key and symbol string:
+<PRE>
+                if ((err = pRegDict-&gt;Put(kMoaMmDictType_SymbolString,
+                        &quot;xxMyHappyAsset&quot;, 
+                        0, /* don't need to specify the size */
+                        kMoaMmDictKey_SymbolString))
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<P>
+<B>Note: </B>You should trademark the symbol string in some way
+to ensure uniqueness. The minimum recommended marking is a two
+letter standardized prefix for your organization, which can be
+the same for all Xtras you implement. In Lingo, cast members of
+your asset Xtra will have this type, prefixed by a pound sign
+(#).<BR>
+
+<H5><A NAME="RTFToC26">The asset
+display name string </A></H5>
+
+<P>
+The display name entry, registered using the <CODE>kMoaMmDictKey_DisplayNameString</CODE>
+key, is a string used in the host application's user interface.
+This string appears in a submenu of the Insert menu for sprite
+assets, and in the transitions list of the transitions dialog
+for transition assets. The string may appear elsewhere, and may
+also be available to other Xtra developers via host application
+callbacks, or to developers via the native scripting language.
+The string will appear in the UI exactly as you provide it here;
+it must be no longer than 64 characters in length. To register
+a display name string, call <A HREF="../moref/dict.htm#Put">IMoaDict::Put()</A>
+method passing the key and string:
+<PRE>
+                if ((err = pRegDict-&gt;Put(kMoaMmDictType_DisplayNameString, 
+                        &quot;My Happy Asset&quot;, 
+                        0, 
+                        kMoaMmDictKey_DisplayNameString)) 
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<P>
+This string need not be unique. However, you may want to trademark
+it in some way to ensure users can uniquely identify your particular
+asset. <BR>
+
+<H5><A NAME="RTFToC27">The asset
+display category string </A></H5>
+
+<P>
+The display category string, registered with the <CODE>kMoaMmDictKey_DisplayCategoryString</CODE>
+key, is a string used in the host application's user interface
+to group your asset with other assets of the same category. For
+sprite assets in Director 5.0, the display category appears in
+the Insert menu, with the display names of assets of that category
+appearing in a submenu. For transition assets in Director, this
+name appears in the category listing in the transitions dialog,
+with the display names of transitions of that category displayed
+in the transitions listing. The string will appear in the UI exactly
+as you provide it here; it must be no longer than 64 characters
+in length. To register a display category string, call <A HREF="../moref/dict.htm#Put">IMoaDict::Put()</A>
+method passing the key and string:
+<PRE>
+                if ((err = pRegDict-&gt;Put(kMoaMmDictType_DisplayCategoryString, 
+                        &quot;Many Happy Assets&quot;, 
+                        0, 
+                        kMoaMmDictKey_DisplayCategoryString)) 
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<P>
+The display category string need not be unique. In fact, you may
+list your Xtra in pre-defined categories provided by the host
+application; to do so, you use the corresponding category name
+here. You may also group Xtras you define in your own categories
+by giving them all the same category name. <BR>
+
+<H5><A NAME="RTFToC28">The actor
+type </A></H5>
+
+<P>
+The actor type entry, registered with the <CODE>kMoaMmDictKey_ActorType</CODE>
+key, is a long integer constant specifying the type of the asset.
+For a sprite, this entry is <CODE>kMoaMmActorType_Sprite</CODE>.
+For a transition Xtra, it's <CODE>kMoaMmActorType_Transition</CODE>.
+To register an actor type, call <A HREF="../moref/dict.htm#Put">IMoaDict::Put()</A>
+method, passing the key and type:<BR>
+
+<PRE>
+                if ((err = pRegDict-&gt;Put(kMoaMmDictType_ActorType, 
+                        kMoaMmActorType_Sprite, 
+                        0, 
+                        kMoaMmDictKey_ActorType)) 
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<H5><A NAME="RTFToC29">Asset capabilities
+</A></H5>
+
+<P>
+The asset capabilities entry, registered with the <CODE>kMoaMmDictKey_AssetCaps</CODE>
+key, is a long integer containing flags which describe various
+capabilities of the asset type. Each flag is represented by a
+bit in the integer; to set multiple flags, &quot;or&quot; them
+together with the C bitwise OR operator &quot;|&quot;. The flags
+are:<BR>
+
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=252><B>Flag</B></TD><TD WIDTH=495><B>Description</B>
+</TD>
+</TR>
+
+<TR><TD WIDTH=252>kMoaMmAssetCaps_None</TD><TD WIDTH=495>Asset has no custom capabilities.
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_HasMediaEditor</CODE>
+</TD><TD WIDTH=495>Asset has a custom media editor.
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_HasPropsEditor </CODE>
+</TD><TD WIDTH=495>Asset has a custom properties editor. </TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_PropsEditorNeedsMedia</CODE> 
+</TD><TD WIDTH=495>Media data needs to be loaded to use the properties editor. The host application will call <CODE>StreamInMedia()</CODE> to load data before editing properties. Use only if <CODE>HasPropsEditor</CODE> (above) is set.
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_HasAboutBox</CODE></TD>
+<TD WIDTH=495>Asset has a custom About Box dialog </TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_CanImageStaticThumb</CODE> 
+</TD><TD WIDTH=495>Asset supports drawing a single-frame thumbnail. 
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_StaticThumbNeedsMedia</CODE> 
+</TD><TD WIDTH=495>Static thumbnail requires media data before it can be drawn.
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_CanImageAnimThumb </CODE>
+</TD><TD WIDTH=495>Asset supports drawing a multi-frame thumbnail.
+</TD>
+</TR>
+
+<TR><TD WIDTH=252><CODE>kMoaMmAssetCaps_AnimThumbNeedsMedia </CODE>
+</TD><TD WIDTH=495>Animated thumbnail requires media data before drawing.
+</TD>
+</TR>
+
+</TABLE>
+
+<P>
+To register asset capabilities, call the <A HREF="../moref/dict.htm#Put">IMoaDict::Put()</A>
+method, passing the key and flags. The default is to support no
+entries, which you specify as follows:
+<PRE>
+                if ((err = pRegDict-&gt;Put(kMoaMmDictType_AssetCaps, 
+                        kMoaMmAssetCaps_None, 
+                        sizeof(MoaMmAssetCaps), 
+                        kMoaMmDictKey_AssetCaps))
+                        != kMoaErr_NoErr) break;
+
+
+</PRE>
+
+<P>
+. <BR>
+
+<H5><A NAME="RTFToC31">Color icon
+</A>(Optional) </H5>
+
+<P>
+The color icon entry, registered with the <CODE>kMoaMmDictKey_ColorIcon</CODE>
+key, is a platform-specific pixmap structure representing an image
+to associate with your asset in the user interface. The host application
+presents this icon at various places and in various sizes. In
+Director, for example, it appears in the Cast window, and in the
+Score when the user selects the frame containing your asset. The
+recommended size for a color icon is 16 x 16 pixels, including
+a 1-pixel black border. The recommended color depth is 8-bit or
+4-bit, in the standard system color palette. On the Mac, the entry
+is the contents of a <CODE>PicHandle</CODE>; on Windows, the entry
+is the contents of a DIB handle.<BR>
+
+<H5><A NAME="RTFToC32">Black &amp;
+white icon </A>(Optional)
+</H5>
+
+<P>
+The black and white icon entry, registered with the <CODE>kMoaMmDictKey_ColorIcon</CODE>
+key, is a platform-specific bitmap structure representing an image
+to associate with your asset in the user interface. The host application
+presents this icon at various places and in various sizes. In
+Director, for example, it appears in the Cast window, and in the
+Score when the user selects the frame containing your asset. The
+recommended size for a black and white icon is 16 x 16 pixels,
+including a 1-pixel black border. On the Mac, the entry is the
+contents of a <CODE>PicHandle</CODE>; on Windows, the entry is
+the contents of a DIB handle.<BR>
+
+<H5><A NAME="RTFToC34">Transition 
+  capabilitiess</A> </H5>
+
+<P>
+The transition capabilities entry, registered with the <CODE>kMoaMmDictKey_TransitionCaps</CODE>
+key, is a long integer of flags describing transition capabilities.
+Each flag represents a bit in the field; to set multiple flags,
+or them using the C &quot;|&quot; operator. The flags are:<BR>
+<BR>
+
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=234><B>Transition Flag</B></TD><TD WIDTH=419><B>Description</B>
+</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_None</CODE></TD><TD WIDTH=419>Transition has no custom capabilities
+</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_ChangeArea</CODE> </TD>
+<TD WIDTH=419>Transition supports change area option</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_ChunkSize</CODE> </TD>
+<TD WIDTH=419>Transition supports smoothness control</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_Duration</CODE> </TD>
+<TD WIDTH=419>Transition supports duration control</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_CantPaletteInterleave</CODE> 
+</TD><TD WIDTH=419>Can't interleave with palette changes/cycling
+</TD>
+</TR>
+
+<TR><TD WIDTH=234><CODE>kMoaMmTransCaps_DoesScreenAccess</CODE> 
+</TD><TD WIDTH=419>Draws direct to screen without using operating system calls/clipping region. 
+</TD>
+</TR>
+
+</TABLE>
+
+<P>
+<BR>
+
+<P>
+A transition Xtra may support any of the three standard properties:
+changeArea, chunkSize, and duration. These are special properties
+handled automatically by the host application. For those your
+Xtra supports, set the appropriate flags in the transitionCaps
+field. If you support these properties, you may supply default
+values for them by registering additional dictionary entries described
+below. <BR>
+
+<H5><A NAME="RTFToC35">Default transition 
+  area</A></H5>
+
+<P>
+The transition default area entry, registered with the <CODE>kMoaMmDictKey_TransDefaultArea</CODE>
+key, contains a value indicating the area in which the transition
+prefers to operate. Enter <CODE>kMoaMmTransArea_FullStage</CODE>
+if the default area is the full stage, and <CODE>kMoaMmTransArea_ChangeArea</CODE>
+if the default is the change area only<BR>
+
+<H5><A NAME="RTFToC36">Default</A>
+smoothness</H5>
+
+<P>
+The transition default smoothness (aka chunk size), registered
+with the <CODE>kMoaMmDictKey_TransDefaultChunkSize</CODE> key,
+is an integer indicating the amount of change between frames in
+the transition. Provide any integer from 0 (maximum smoothness)
+to 128 (maximum chunkiness). Chunkiness is measured in arbitrary
+units. <BR>
+
+<H5><A NAME="RTFToC37">Default duration</A></H5>
+
+<P>
+The transition default duration, registered with the <CODE>kMoaMmDictKey_TransDefaultDuration</CODE>
+key, is an integer indicating the default elapsed time for the
+transition, in milliseconds.<BR>
+
+<H5><A NAME="RTFToC38">Startup initialization
+</A></H5>
+
+<P>
+If your Xtra needs to perform any interaction with the application
+at startup--for example, allocating buffers or initializing libraries--you
+should implement the <CODE>IMoaMmInterrogate</CODE> interface.
+This interface is described in the chapter &quot;Multimedia API
+Reference.&quot; You may choose to implement this interface in
+the same class that implements <CODE>IMoaRegister</CODE>. <BR>
+<BR>
+<B>Note:</B> this interface should be implemented <I><B>only if
+absolutely necessary</B></I> for your Xtra, as it is called every
+time the host application starts, even if the user never subsequently
+uses your Xtra. <BR>
+
+<H4>The asset class</H4>
+
+<P>
+Every media asset Xtra defines an asset class to implement the
+<A HREF="../MMREF/MMXASSET.HTM">IMoaMmXAsset</A> interface. This
+interface handles tasks such as initializing the asset, providing
+authoring support for the asset, loading and freeing the asset's
+media data and properties, and creating new actor instances when
+needed to display or otherwise present the behavior of the asset.
+An instance of your asset class is created for each asset of its
+type in the open document's asset database (the cast in Director).<BR>
+<BR>
+These instances are created when opening a document which contains
+assets of the corresponding type, and also when the user instructs
+the host application to create new assets of that type (either
+from the UI at authoring time, or from the native scripting language
+or other programmatic control at either authoring or playback-time).
+<BR>
+
+<H5><A NAME="RTFToC40">Initializing
+an asset </A></H5>
+
+<P>
+There are several steps to initializing the asset class, involving
+several functions and methods of the asset class.<BR>
+
+<H5><A NAME="RTFToC41">Creating
+the object </A></H5>
+
+<P>
+Each MOA class implements a version of the MoaCreate function
+to perform object initialization. This function has a standard
+name, <CODE>MoaCreate_AssetClassName()</CODE>. The purpose of
+this function is to prepare an object by allocating memory (using
+the callback interface <CODE>IMoaHandle</CODE>) and initializing
+instance variables. The MOA documentation provides more information
+on allocating and initializing objects.<BR>
+
+<H5><A NAME="RTFToC42">Initializing
+from the registry </A></H5>
+
+<P>
+At initialization, your Xtra may retrieve initialization information
+stored in the dictionary. To do so, first implement your Xtra's
+<CODE>IMoaRegister::Register()</CODE> method to store the information,
+then implement the <A HREF="../MOREF/INTFRMDC.HTM">IMoaInitFromDict</A>
+interface in your asset class to retrieve it. Your <A HREF="../MOREF/INTFRMDC.HTM#InitFromDict">IMoaInitFromDict::InitFromDict()</A>
+implementation generally assigns information to instance variables
+of the asset class. It may also store the <CODE>IMoaDict</CODE>
+interface passed to <CODE>InitFromDict()</CODE> in an instance
+variable--be sure to <A HREF="../MOREF/UNKNOWN.HTM#AddRef">AddRef()</A>
+the interface if you do. Storing the dictionary enables your asset
+to get registered information at any time. <BR>
+
+<H5><A NAME="RTFToC43">Preparing
+new content </A></H5>
+
+<P>
+Your asset may begin life as a blank slate, with no media or properties
+specified. However, you may choose to provide some default media
+and property settings, or allow the user to set the initial state
+of the media and properties. To do so, you implement the <A HREF="../MMREF/MMXASSET.HTM#PrepareNewContent">IMoaMmXAsset::PrepareNewContent()</A>
+method. <BR>
+<BR>
+This method can display a user interface for setting media and
+properties. These interfaces may be the standard media or property
+editors, or may be other UI, such as an open-file dialog to let
+users select and open a media file. <BR>
+<BR>
+Note that in Director, assets may be created through Lingo. In
+these cases, <A HREF="../MMREF/MMXASSET.HTM#PrepareNewContent">PrepareNewContent()</A>
+shouldn't display a user interface--it should provide some other
+mechanism for setting media and properties. The <A HREF="../MMREF/MMXASSET.HTM#PrepareNewContent">PrepareNewContent()</A>
+method is passed the <CODE>newFlags</CODE> parameter to specifies
+how the asset was created. Your implementation should interpret
+this flag and act appropriately according to the context. <BR>
+
+<H5><A NAME="RTFToC44">Interacting
+with the application </A></H5>
+
+<P>
+The asset callback interface, <A HREF="../MMREF/MMASSTCL.HTM">IMoaMmAssetCallback</A>,
+provides a way for your asset to interact with both the host application
+and the actors it creates. This interface is provided at asset
+initialization by a call from the host to your <A HREF="../MMREF/MMXASSET.HTM#SetCallback">IMoaMmXAsset::SetCallback()</A>
+method. To keep this interface around for later use, define an
+asset class instance variable to store it,. Implement the <A HREF="../MMREF/MMXASSET.HTM#SetCallback">SetCallback()</A>
+method to call <A HREF="../MOREF/UNKNOWN.HTM#AddRef">AddRef()</A>
+on the interface when it is passed to you, then store it in the
+corresponding instance variable. Remember to call <A HREF="../MOREF/UNKNOWN.HTM#Release">Release()</A>
+on this interface in your asset class <CODE>Destroy()</CODE> function.
+<P>
+Note: The <A HREF="../mmref/mmasstc2.htm">IMoaMmAssetCallback2</A>
+interface provides enhancements to the IMoaMmAssetCallback interface.
+Specifically, it provides an asset with the ability to force its
+media to load and unload. To acquire this interface, call <CODE>IMoaMmAssetCallback::QueryInterace()</CODE>.
+<BR>
+<BR>
+In Director, the object that provides the <CODE>IMoaMmAssetCallback</CODE>
+interface also provides <A HREF="../drref/drasstcl.htm">IMoaDrAssetCallback</A>,
+with methods for the asset to use in manipulating itself via standard
+Lingo calls. To acquire this application-specific
+interface, call <A HREF="../MOREF/UNKNOWN.HTM#QueryInterface">QueryInterface()</A>
+on the <A HREF="../MMREF/MMASSTCL.HTM">IMoaMmAssetCallback</A>
+interface. <BR>
+
+<H5><A NAME="RTFToC46">Displaying
+thumbnail images </A></H5>
+
+<P>
+Thumbnail images are presented at various places in the authoring
+environment to provide a visual cue to the user about your asset.
+Every asset Xtra should support one of the two kinds of thumbnail
+drawing: static or animated. <BR>
+<BR>
+If your asset is easily recognizable by a single image, you can
+support the static thumbnail. First register it using the <CODE>kMoaMmDictKey_AssetCaps</CODE>
+registry entry. You can use the registry to specify whether your
+Xtra can draw a static thumbnail, and whether it requires its
+media to draw itself.<BR>
+<BR>
+To actually draw the static thumbnail, implement <A HREF="../MMREF/MMXASSET.HTM#ImageStaticThumb">IMoaMmXAsset::ImageStaticThumb()</A><CODE>.</CODE>
+This method provides a graphics context, through the <CODE>IMoaMmGC</CODE>
+interface, and a rectangle representing the image area. You may
+provide a generic thumbnail for all your assets by drawing with
+graphics primitives or by displaying a standard bitmap stored
+in the registry dictionary or in your Xtra's resources. Alternatively,
+you can provide a custom thumbnail for each asset instance. To
+do so, you should specify in the registry that your thumbnail
+requires media. You can implement <A HREF="../MMREF/MMXASSET.HTM#ImageStaticThumb">ImageStaticThumb()</A>
+to share a common drawing routine with your actor's <A HREF="../MMREF/MMXSPRTA.HTM#Image">IMoaMmXSpriteActor::Image()</A>
+method, so the image in the authoring environment is the same
+as that in the presentation itself. <BR>
+<BR>
+If your asset is more accurately represented by an animated image,
+you should support animated thumbnails. Transition assets in particular
+benefit from animations that demonstrate their effects. To display
+an animated thumbnail, you register the capability using the <CODE>kMoaMmDictKey_AssetCaps</CODE>
+registry entry. You can use this registry entry to specify whether
+your Xtra draws an animated thumbnail, and whether it requires
+media to draw.<BR>
+<BR>
+To actually draw the animated thumbnail, implement the <CODE>IMoaMmXAsset</CODE>
+methods <A HREF="../MMREF/MMXASSET.HTM#BeginImageAnimThumb">BeginImageAnimThumb()</A>,
+<A HREF="../MMREF/MMXASSET.HTM#ServiceImageAnimThumb">ServiceImageAnimThumb()</A>,
+and <A HREF="../MMREF/MMXASSET.HTM#EndImageAnimThumb">EndImageAnimThumb()</A><CODE>.</CODE>Each
+of these methods provides a graphics context, through the <CODE>IMoaMmGC</CODE>
+interface, and a rectangle representing the image area. Within
+the <CODE>Begin...</CODE> method, you initialize any memory required
+for your thumbnail. The host app calls your <CODE>Service...</CODE>
+method repeatedly, as quickly as it can generate calls. Your implementation
+should draw the thumbnail image each time it's called. To time-synchronize
+the frame updates of your animation, set up an internal timing
+mechanism within your implementation. Use the <CODE>End...</CODE>
+method to dispose of any memory allocated during the display of
+the thumbnail. <BR>
+<BR>
+<B>Note:</B> use the <CODE>ServiceImageAnimThumb()</CODE> method
+for all thumbnail drawing. The <CODE>BeginImage...</CODE> and
+<CODE>EndImage...</CODE> methods are for allocation and housekeeping.
+<BR>
+<BR>
+In addition to presenting thumbnails, you can also add custom
+icons to your authoring time display through the registry. This
+allows you to customize the small icon displayed in the lower
+right hand corner of your asset's thumbnail. See the discussion
+of Asset Registration, earlier in this chapter, for details.<BR>
+
+<H5><A NAME="RTFToC47">Displaying
+the About box </A></H5>
+
+<P>
+An asset Xtra presents its About box in the authoring environment
+to provide general information about itself. This dialog can provide
+background information on the asset and your organization, and
+can also provide the user with help using your Xtra. The About
+box is presented through the transition dialog for transition
+assets and the cast member or icon properties dialog for sprite
+assets. <BR>
+<BR>
+If your asset displays an about box, you register the capability
+using the <CODE>kMoaMmDictKey_AssetCaps</CODE> registry entry.
+You also implement the <A HREF="../MMREF/MMXASSET.HTM#InvokeAboutBox">IMoaMmXAsset::InvokeAboutBox()</A>
+method. Within this method, you may use methods in the two platform-specific
+callback interfaces, <A HREF="../mmref/mmwndmac.htm">IMoaMmWndMac</A>
+and <A HREF="../mmref/mmwndwin.htm">IMoaMmWndWin</A>
+to display platform-specific dialog boxes, or use the <CODE>IMuiDialog</CODE>
+interface to display a platform-independent dialog (see the <A HREF="../mudg/index.htm">MUI Developer's Guide</A>
+for information on which applications support <CODE>IMuiDialog</CODE>
+and other MUI API). <BR>
+
+<H5><A NAME="RTFToC48">Media and
+properties editors </A></H5>
+
+<P>
+Your asset can provide dialog boxes in the authoring environment
+to allow the user to manipulate media and properties of the asset.
+Director supports media and property editing for both sprite and
+transition assets. <BR>
+<BR>
+To implement a media or properties editor, you register the capability
+using the <CODE>kMoaMmDictKey_AssetCaps</CODE> registry entry.
+To implement a media editor, you also implement the <A HREF="../MMREF/MMXASSET.HTM#InvokeMediaEditor">IMoaMmXAsset::InvokeMediaEditor()</A>
+method. To implement a properties editor, you implement two methods:
+<A HREF="../MMREF/MMXASSET.HTM#InvokePropsEditor">InvokePropsEditor()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#FinishPropsEditor">FinishPropsEditor()</A>.
+<BR>
+<BR>
+<A HREF="../mmref/mmwndmac.htm">IMoaMmWndMac</A> and <A HREF="../mmref/mmwndwin.htm">IMoaMmWndWin</A>
+to display platform-specific editing dialog boxes, or use the
+<CODE>IMuiDialog</CODE> interface to display platform-independent
+dialogs (see the <A HREF="../mudg/index.htm">MUI Developer's Guide</A>
+for information on which applications support <CODE>IMuiDialog</CODE>
+and other MUI API). You can also use platform-specific resources
+to define and display custom editing dialog boxes. Within the
+context of your editor dialogs, you can display platform-specific
+controls and issue platform-specific drawing commands. <BR>
+<BR>
+Your media editor should display an editing area appropriate to
+the media. For example, a bezier curve sprite asset Xtra would
+display a drawing area where the user could position and move
+points to define curves. <BR>
+<BR>
+<A HREF="../MMREF/MMXASSET.HTM#InvokeMediaEditor">InvokeMediaEditor()</A>
+is called directly by the authoring application. It provides a
+flag parameter, <CODE>pModifyFlags</CODE>, that lets you inform
+the host when the user has modified the media. The host application
+then knows that media is &quot;dirty&quot; and will deal with
+it appropriately, for example, by putting up a Save dialog if
+the user tries to close the presentation containing the media.
+<BR>
+<BR>
+<A HREF="../MMREF/MMXASSET.HTM#InvokePropsEditor">InvokePropsEditor()</A>
+is called from the host application's standard properties dialog.
+When the user exits your properties editor, they return to the
+standard dialog. If they then decide to cancel edits, you need
+to revert to the previous properties. The <A HREF="../MMREF/MMXASSET.HTM#FinishPropsEditor">FinishPropsEditor()</A>
+method notifies you when the user exits the standard properties
+dialog, and whether the user accepted or canceled the property
+edits. You should therefore implement <A HREF="../MMREF/MMXASSET.HTM#InvokePropsEditor">InvokePropsEditor()</A>
+to return without committing any changes, and implement <A HREF="../MMREF/MMXASSET.HTM#FinishPropsEditor">FinishPropsEditor()</A>
+to commit or revert, depending on the user's choice. <BR>
+
+<H5><A NAME="RTFToC49">Managing
+actors </A></H5>
+
+<P>
+Actors are transient representations of an asset, created only
+when they appear in the presentation and disposed of when they
+are done. As a piece plays, an asset needs to be able to create
+new instances of its actors and communicate any changes to those
+actors that might affect their appearance, such as edits to their
+media or properties. <BR>
+
+<H5><A NAME="RTFToC50">Creating
+new actors </A></H5>
+
+<P>
+At various times, your media asset will be called on to create
+a new instance of its actor.<BR>
+<BR>
+Within the <CODE>NewXActor()</CODE> method, you call the <A HREF="../MOREF/CALLBACK.HTM#MoaCreateInstance">IMoaCallback::MoaCreateInstance()</A>
+method to actually create the instance, passing in the CSLID,
+IID, and pointer for the newly allocated interface. Once the actor
+is instantiated, you can call the <CODE>Notify()</CODE> method
+to communicate any specific data it needs. The <CODE>Notify()</CODE>
+method is provided in <A HREF="../MMREF/MMXASSET.HTM#Notify">IMoaMmXAsset</A>,
+<A HREF="../MMREF/MMXSPRTA.HTM#Notify">IMoaMmXSpriteActor</A>,
+and <A HREF="../MMREF/MMXTRNST.HTM#Notify">IMoaMmXTransitionActor</A>
+as a general mechanism for interaction between assets and actors.
+You define custom message codes, then implement <CODE>Notify()</CODE>
+to receive and respond to those messages. By calling an actor's
+<CODE>Notify()</CODE> method, an asset can pass initialization
+data to the actor, and later alert it to changes in media or properties
+that might affect its appearance. <BR>
+
+<H5><A NAME="RTFToC51">Communicating
+with actors </A></H5>
+
+<P>
+The <A HREF="../MMREF/MMXASSET.HTM#SetCallback">SetCallback()</A>
+method, mentioned in the earlier section &quot;Initializing an
+asset&quot; provides a general mechanism for communicating between
+assets and actors. This method is called when an asset is first
+initialized; it is important to implement this method to set up
+the mechanism for communicating between assets and actors. The
+<A HREF="../MMREF/MMASSTCL.HTM">IMoaMmAssetCallback</A> interface
+provided through <CODE>SetCallback()</CODE> provides a <A HREF="../MMREF/MMASSTC2.HTM#NotifySprites">NotifySprites()</A>
+method for use by assets. This method will send the same message
+to all actors created by an asset, by calling their <CODE>Notify()</CODE>
+methods. This is the easiest way to inform actors when the asset's
+media or properties change. <BR>
+<BR>
+Similarly, actors can call the <A HREF="../MMREF/MMXASSET.HTM#Notify">Notify()</A>
+method of their asset. The <A HREF="../MMREF/MMSPRTCL.HTM">IMoaMmSpriteCallback</A>
+interface provides a <CODE>NotifyAsset()</CODE> method to automate
+communication from a sprite actor to its asset. This is described
+in the discussion &quot;Implementing sprite actors.&quot; <BR>
+
+<H5><A NAME="RTFToC52">Managing
+data and memory </A></H5>
+
+<P>
+An asset shares responsibility for managing data and memory with
+its host application. There are several situations in which an
+asset needs to act.
+<UL>
+<LI><B>When a presentation is saved</B>, the asset writes media
+and properties to disk. When users cut or copy an asset to the
+pasteboard, the asset writes media and properties to the pasteboard.
+<LI><B>When a presentation is loaded</B>, the asset reads in media
+and properties from disk. When users pastes an asset, the asset
+reads media and properties from the pasteboard.
+<LI><B>As a presentation plays </B>(at playback or authoring time),
+the host application may request that an asset purge itself from
+memory when it isn't being presented.
+<LI><B>When an asset is about to be presented</B>, or when the
+user begins editing its media or properties, the host application
+requests that the asset restore media and property data if it
+has previously been purged. 
+<LI><B>When the author checks memory usage</B>, the asset provides
+information on how much memory it's using. 
+</UL>
+
+<P>
+<B>Note:</B> You must implement assets so that data saved on one
+platform (Mac or Windows) can be successfully retrieved on the
+other. <BR>
+
+<H5><A NAME="RTFToC53">Saving and
+copying asset data </A></H5>
+
+<P>
+An asset gets media and property data through its <CODE>PrepareNewContent()</CODE>
+method and through its media and properties editors, all described
+earlier. Once the media and properties data has been created,
+the host application needs to be able to call on the asset to
+save this data to disk when the user saves a presentation, or
+copy the data to the pasteboard when the user cuts or copies the
+asset. To perform these tasks, the host application calls several
+methods of the <CODE>IMoaMmXAsset</CODE> interface: GetStreamOutMediaSize(),
+GetStreamOutPropsSize(), StreamOutMedia(), <CODE>and</CODE> StreamOutProps().
+<BR>
+<BR>
+Your asset implements the methods <A HREF="../MMREF/MMXASSET.HTM#GetStreamOutMediaSize">GetStreamOutMediaSize()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#GetStreamOutPropsSize">GetStreamOutPropsSize()</A>
+to inform the application of how much space to allocate for its
+media and properties data before writing. The <A HREF="../MMREF/MMXASSET.HTM#StreamOutMedia">StreamOutMedia()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#StreamOutProps">StreamOutProps()</A>
+methods are called only if the corresponding <CODE>...Size()</CODE>
+method returns a number greater than zero. <BR>
+<BR>
+Note this one exception: if an asset's media size is unknown (or
+expensive to determine), its GetStreamOutMediaSize() method may
+return -1 to indicate that it needs to write an indeterminate
+amount of data. However, this mechanism provides flexibility at
+the expense of efficiency, since it prevents the host application
+from optimally storing data on disk when saving in-place.<BR>
+<BR>
+Your asset implements the methods StreamOutMedia() and StreamOutProps()
+to actually write the media. These methods are passed an <CODE>IMoaStream</CODE>
+interface, which provides a platform- and media-independent data
+streaming. This interface includes methods for opening, reading,
+writing, and closing streams of data. Use the <A HREF="../MOREF/STREAM.HTM">IMoaStream</A>
+interface in your <CODE>StreamOut...</CODE> methods to write out
+media and properties data. If your implementation encounters an
+error in accessing the data stream, it should halt, clean up,
+and return the error to the host. If the <CODE>StreamOut...</CODE>
+method returns with no error, the application assumes the data
+has been written correctly and routes it to the appropriate destination:
+pasteboard or disk.
+<P>
+Note: The <A HREF="../mfdg/index.htm">Moa File Access II</A> API
+defines new interfaces for file access and for streaming data.
+However, Director continues to support the earlier
+interface IMoaStream for media and property data. <BR>
+
+<H5><A NAME="RTFToC54">Retrieving
+and pasting asset data </A></H5>
+
+<P>
+Before the host application loads an asset's media and properties
+from disk or pastes them from the pasteboard, it first creates
+an instance of the appropriate asset class. It then calls this
+asset to stream in the data. To do the streaming, your asset implements
+a pair of methods: <A HREF="../MMREF/MMXASSET.HTM#StreamInMedia">StreamInMedia()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#StreamInProps">StreamInProps()</A>.
+These two methods correspond closely to the <CODE>StreamOut...</CODE>
+methods. Data is provided to the asset through an <A HREF="../MOREF/STREAM.HTM">IMoaStream</A>
+interface. The asset retrieves data from the stream in the same
+order as it was written out. If your implementation encounters
+an error in accessing the data stream, it should halt, clean up,
+and return the error to the host. If both methods return with
+<CODE>kMoaErr_NoErr</CODE>, the host application assumes your
+asset has properly loaded, and proceeds to present the asset.
+<BR>
+<BR>
+As a presentation plays, media and properties data is typically
+loaded as needed. <BR>
+<BR>
+Note that in Director, the user and the presentation may force
+loading. For example, the author may change the preload mode in
+the Movie Properties dialog. A Director presentation may also
+load cast members programatically using the various cast management
+functions in Lingo (e.g. <CODE>preloadCast</CODE>).<BR>
+<BR>
+The host application assumes that your media and properties must
+be loaded in order for an asset Xtra's actors to present themselves
+correctly. Thus if it believes that the data is not yet loaded,
+it will call the StreamInMedia() and StreamInProps() methods before
+a new actor instance is created. Data may also be loaded at other
+times for authoring purposes, such as displaying a thumbnail image.
+The host application assumes that the media editor requires media
+data and the properties editor requires properties data. In addition,
+your asset can notify the host application through the registry
+if it requires media data to display its thumbnail or for use
+in its properties editor.<BR>
+
+<H5><A NAME="RTFToC55">Freeing memory
+</A></H5>
+
+<P>
+As a multimedia presentation plays, at either authoring or playback
+time, it needs to stage the flow of assets through memory, loading
+assets before they are presented, and purging them afterwards.
+<BR>
+<BR>
+In Director, the developer can also affect when assets are freed
+by adjusting their purge priorities in the Cast Member Properties
+dialogs or via Lingo or the Director Services callbacks. <BR>
+<BR>
+Xtra assets participate in the purging process by implementing
+two methods, <A HREF="../MMREF/MMXASSET.HTM#FreeMedia">FreeMedia()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#FreeProps">FreeProps()</A>.
+You should implement these methods to dispose of any memory used
+for the data streamed by the <CODE>StreamOutMedia()</CODE> and
+<CODE>StreamOutProps()</CODE> methods. The <CODE>FreeMedia()</CODE>
+and <CODE>FreeProps()</CODE> methods are generally called only
+by the application. At authoring time, they are called only if
+an asset's media and properties have been streamed out and no
+further edits have been made. They may be called at any time during
+playback, since media and property data are readily available
+and generally remain unchanged (or are changed under scripting
+control). <CODE>FreeMedia()</CODE> and <CODE>FreeProps()</CODE>
+may also be called when the user changes from one presentation
+to another in the host application. <BR>
+<BR>
+Your asset should never purge its media or properties unless the
+host app explicitly calls its <CODE>FreeMedia()</CODE> or <CODE>FreeProps()</CODE>
+methods.<BR>
+
+<H5><A NAME="RTFToC56">Sizing media
+and properties </A></H5>
+
+<P>
+As authors prepare multimedia presentations, they need to determine
+how much memory various assets occupy. The author can do this
+through the standard properties dialog, and other areas in the
+user interface. To support this capability, your asset should
+implement the <A HREF="../MMREF/MMXASSET.HTM#GetInMemMediaSize">GetInMemMediaSize()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#GetInMemPropsSize">GetInMemPropsSize()</A>
+methods. These methods return the size, in bytes, of the corresponding
+data in active memory for the asset. <BR>
+
+<H4><A NAME="RTFToC57">Scripting support
+</A></H4>
+
+<P>
+Media assets provide several methods for supporting manipulation
+through the host application's native scripting language. In general,
+any asset behavior that can be invoked through the user interface
+should also be available through the host scripting language.
+<BR>
+<BR>
+In Director, media asset Xtras can be accessed and manipulated
+through the Lingo scripting language. In the future, other applications
+will provide comparable scripting support for media assets. <BR>
+
+<H5><A NAME="RTFToC58">Registering
+a scripting language symbol </A></H5>
+
+<P>
+To support Lingo scripting in Director, an asset registers a unique
+symbol string in the registry. 
+
+<H5><A NAME="RTFToC59">Scripted
+property access </A></H5>
+
+<P>
+Media asset Xtras can provide specialized properties that can
+be accessed through the host's scripting language as well as through
+the properties editor, discussed earlier. An asset's properties
+frequently correspond to its instance variables. The choice of
+which properties to provide through the scripting language or
+the editors is up to you. <BR>
+<BR>
+Two methods, <A HREF="../MMREF/MMXASSET.HTM#GetProp">GetProp()</A>
+and <A HREF="../MMREF/MMXASSET.HTM#SetProp">SetProp()</A>, provide
+scripting support for asset properties. Asset properties can be
+made read-only by supporting them only through the <CODE>GetProp()</CODE>
+method. Read-write properties must be supported by both methods.
+<BR>
+<BR>
+Both <CODE>GetProp()</CODE> and <CODE>SetProp()</CODE> have two
+standard arguments, a <CODE>MoaMmSymbol</CODE> representing the
+property to be accessed, and a <CODE>MoaMmValue</CODE> for passing
+the actual value. To support specific properties, create an array
+of symbols for the properties you support as an instance variable
+of your asset. When you initialize your asset, set the values
+in this array by calling the <A HREF="../MMREF/mmvalue.HTM#StringToSymbol">IMoaMmUtils::StringToSymbol()</A>
+method. Within your implementation of <CODE>GetProp()</CODE> and
+<CODE>SetProp()</CODE>, you can compare the symbol passed in to
+those in your array, and use the resulting index to determine
+the property value to access. (<CODE>MoaMmSymbols</CODE> are guaranteed
+to be unique for a particular run of the host application; they
+can be compared using the standard <CODE>==</CODE> comparison
+operator.) To convert between C or MOA types and <CODE>MoaMmValue</CODE>
+types, use the conversion methods provided by <A HREF="../MMREF/MMUTILS.HTM">IMoaMmUtils</A>.
+<BR>
+<BR>
+When an asset property is changed through <CODE>SetProp()</CODE>,
+the method should call <A HREF="../MMREF/MMASSTC2.HTM#SetModified">IMoaMmAssetCallback::SetModified()</A>
+to inform the host application. This ensures that the property
+data is saved correctly the next time the presentation is saved.
+<BR>
+
+<H5><A NAME="RTFToC60">Asset functions
+</A></H5>
+
+<P>
+In addition to scripted property access, an asset can provide
+functions in the host scripting language. These functions are
+object oriented, since they're associated with a particular instance
+of an asset. They may add or remove media from an asset or invoke
+other behavior. To define scripted functions, you implement the
+<A HREF="../MMREF/MMXASSET.HTM#CallFunction">IMoaMmXAsset::CallFunction()</A>
+method. This method supports functions with arbitrary-length parameter
+lists. <BR>
+<BR>
+As with <CODE>GetProp()</CODE> and <CODE>SetProp()</CODE> methods,
+scripted functions use <CODE>MoaMmSymbols</CODE> and <CODE>MoaMmValues</CODE>.
+A <CODE>MoaMmSymbol</CODE> represents the name of the function.
+To support specific functions, create an array of symbols for
+the functions you support as an instance variable of your asset.
+When you initialize your asset, set the values in this array by
+calling the <A HREF="../MMREF/MMvalue.HTM#StringToSymbol">IMoaMmUtils::StringToSymbol()</A>
+method. Within your implementation of <CODE>CallFunction()</CODE>,
+you can compare the symbol passed in to those in your array, and
+use the resulting index to determine the function implementation
+to access. (<CODE>MoaMmSymbols</CODE> are guaranteed to be unique
+for a particular run of the host application; they can be compared
+using the standard <CODE>==</CODE> comparison operator.) Arguments
+to scripting language functions are passed to <CODE>CallFunction()</CODE>
+in an array of <CODE>MoaMmValues</CODE>. To interpret these values,
+and to provide the return value of a function as a <CODE>MoaMmSymbol</CODE>,
+use the list management methods provided by <CODE>IMoaMmList</CODE>
+and the conversion methods provided by <CODE>IMoaMmUtils</CODE>.
+<BR>
+<BR>
+If an asset's media or properties are changed through <CODE>CallFunction()</CODE>,
+the method should call <A HREF="../MMREF/MMASSTC2.HTM#SetModified">IMoaMmAssetCallback::SetModified()</A>
+to inform the host application. This ensures that the data will
+be saved correctly the next time the presentation is saved. <BR>
+
+<H4><A NAME="RTFToC61">Implementing the 
+  transition actor class</A> </H4>
+
+<P>
+Each transition Xtra must provide at least one class that implements
+the <CODE>IMoaTransitionActor</CODE> interface. The transition
+actor class provides the playback behavior of a transition asset.
+<BR>
+<BR>
+The transition actor class implements the <A HREF="../MMREF/MMXTRNST.HTM">IMoaMmXTransitionActor</A>
+interface. This interface provides the presentation behavior of
+your transition. As a transition plays, methods in the <CODE>IMoaMmXTransitionActor</CODE>
+interface are called on your transition actors to initialize,
+play, and finish the transition. Transition actors are generally
+created just as a transition is about to be presented, and removed
+from memory as soon as the transition is complete. <BR>
+<BR>
+When the host application needs to display an Xtra-based transition,
+the transition's <CODE>IMoaMmXAsset</CODE> class is called to
+create a new transition actor instance. The transition actor is
+then called repeatedly to &quot;step&quot; the transition until
+it is complete. During each step of the transition, the transition
+actor updates an area of the playback window, bringing the image
+on the stage &quot;closer&quot; to the final destination image
+(which has been prepared by the host application in the offscreen
+compositing buffer before the transition begins). <BR>
+<BR>
+In Director, a transition actor is created at the beginning of
+the specific frame where the transition appears. The actor may
+be disposed of as soon as the transition is complete.<BR>
+
+<H5><A NAME="RTFToC62">Creating
+and initializing a transition actor </A></H5>
+
+<P>
+As discussed earlier, a transition asset creates transition actors
+through the <A HREF="../MMREF/MMXASSET.HTM#NewXActor">NewXActor()</A>
+method, which should call <A HREF="../MOREF/CALLBACK.HTM#MoaCreateInstance">IMoaCallback::MoaCreateInstance()</A>.
+The transition actor class is initialized through the standard
+<CODE>MoaCreate...</CODE> function. <BR>
+<BR>
+After the actor has been created, the asset may communicate with
+it to perform further initialization. The actor class can implement
+its <A HREF="../MMREF/MMXTRNST.HTM#Notify">Notify()</A> method
+to allow the asset to send it an initialization message. This
+is generally the best way for an asset to give an actor access
+to any internal data it needs. <BR>
+<BR>
+In implementing the asset and the actor, you can define various
+messages that can be handled by the <CODE>Notify()</CODE> method
+for communication from asset to actor. Assets can communicate
+with all their actors at once through the <A HREF="../MMREF/MMASSTC2.HTM#NotifySprites">IMoaMmAssetCallback::NotifySprites()</A>
+method, which works by calling each actor's Notify() method. 
+<BR>
+
+<H5><A NAME="RTFToC63">Presenting
+a transition actor </A></H5>
+
+<P>
+The presentation of a transition is implemented in three stages,
+cue, continue, and finish. Three methods of the <CODE>IMoaMmXTranstionActor</CODE>
+interface correspond to these stages. All three methods are passed
+a pair of graphics contexts, one representing the transition image
+source and the other representing the transition destination buffer.
+They're also passed a rectangle representing the area affected
+by the transition. Finally, each is passed a <CODE>MoaMmTransInfo</CODE>
+struct representing standard settings and timing details--including
+current time and elapsed time--for the transition.<BR>
+<BR>
+Implement the <A HREF="../MMREF/MMXTRNST.HTM#Cue">Cue()</A> method
+to prepare the actor to play its transition. You may allocate
+any memory or acquire media or devices required to perform the
+presentation in this method. <BR>
+<BR>
+Implement the <A HREF="../MMREF/MMXTRNST.HTM#Continue">Continue()</A>
+method to perform the actual transition. <CODE>Continue()</CODE>
+is called repeatedly as quickly as possible. It's up to your code
+to do any throttling to ensure it runs at an appropriate rate.
+Within the <CODE>Continue()</CODE> method, your transition should
+perform an operation that renders a partial but increasingly complete
+version of the source image into the destination buffer. This
+method should return <CODE>FALSE</CODE> in its <CODE>pFinished</CODE>
+parameter each time it is called, until it completes the transition.
+It should then return <CODE>TRUE</CODE>. <BR>
+<BR>
+Implement the <A HREF="../MMREF/MMXTRNST.HTM#Finish">Finish()</A>
+method to deallocate any resources acquired in the <CODE>Cue()</CODE>
+or <CODE>Continue()</CODE> methods. After <CODE>Finish()</CODE>
+is called, the transition actor may be freed by the host application
+. <BR>
+
+<H4><A NAME="RTFToC64">Implementing the 
+  sprite actor class</A></H4>
+
+<P>
+The sprite actor class provides the playback behavior of a sprite
+asset. The sprite actor class implements the <A HREF="../MMREF/MMXSPRTA.HTM">IMoaMmXSpriteActor</A>
+interface. This interface provides the time-based behavior of
+your media asset and its appearance in the playback window. As
+an animation plays, methods in the <CODE>IMoaMmXSpriteActor</CODE>
+interface are repeatedly called on your sprite actor objects to
+perform a variety of tasks. Sprite actors are generally created
+just as an asset is about to be presented, and removed from memory
+as soon as its presentation is complete. <BR>
+<BR>
+In Director, the life of a sprite actor corresponds to its sprite
+span. The actor is created when a Director movie enters the span,
+and is disposed when the movie leaves the span. <BR>
+
+<H5><A NAME="RTFToC65">Creating
+and initializing a sprite actor </A></H5>
+
+<P>
+As discussed earlier, a sprite asset creates sprite actors through
+the <A HREF="../MMREF/MMXASSET.HTM#NewXActor">NewXActor()</A>
+method, which should call <A HREF="../MOREF/CALLBACK.HTM#MoaCreateInstance">IMoaCallback::MoaCreateInstance()</A>.
+A sprite actor is initialized through the standard <CODE>MoaCreate...</CODE>
+function. <BR>
+<BR>
+After the actor has been created, the asset may communicate with
+it to perform further initialization. The actor class can implement
+its <A HREF="../MMREF/MMXTRNST.HTM#Notify">Notify()</A> method
+to allow the asset to send it an initialization message. This
+is generally the best way for an asset to give an actor access
+to any internal data it needs. <BR>
+<BR>
+After the actor has been created and initialized by <CODE>NewXActor()</CODE>,
+its <A HREF="../MMREF/MMXSPRTA.HTM#GetCaps">IMoaMmXSpriteActor::GetCaps()</A>
+method is called. Use this method to inform the host application
+of your actor's capabilities. An actor can implement <CODE>GetCaps()</CODE>
+to subscribe to certain event types, including idle events, mouse
+events, keyboard events, playback notification events, and environment
+events. Other capabilities an actor can describe include drawing
+modes and tabbing behavior. <BR>
+
+<H5><A NAME="RTFToC66">The sprite
+actor callback interface </A></H5>
+
+<P>
+The sprite callback interface, <A HREF="../MMREF/MMSPRTCL.HTM">IMoaMmSpriteCallback</A>,
+provides a way for your actor to interact with both its asset
+and the host application. This interface is provided at actor
+initialization by a call from the host to your <A HREF="../MMREF/MMXSPRTA.HTM#SetCallback">IMoaMmXSpriteActor::SetCallback()</A>
+method. To keep this interface around for later use, define an
+actor class instance variable to store it. Implement the <CODE>SetCallback()</CODE>
+method to call <A HREF="../MOREF/UNKNOWN.HTM#AddRef">AddRef()</A>
+on the interface when it is passed to you, then store it in the
+corresponding instance variable. <BR>
+<BR>
+In Director, the object that provides the <A HREF="../MMREF/MMSPRTCL.HTM">IMoaMmSpriteCallback</A>
+interface also provides <A HREF="../drref/drsprtcl.htm">IMoaDrSpriteCallback</A>,
+which provides additional methods for the actor to use in manipulating
+itself through both the Director services API and standard Lingo
+calls. To acquire this interface, call <A HREF="../MOREF/UNKNOWN.HTM#QueryInterface">QueryInterface()</A>
+on the <CODE>IMoaMmSpriteCallback</CODE> interface.<BR>
+
+<H5><A NAME="RTFToC67">Presenting
+a sprite actor </A></H5>
+
+<P>
+Several methods participate in the process of presenting a sprite
+actor, including <CODE>GetCaps()</CODE>, <CODE>CollectChanges()</CODE>,
+<CODE>Image()</CODE>, and <CODE>Event()</CODE>. In Director, the
+process of updating and presenting all the sprites visible on
+stage is performed by the animation loop. <BR>
+
+<H5><A NAME="RTFToC68">The Director
+animation loop </A></H5>
+
+<P>
+The Director animation loop is the mechanism used to update the
+images of visible sprites on the stage for each frame in a Director
+movie. This mechanism includes a number of operations that are
+performed repeatedly, in the same sequence, for each frame.<BR>
+<BR>
+First, Director determines what areas of the stage need to be
+updated for the current frame. To determine which area of a sprite
+actor's image needs to be drawn, it calls the <A HREF="../MMREF/MMXSPRTA.HTM#CollectChanges">IMoaMmXSpriteActor::CollectChanges()</A>
+method. Static sprites always draw in the same area and aren't
+redrawn unless they were previously concealed by another sprite.
+Their <CODE>CollectChanges()</CODE> method is never called.
+<P>
+Next, Director draws all the visible sprites To draw an Xtra's
+sprite actor, it calls the <A HREF="../MMREF/MMXSPRTA.HTM#Image">IMoaMmXSpriteActor::Image()</A>
+method. Director does its drawing in several passes. First, it
+draws trailless sprites that do offscreen rendering into its frame
+buffer. It draws sprites from back to front, in sprite channel
+order. It then renders all trailed sprites that do offscreen rendering
+using the same ordering. Director then draws the change areas
+of the current frame from the buffer to the stage, minus any areas
+that receive direct-to-stage drawing. Director then begins playing
+any sounds in the current frame's sound channels. It then draws
+any direct-to-stage sprites. Finally, Director sends both step
+and idle events to actors that subscribe to them, by calling their
+<A HREF="../MMREF/MMXSPRTA.HTM#Event">IMoaMmXSpriteActor::Event()</A>
+methods. Step is provided for an actor to update its image area
+for the next frame. Idle is provided to allow the actor to perform
+background tasks. <BR>
+
+<H5><A NAME="RTFToC69">Presentation
+capabilities </A></H5>
+
+<P>
+Your actor implements the <A HREF="../MMREF/MMXSPRTA.HTM#GetCaps">GetCaps()</A>
+method to describes its capabilities to the application. Among
+the capabilities of an actor are the events it handles and its
+drawing mode. The application passes a <CODE>MoaMmXSpriteCaps</CODE>
+structure to your GetCaps() method. You indicate your actor's
+capabilities by filling in the fields in this structure. <BR>
+<BR>
+The <CODE>eventMask</CODE> field of the <CODE>MoaMmXSpriteCaps</CODE>
+structure indicates any events the actor subscribes to. To present
+itself dynamically, a sprite actor subscribes to step events.
+An actor may also subscribe to play events, to be notified when
+playback begins and ends (at authoring time only), and to span
+events, to be notified when the movie enters and exits the span
+of the sprite.<BR>
+<BR>
+The <CODE>preferredImageMode</CODE> and <CODE>requiredImageMode</CODE>
+fields indicate the actor's drawing mode preferences. A sprite
+actor may implement either direct-to-screen or offscreen drawing
+modes. Direct-to-screen actors always draw directly to the playback
+window; offscreen-drawing actors draw to the host application's
+offscreen compositing buffer, which is subsequently copied to
+the screen after all other offscreen sprites have been imaged.
+Offscreen drawing eliminates screen flicker when drawing sprites
+that move and may potentially overlap with each other. 
+<P>
+Here's a typical impementation of the <CODE>GetCaps()</CODE> method:
+<PRE>
+STDMETHODIMP COvalSpriteActor_IMoaMmXSpriteActor::GetCaps(PMoaMmXSpriteCaps     pActorCaps)
+{
+        X_ENTER
+        MoaError        err = kMoaErr_NoErr;
+        pActorCaps-&gt;eventMask = (kMoaMmEventMask_Mouse
+                                        | kMoaMmEventMask_Play
+                                        | kMoaMmEventMask_Span
+                                        | kMoaMmEventMask_Step
+                                        | kMoaMmEventMask_Key
+                                        | kMoaMmEventMask_Environment);
+        pActorCaps-&gt;flags = (kMoaMmXSpriteCapsFlags_None
+                                        | kMoaMmXSpriteCapsFlags_AutoTabEnabled
+                                        | kMoaMmXSpriteCapsFlags_Persistent);
+        pActorCaps-&gt;requiredImageMode = kMoaMmXSpriteImageMode_Any;
+        pActorCaps-&gt;preferredImageMode = kMoaMmXSpriteImageMode_Offscreen;
+        X_RETURN(MoaError, err);
+        X_EXIT
+}
+
+
+</PRE>
+
+<H5><A NAME="RTFToC70">Collecting
+change areas </A></H5>
+
+<P>
+Implement the <A HREF="../MMREF/MMXSPRTA.HTM#CollectChanges">IMoaMmXSpriteActor::CollectChanges()</A>
+method to optimize drawing by limiting the area to be redrawn.
+This method passes your actor an instance of <A HREF="../MMREF/MMCHNGCL.HTM">IMoaMmChangeCollector</A>.
+You call methods of this interface as many times as necessary,
+passing rectangles that represent areas of the image to update.
+The <CODE>CollectChanges()</CODE> method is called after a step
+event is sent and before an actor's <CODE>Image()</CODE> method
+is called. <BR>
+<BR>
+A static actor--one that doesn't draw or whose image doesn't change--need
+do no more than implement an empty version of this method, as
+it will never be called. An actor specifies that it is static
+by setting the <CODE>kMoaMmXSpriteCapsFlags_IsStatic</CODE> flag
+in its <CODE>GetCaps()</CODE> method. However, static actors can
+call the <A HREF="../MMREF/MMsprtcl.HTM#InvalSpriteRect">IMoaMmAssetCallback::InvalSpriteRect()</A>
+method to force the host application to call this method and perform
+redrawing if they need to.<BR>
+<BR>
+When your <CODE>CollectChanges()</CODE> method calls methods in
+the <CODE>IMoaMmChangeCollector</CODE> interface, you specify
+change areas in playback window coordinates. The origin (0,0)
+of this coordinate system is at the top-left of the playback window.
+In general, all rectangles (<CODE>MoaRect</CODE>) and points (<CODE>MoaPoint</CODE>)
+passed to and from <CODE>CollectChanges()</CODE> and other methods
+are in playback window coordinates.<BR>
+
+<H5><A NAME="RTFToC71">Drawing the
+image </A></H5>
+
+<P>
+To draw a sprite actor, the host application calls your <A HREF="../MMREF/MMXSPRTA.HTM">IMoaMmXSpriteActor::Image()</A>
+method. This method provides your Xtra with a rectangle representing
+the drawing area, and an <A HREF="../MMREF/MMGC.HTM">IMoaMmGC</A>
+interface providing a graphics context for drawing. Use <CODE>IMoaMmGC</CODE>
+methods to determine the host graphics context of the platform,
+then perform drawing by calling graphics primitives of the host
+graphics context. If an actor is invisible for a particular frame,
+it may do nothing in its <CODE>Image()</CODE> method during that
+frame. <BR>
+<BR>
+The rectangle provided through the <CODE>Image()</CODE> method
+is specified in the coordinate system of the playback window.
+The origin (0,0) of this coordinate system is at the top-left
+of the playback window. Rectangles (<CODE>MoaRect</CODE>) and
+points (<CODE>MoaPoint</CODE>) passed to and from <CODE>Image()</CODE>
+and other methods are in playback window coordinates.<BR>
+
+<H5>Imaging details</H5>
+
+<P>
+If your sprite actor draws off-screen and only changes its image
+occasionally, you may want to implement <A HREF="../MMREF/MMXSPRTA.HTM#GetCaps">IMoaMmXSpriteActor::GetCaps()</A>
+to set the flag <CODE>kMoaMmXSpriteCapsFlags_IsStatic</CODE>.
+If an off-screen sprite is static, Director doesn't call the <A HREF="../MMREF/MMXSPRTA.HTM#CollectChanges">IMoaMmXSpriteActor::CollectChanges()</A><CODE>
+</CODE>method and only calls the actor's <A HREF="../MMREF/MMXSPRTA.HTM#Image">Image()</A>
+method when you notify it through <A HREF="../MMREF/MMSPRTCL.HTM#InvalSpriteRect">IMoaMmSpriteCallback::InvalSpriteRect()</A><CODE>
+</CODE>or if redraw is necessary for some other reason (for example,
+when handling an update event or when another sprite which intersects
+yours is changing).<BR>
+<BR>
+For the finest control, you want your sprite to be non-static
+so you can tell the host application specifically what region
+of your sprite's rectangle needs updating in the next frame in
+response to <CODE>IMoaMmXSpriteActor::CollectChanges()</CODE>.
+<BR>
+<BR>
+Your sprite actor does not have to supply a changed rectangle
+in response to <CODE>IMoaMmXSpriteActor::CollectChanges()</CODE>.
+If nothing changed, don't image. Director will call <CODE>IMoaMmXSpriteActor::Image()</CODE>
+anyway if the sprite moved, changed size, was covered up, and
+so on.<BR>
+<BR>
+If you are drawing to Director's offscreen buffer, you can get
+direct access to the pixels in memory. It's complex and operating
+system-specific, but for ultimate performance, you can invoke
+<CODE>IMoaMmGC::GetNativeInfo() </CODE>on the graphics context
+passed to your Image routine, and then interpret the structure.
+<BR>
+<BR>
+You are always passed the entire rectangle of your sprite in <CODE>IMoaMmXSpriteActor::Image()</CODE>,
+regardless of what you supplied to <A HREF="../MMREF/MMCHNGCL.HTM#AddChangeRect">IMoaMmChangeCollector::AddChangeRect()</A>.
+However, Director does establish a clip region for the part of
+your sprite that actually needs imaging, whether you are drawing
+direct-to-stage or to the offscreen buffer. If you use regular
+drawing commands, your drawing will be clipped to this area. If
+it takes you a long time to render, you can invoke <A HREF="../MMREF/MMGC.HTM#GetNativeGCInfo">IMoaMmGC::GetNativeGCInfo()</A>
+on the graphics context passed to your Image routine, and then
+use operating system-specific calls to find out about the clipping
+region (<CODE>visRgn </CODE>and <CODE>clipRgn </CODE>on the Mac,
+<CODE>GetClip </CODE>on Windows). If you access the pixels directly,
+you must respect this clipping region.<BR>
+<BR>
+Direct-to-stage sprite assets are called to image on every frame
+regardless of whether they are static or supply changed rectangles.
+This allows the Xtra to get CPU time for rendering for every frame.
+It makes sense for video playback that changes with every frame.
+Director will not modify the sprite actor's region of the stage,
+so the sprite can choose where and whether to draw; however, if
+the sprite needs to repaint for other reasons, not drawing can
+leave garbage pixels on the stage.<BR>
+<BR>
+Direct-to-stage sprite assets can't tell if they are called to
+image because of a frame step event, or because the stage window
+needs repainting (for example, it changed size, was covered up
+and then exposed). If your sprite actor is actually a window,
+it will get window repaint events for these. Another approach
+is to optimize drawing to only draw changed areas, but to repaint
+the entire sprite rectangle every few frames.<BR>
+
+<H5>Presentation events 
+</H5>
+
+<P>
+A sprite actor updates its presentation by implementing the <A HREF="../MMREF/MMXSPRTA.HTM#Event">IMoaMmXSpriteActor::Event()</A>
+method to respond to various types of events. These methods inform
+the actor of changes in the state of the movie as it plays. <BR>
+<BR>
+<CODE>kMoaMmEvent_PlayBegin</CODE> is sent when a presentation
+first starts playing, and <CODE>kMoaMmEvent_PlayEnd</CODE> is
+sent when it stops. These events are generated only at authoring
+time, and correspond to the Play and Stop controls in the user
+interface. An actor receives these events by subscribing to play
+events. <BR>
+<BR>
+<CODE>kMoaMmEvent_SpanBegin</CODE> is sent when the presentation
+first enters the span of a particular sprite, and <CODE>kMoaMmEvent_SpanEnd</CODE>
+is sent when the presentation exits the span. These events are
+generated both at playback and authoring time. To respond to a
+span begin, an actor may initialize certain memory required to
+present itself. To respond to span end, it may dispose of that
+memory. An actor receives these events by subscribing to span
+events. <BR>
+<BR>
+<CODE>kMoaMmEvent_Step</CODE> is sent when the presentation changes
+frames. To respond to this event, the actor should update its
+state so that it can draw the next frame when its <CODE>Image()</CODE>
+method is called.<BR>
+<BR>
+A sprite actor should never perform any imaging in its movie's
+on or off-screen buffers in response to presentation events. 
+<BR>
+
+<H5><A NAME="RTFToC73">Event handling
+in a sprite actor </A></H5>
+
+<P>
+In addition to handling events directly related to imaging, an
+actor may choose to handle other types of events, including user-generated
+mouse and keyboard events, and events associated with the playback
+environment of the actor. To register the types of events that
+an actor responds to, it implements the <CODE>GetCaps()</CODE>
+method as described earlier. <BR>
+
+<P>
+&quot;Multimedia Types and Miscellaneous API&quot; contains a
+<A HREF="../mmref/mmtypndx.htm">table of events</A> that sprites
+can respond to. <BR>
+
+<H5><A NAME="RTFToC74">Hit detection
+</A></H5>
+
+<P>
+Before a sprite actor can provide mouse or keyboard event handling,
+it needs to interact with the host application to check whether
+a pointer position falls within its bounds. To do so, the actor
+implements the <A HREF="../MMREF/MMXSPRTA.HTM#ContainsPoint">ContainsPoint()</A>
+method. This method is called any time a significant mouse event
+occurs within the asset's default image area. <BR>
+<BR>
+In some cases, hit detection is simple--the <CODE>ContainsPoint()</CODE>
+method may return true if the point is anywhere within the boundary
+of the actor's image rectangle. Actors that present complex images
+may implement more sophisticated algorithms to determine whether
+a given point falls within their image area.<BR>
+
+<H5><A NAME="RTFToC75">Mouse events
+</A></H5>
+
+<P>
+An actor can respond to a variety of mouse events through the
+<A HREF="../MMREF/MMXSPRTA.HTM#Event">IMoaMmXSpriteActor::Event()</A>
+method, including mouse down, mouse up, and mouse up outside.
+On a system such as Windows that supports two mouse buttons, there
+are additional events for the right mouse button. <BR>
+<BR>
+(In Director, a Macintosh user may emulate two-button mouse behavior
+and receive right mouse events by setting the global property
+the <CODE>emulateMultiButtonMouse</CODE> to <CODE>TRUE</CODE>.
+Right mouse button events are emulated by pressing the Control
+key while clicking the mouse button.)<BR>
+<BR>
+<CODE>kMoaEvent_MouseDown</CODE> and <CODE>kMoaEvent_RightMouseDown</CODE>
+indicate that the user has pressed the mouse in the image area
+of the actor. An actor receives these events if the mouse button
+is pressed with the pointer in the asset's default image area,
+and the actor has returned true in response to the <CODE>ContainsPoint()</CODE>
+method. <BR>
+<BR>
+<CODE>kMoaEvent_MouseDoubleClick</CODE> and <CODE>kMoaEvent_RightMouseDoubleClick</CODE>
+indicate that the user has clicked the mouse button again in the
+image area of the actor. An actor receives these events if the
+mouse button is pressed with the pointer in the asset's default
+image area, and the actor has returned true in response to the
+<CODE>ContainsPoint()</CODE> method. Double clicks are determined
+by the user setting. Before receiving this event, the actor will
+receive corresponding mouse down and mouse up events for the first
+click. <BR>
+<BR>
+<CODE>kMoaEvent_MouseUp</CODE> and <CODE>kMoaEvent_RightMouseUp</CODE>
+indicate that the user released the mouse button within the image
+area of the actor; <CODE>kMoaEvent_MouseUpOutside</CODE> and <CODE>kMoaEvent_RightMouseUpOutside</CODE>
+indicate that release occurred outside the image area. These events
+are sent only if a mouse down previously occurred within the actor's
+image area. Similar rules apply for determining mouse up location
+as for mouse downs. <BR>
+
+<H5><A NAME="RTFToC76">Keyboard
+events </A></H5>
+
+<P>
+Sprite actors that allow the user to enter or modify text must
+implement <A HREF="../MMREF/MMXSPRTA.HTM#Event">IMoaMmXSpriteActor::Event()</A>
+to handle keyboard events. To receive these events, the actor
+subscribes to them in its <CODE>GetCaps()</CODE> method. <BR>
+<BR>
+Before a sprite actor can handle keystrokes, it must receive focus:
+that is, become the exclusive receiver of keyboard events. An
+actor receives focus by responding to the <CODE>kMoaMmEvent_KeyFocusEnter</CODE>
+event. Once an actor acquires focus, it begins responding to the
+events <CODE>kMoaMmEvent_KeyDown</CODE> and <CODE>kMoaMmEvent_KeyUp</CODE>.
+The actor implements keystroke handling and text editing entirely
+on its own. When the user finishes editing by pressing Tab (with
+Auto-tab enabled, as described below) or clicking in another focus-handling
+sprite, the host application sends a <CODE>kMoaMmEvent_KeyFocusExit</CODE>
+event. <BR>
+<BR>
+Auto-tabbing enables the user to move from one sprite to another
+on the screen by pressing the Tab key. This is useful for implementing
+forms in the user interface, such as those used by a database
+presentation. To support auto-tabbing, the actor registers this
+capability through its <CODE>GetCaps()</CODE> method. <BR>
+
+<H5><A NAME="RTFToC77">Environment
+events </A></H5>
+
+<P>
+Changes in the playback environment may affect how the actor presents
+itself. Environment events inform the actor of such changes. The
+environment events include stage window open and closed events,
+stage depth changed, sound state changed, and asset modified.
+<BR>
+<BR>
+The <CODE>kMoaMmEvent_StageWindowOpen</CODE> and <CODE>kMoaMmEvent_StageWindowClose</CODE>
+events are sent to inform the actor of changes in the playback
+window where the actor is being presented. The <CODE>kMoaMmEvent_StageDepthChanged</CODE>
+is sent whenever the pixel depth of the playback window or buffer
+changes, to enable the actor to update its palette or modify its
+drawing to accommodate the change. The <CODE>kMoaMmEvent_SoundState</CODE>
+is sent to indicate when the user has turned sound on or off;
+actors that play sounds should respond by setting their output
+accordingly. <BR>
+<BR>
+The <CODE>kMoaMmEvent_AssetModified</CODE> event is sent whenever
+the asset notifies the host application that its media or property
+data has changed. This event is generated when the media and property
+editors modify the data, or when the asset callback's <CODE>SetModified()</CODE>
+method is called (usually from the <CODE>SetProp()</CODE> method).
+<BR>
+
+<H5><A NAME="RTFToC78">Idle events
+</A></H5>
+
+<P>
+Actors occasionally need to perform background tasks, such as
+a search or sort operation performed by a database presentation.
+Performing these lower-priority operations in real-time would
+prevent other parts of the presentation from running. To handle
+such tasks, implement the <A HREF="../MMREF/MMXSPRTA.HTM#Event">IMoaMmXSpriteActor::Event()</A>
+method to handle the idle event, <CODE>kMoaMmEvent_Idle</CODE>.
+Idle events are sent intermittently, whenever the host application
+isn't doing some other task related to the presentation. By responding
+to this event, the actor can perform background tasks while allowing
+the presentation to continue. <BR>
+
+<H5><A NAME="RTFToC79">Alternative
+sprite actor behavior </A></H5>
+
+<P>
+Of course, a sprite actor's behavior should depend on what it
+presents. An actor that presents an animated image needs to implement
+<CODE>CollectChanges()</CODE>, <CODE>Image()</CODE>, and<CODE>
+Event()</CODE>, which are called each frame to update and present
+the image. A static image doesn't need to implement <CODE>Event()</CODE>
+to handle step events, and will never return a change rectangle
+in its <CODE>CollectChanges()</CODE> method. An actor that represents
+a sound or a pure behavior need never do any drawing in its <CODE>Image()</CODE>
+method. Instead, it may perform other actions in this method,
+or it may do all its work in step event handling code in its <CODE>Event()</CODE>
+method, leaving its <CODE>CollectChanges()</CODE> and <CODE>Image()</CODE>
+methods empty.<BR>
+<BR>
+If your sprite actor has no visual component, it can simply respond
+to the span begin, span end, play begin, and play end events--for
+example, to start and stop a sound. When its <CODE>ContainsPoint()</CODE>
+method is called, it can always return FALSE. <BR>
+
+<H5><A NAME="RTFToC80">Scripting
+support </A></H5>
+
+<P>
+Like assets, sprite actors provide several methods for supporting
+manipulation through the host application's native scripting language.
+In general, any actor behavior that can be invoked through the
+user interface should also be available through the host scripting
+language. <BR>
+<BR>
+In Director, sprite actors can be accessed and manipulated through
+the Lingo scripting language. Like other sprites in Director,
+Xtra sprite actors are accessed in Lingo through the score. A
+sprite actor can get access to various Director features through
+the <CODE>IMoaDrSpriteCallback</CODE> interface. This interface
+provides methods for accessing its movie, calling handlers in
+its script, and performing other behavior specific to Director
+movies. <BR>
+
+<H5><A NAME="RTFToC81">Scripted
+property access </A></H5>
+
+<P>
+Sprite actors can provide specialized properties that can be accessed
+through the host's scripting language. An actor's properties frequently
+correspond to its instance variables. You may also provide the
+ability to access an actor's capabilities through the scripting
+language. The choice of which properties to provide through the
+scripting language is up to you. <BR>
+<BR>
+Two methods, <A HREF="../MMREF/MMXSPRTA.HTM#GetProp">GetProp()</A>
+and <A HREF="../MMREF/MMXSPRTA.HTM#SetProp">SetProp()</A>, provide
+scripting support for actor properties. Actor properties can be
+made read-only by supporting them only through the <CODE>GetProp()</CODE>
+method. Read-write properties must be supported by both methods.
+<BR>
+<BR>
+Both <CODE>GetProp()</CODE> and <CODE>SetProp()</CODE> have two
+standard arguments, a <CODE>MoaMmSymbol</CODE> representing the
+property to be accessed, and a <CODE>MoaMmValue</CODE> for passing
+the actual value. To support specific properties, create an array
+of symbols for the properties you support as an instance variable
+of your actor. When you initialize your asset, set the values
+in this array by calling the <CODE>IMoaMmUtils</CODE>::<CODE>StringToSymbol()</CODE>
+method. Within your implementation of <CODE>GetProp()</CODE> and
+<CODE>SetProp()</CODE>, you can compare the symbol passed in to
+those in your array, and use the resulting index to determine
+the property value to access. (<CODE>MoaMmSymbols</CODE> are guaranteed
+to be unique for a particular run of the host application; they
+can be compared using the standard <CODE>==</CODE> comparison
+operator.) To convert between C or MOA types and <CODE>MoaMmValue</CODE>
+types, use the conversion methods provided by <CODE>IMoaMmUtils</CODE>.
+<BR>
+<BR>
+If a property setting changes an actor's capabilities, be sure
+to call the <A HREF="../MMREF/MMSPRTCL.HTM#InvalSpriteCaps">IMoaMmSpriteCallback::InvalSpriteCaps()</A>
+method. This method ensures that the application will call <CODE>GetCaps()</CODE>
+again to update its information about the sprite actor's capabilities.
+<BR>
+
+<H5><A NAME="RTFToC82">Actor functions
+</A></H5>
+
+<P>
+In addition to scripted property access, an actor can provide
+functions in the host scripting language. These functions are
+object oriented, since they're associated with a particular instance
+of an actor. They may add or remove media from an actor or invoke
+other behavior. To define scripted functions, you implement the
+<A HREF="../MMREF/MMXSPRTA.HTM#CallFunction">IMoaMmXSpriteActor::CallFunction()</A>
+method. For a discussion of how to implement this feature, see
+Asset functions in the previous section. <BR>
+
+<H5><A NAME="RTFToC83">Interacting
+with assets </A></H5>
+
+<P>
+An actor may need to communicate with its asset at times. For
+example, it may need to inform the asset of changes in media or
+properties resulting from user events at playback time. In addition,
+the asset may need to communicate with the actor, to inform it
+of changes to media or properties made through the editors or
+the scripting language. <BR>
+<BR>
+Both the <CODE>IMoaMmXAsset</CODE> and <CODE>IMoaMmXActor</CODE>
+interfaces define a <CODE>Notify()</CODE> method. This method
+can be implemented in the actor and asset classes to allow communications
+between the two. The <CODE>IMoaMmAssetCallback</CODE> interface
+provides a <CODE>NotifyActors()</CODE> method, which calls the
+<CODE>Notify()</CODE> methods in all actors belonging to a particular
+asset. The <A HREF="../MMREF/MMSPRTCL.HTM#NotifyAsset">IMoaMmSpriteCallback::NotifyAsset()</A>
+method calls <CODE>Notify()</CODE> in the asset. 
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+
+</HTML>

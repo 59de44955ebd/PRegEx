@@ -1,0 +1,1013 @@
+<HTML>
+<HEAD> 
+<TITLE>IMoaMmImage</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+
+<body>
+
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A><BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+<A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+
+<h3><A name = "IMoaMmXValue">IMoaMmImage</A></h3>
+
+<hr width=45% align=left>
+Interface ID: <CODE>IID_IMoaMmImage<BR></CODE>
+Pointer type:<CODE>IMoaMmImage<BR></CODE>
+Inheritance: <CODE>IMoaUnknown<BR></CODE>
+Header file: <a href="../../Include/mmiimage.h">mmiimage.h</a><BR>
+  
+<h3>Description</h3>
+
+<DL> 
+  <DD> This callback interface provides MoaMmImage manipulation functions and 
+    support for image object (interface new to Director 8.5). Most of the methods 
+    in this inteface have a direct correspondance with the lingo imaging commands. 
+    Please see the Director 8.5 documentation for more information about image 
+    objects and image methods. 
+    <p>Note: syntax provided in C++ format.</p>
+</DL>
+
+<DL> 
+  <DT> 
+    <h3>Constants and Structures</h3>
+  <DD> 
+    <pre><code>
+typedef struct MoaMmImageInfo
+{
+	MoaLong iWidth;
+	MoaLong iHeight;
+	MoaLong iRowBytes;
+	MoaLong iTotalDepth;
+	MoaLong iAlphaDepth;
+	MoaBool bCartesian;
+
+} MoaMmImageInfo, *PMoaMmImageInfo;
+</code></pre>
+</DL>
+<h3>Methods</h3>
+
+<h4>Image Creation and Information</h4>
+
+<DL> 
+  <DD>
+    <A HREF = "#NewImage">NewImage()</A> <BR>
+    <A HREF = "#Duplicate">Duplicate()</A> <BR>
+    <A HREF = "#NewImageFromStream">NewImageFromStream()</A> <BR>
+    <A HREF = "#UpdateImageFromStream">UpdateImageFromStream()</A> <BR>
+    <A HREF = "#ReleaseProgressCookie">ReleaseProgressCookie()</A> <BR>
+    <A HREF = "#NewImageFromPath">NewImageFromPath()</A> <BR>
+    <A HREF = "#GetImageInfo">GetImageInfo()</A> <BR>
+    <BR>
+</DL>
+
+<h4>Image Manipulation Methods</h4>
+
+<DL>
+<DD>
+    <A HREF = "#CopyPixels">CopyPixels()</A> <BR>
+	<A HREF = "#Crop">Crop()</A> <BR>
+    <A HREF = "#Draw">Draw()</A> <BR>
+    <A HREF = "#Fill">Fill()</A> <BR>
+    <A HREF = "#CreateMatte">CreateMatte()</A> <BR>
+    <A HREF = "#CreateMask">CreateMask()</A> <BR>
+    <A HREF = "#TrimWhiteSpace">TrimWhiteSpace()</A> <BR>
+    <A HREF = "#SetAlpha">SetAlpha()</A> <BR>
+    <A HREF = "#ExtractAlpha">ExtractAlpha()</A> <BR>
+</DL>
+
+<h4>Pixel Access Methods</h4>
+
+<DL>
+<DD>
+    <A HREF = "#GetPixel">GetPixel()</A> <BR>
+    <A HREF = "#SetPixel">SetPixel()</A> <BR>
+    <A HREF = "#GetPixellnteger">GetPixelInteger()</A> <BR>
+    <A HREF = "#SetPixelInteger">SetPixelInteger()</A> <BR>
+    <A HREF = "#LockPixels">LockPixels()</A> <BR>
+    <A HREF = "#UnlockPixels">UnlockPixels()</A> <BR>
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="NewImage">NewImage()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>NewImage(MoaLong <I>iWidth</I>, MoaLong <i>iHeight</i>, MoaLong <i>iBitDepth</i>, 
+  MoaLong <i>iAlphaDepth</i>,
+  <dd>PMoaMmValue <I>pPaletteRef</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>iWidth</i></code> 
+  <DD>The width of the new image.<BR>
+    <BR>
+  <DT><code><i>iHeight</i></code> 
+  <DD>The height of the new image.<BR>
+    <BR>
+  <DT><code><i>iBitDepth</i></code> 
+  <DD>The bit depth of the new image.<BR>
+    <BR>
+  <DT><code><i>iAlphaDepth</i></code> 
+  <DD>The alpha channel depth of the new image.<BR>
+    <BR>
+  <DT><code><i>pPaletteRef</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains a member reference for a palette member. Use
+  NULL for a missing palette reference. The movie default palette is used.<BR>
+  <br>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the new image object.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a lingo image object based upon the passed in parameters.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="Duplicate">Duplicate()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>Duplicate(ConstPMoaMmValue <I>pSourceImage</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the destination image 
+    object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a copy of a lingo image object. This does not work on mask items.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="NewImageFromStream">NewImageFromStream()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>NewImageFromStream(PIMoaStream <I>pStream</I>, PPMoaVoid <I>pProgressCookie</I>,
+  PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pStream</i></code> 
+  <DD>Pointer to an open Moa stream that references a file with image data.<BR>
+    <BR>
+  <DT><code><i>pProgressCookie</i></code> 
+  <DD>Pass NULL for pProgressCookie if all data is available in the stream. Otherwise 
+    pass in the address of a pointer that will be used to store a cookie.<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the destination image 
+    object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Takes an open PIMoaStream and reads (and parses) an image from a file format. 
+    If pProgressCookie is non-NULL, a cookie is allocated and can be passed in 
+    to <code>UpdateImageFromStream</code>. In this case <code>ReleaseProgressCookie</code> 
+    must be called to deallocate the cookie.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="UpdateImageFromStream">UpdateImageFromStream()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>UpdateImageFromStream(PIMoaStream <I>pStream</I>, 
+  PMoaVoid <I>pProgressCookie</I>, 
+  PMoaMmValue <I>pUpdateImage</I>) </code>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pStream</i></code> 
+  <DD>Pointer to the open Moa stream that references a file with image data.<BR>
+    <BR>
+  <DT><code><i>pProgressCookie</i></code> 
+  <DD>The cookie for this stream.<BR>
+    <BR>
+  <DT><code><i>pUpdateImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that is in the process of receiving the 
+    image object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Called when an image object is being streamed in from a file.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="ReleaseProgressCookie">ReleaseProgressCookie()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>ReleaseProgressCookie(PPMoaVoid<I> pProgressCookie</I>) </code> 
+</DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pProgressCookie</i></code> 
+  <DD>The cookie to be released.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Called to release the cookie that was allocated by <code>NewImageFromStream</code>.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="NewImageFromPath">NewImageFromPath()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>NewImageFromPath(PIMoaPathName <I>pMoaPath</I>, 
+  PMoaMmValue <I>pResultImage</I>) </code>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pMoaPath</i></code> 
+  <DD>Pointer to a file that contains image data.<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the image object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Takes a PIMoaPathName and opens and reads (and parses) an image from a file.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="GetImageInfo">GetImageInfo()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>GetImageInfo(ConstPMoaMmValue <I>pImage</I>, 
+  PMoaMmImageInfo <I>pImageInfo</I>) </code>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains an image object.<BR>
+    <BR>
+  <DT><code><i>pImageInfo</i></code> 
+  <DD>Pointer to a <code>MoaMmImageInfo</code> structure that will be filled with 
+    the information about the passed in image.<BR>
+  
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>kMoaDrErr_ImageExpected</CODE> is returned if <code><i>pImage</i></code> does not reference an image object
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Takes a MmValue containing an ImageRef and returns a filled out <code>MoaMmImageInfo</code> 
+    structure.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="CopyPixels">CopyPixels()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> <code>CopyPixels(ConstPMoaMmValue <I>pImage</I>, ConstPMoaMmValue <I>pSourceImage</I>, 
+  ConstPMoaMmValue <I>pDestRectOrQuad</I>, 
+  <dd>ConstPMoaMmValue <I>pSourceRect</I>, 
+  ConstPMoaMmValue <I>pPropList</I>)
+</code>
+</DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the destination image object<BR>
+    <BR>
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pDestRectOrQuad</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the destination rectangle or quad for the copy<BR>
+    <BR>
+  <DT><code><i>pSourceRect</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source rectangle<BR>
+    <BR>
+  <DT><code><i>pPropList</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains a property list with various 
+    parameters used for modifiying the copy. Use NULL for a missing property list<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Does a blit from the source image to a destination image using either a 
+    destination quad or rectangle, a source rectangle and various ink parameters. 
+    This method provides the same functionality as the lingo image.copyPixels 
+    command. The property list can contain the following items:<br>
+    <br>
+    <code>#color</code> - lingo color object<br>
+    <code>#bgColor</code> - lingo color object<br>
+    <code>#ink</code> - lingo ink value<br>
+    <code>#blendLevel</code> - lingo blend value<br>
+    <code>#dither</code> - non-zero value to dither, zero to not dither<br>
+    <code>#useFastQuads</code> - non-zero value to use fast quads in quad mode<br>
+    <code>#maskImage</code> - lingo mask image object for masking<br>
+    <code>#maskOffset</code> - lingo point for mask offset.<BR>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="Crop">Crop()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>Crop(ConstPMoaMmValue <I>pSourceImage</I>, ConstPMoaMmValue <I>pRect</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pRect</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the rectangle to use for cropping.<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the new cropped image 
+    object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a cropped image based upon an image object and a rectangle.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="Draw">Draw()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>Draw(ConstPMoaMmValue <I>pImage</I>, ConstPMoaMmValue <I>pRect</I>, ConstPMoaMmValue <I>pPropList</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>pRect</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the rectangle to use for 
+    drawing.<BR>
+    <BR>
+  <DT><code><i>pPropList</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains a property list with various 
+    parameters used for modifiying the drawing. Use NULL for a missing property 
+    list<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Performs a drawing operation on a lingo image object. The property list can contain the following items:<br>
+    <br>
+    <code>#color</code> - lingo color object<br>
+    <code>#lineSize</code> - line width<br>
+    <code>#shapeType</code> - #rect, #roundRect, #oval, #line<br>
+<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="Fill">Fill()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>Fill(ConstPMoaMmValue <I>pImage</I>, ConstPMoaMmValue <I>pRect</I>, ConstPMoaMmValue <I>pPropList</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>pRect</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the rectangle to use for 
+    drawing.<BR>
+    <BR>
+  <DT><code><i>pPropList</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains a property list with various 
+    parameters used for modifiying the drawing. Use NULL for a missing property 
+    list<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Performs a drawing operation with a filled shape on a lingo image object. The property list can contain the following items:<br>
+    <br>
+    <code>#color</code> - lingo color object<br>
+    <code>#bgColor</code> - lingo color object<br>
+    <code>#lineSize</code> - line width<br>
+    <code>#shapeType</code> - #rect, #roundRect, #oval, #line<br>
+<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="CreateMatte">CreateMatte()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>CreateMatte(ConstPMoaMmValue <I>pSourceImage</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the new destination 
+    image object with the matte<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a matte image based upon the source image object.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="CreateMask">CreateMask()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>CreateMask(ConstPMoaMmValue <I>pSourceImage</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the new destination 
+    image object with the mask<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a mask image based upon the source image object.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="TrimWhiteSpace">TrimWhiteSpace()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>TrimWhiteSpace(ConstPMoaMmValue <I>pSourceImage</I>, PMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive the new trimmed image object<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a new image with trimmed white edges based upon an existing image object.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="SetAlpha">SetAlpha()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>SetAlpha(ConstPMoaMmValue <I>pImage</I>, ConstPMoaMmValue <I>pAlphaImageOrAlphaValue</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the original image object 
+    and will receive the alpha channel. This image must be 32 bit.<BR>
+    <BR>
+  <DT><code><i>pAlphaImageOrAlphaValue</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains either a an integer or an 
+    alpha channel image. The alpha channel image must be 8 bit.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> For integer version, sets the alpha channel of an 32-bit image to a constant value.  For image 
+  object version, inserts 8-bit image into the alpha channel of a 32-bit image.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="ExtractAlpha">ExtractAlpha()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>ExtractAlpha(ConstPMoaMmValue <I>pSourceImage</I>, ConstPMoaMmValue <I>pResultImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the source image object. 
+    This image must be 32 bit.<BR>
+    <BR>
+  <DT><code><i>pResultImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that will receive a new 8 bit image object.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Creates a new image 8-bit grayscale image object that is only the alpha channel plane from 
+  the existing image object, as long as the existing image object is a 32:8 image.<br>
+  
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="GetPixel">GetPixel()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>GetPixel(ConstPMoaMmValue <I>pImage</I>, MoaLong <I>iXCoordinate</I>, MoaLong <I>iY</I>Coordinate, 
+  <dd>PMoaMmValue <I>pResultPixelValue</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>iXCoordinate</i></code> 
+  <DD>Integer with the pixel's X coordinate<BR>
+    <BR>
+  <DT><code><i>iYCoordinate</i></code> 
+  <DD>Integer with the pixel's Y coordinate<BR>
+    <BR>
+  <DT><code><i>pResultPixelValue</i></code>
+  <DD>Pointer to a <code>MmValue</code> that will receive a color object value 
+    for the pixel.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Finds the pixel value for a particular pixel location in a lingo image 
+    object. This value is returned as a new color object.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="SetPixel">SetPixel()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>SetPixel(ConstPMoaMmValue <I>pImage</I>, MoaLong <I>iXCoordinate</I>, MoaLong <I>iY</I>Coordinate, 
+  <dd>ConstPMoaMmValue <I>pPixelValue</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>iXCoordinate</i></code> 
+  <DD>Integer with the pixel's X coordinate<BR>
+    <BR>
+  <DT><code><i>iYCoordinate</i></code> 
+  <DD>Integer with the pixel's Y coordinate<BR>
+    <BR>
+  <DT><code><i>pPixelValue</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the new color object value to be used for the pixel. <BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Sets a specific pixel in a lingo image object using the passed in color 
+    object.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="GetPixellnteger">GetPixellnteger()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>GetPixellnteger(ConstPMoaMmValue <I>pImage</I>, MoaLong <I>iXCoordinate</I>, MoaLong <I>iY</I>Coordinate, 
+  <dd>PMoaLong <I>pResultPixelValue</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>iXCoordinate</i></code> 
+  <DD>Integer with the pixel's X coordinate<BR>
+    <BR>
+  <DT><code><i>iYCoordinate</i></code> 
+  <DD>Integer with the pixel's Y coordinate<BR>
+    <BR>
+  <DT><code><i>pResultPixelValue</i></code>
+  <DD>Pointer to a <code>MoaLong</code> that will receive an integer value 
+    for the pixel.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Finds the pixel value for a particular pixel location in a lingo image 
+    object. This value is returned as an integer.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="SetPixelInteger">SetPixelInteger()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT> 
+  <code>SetPixelInteger(ConstPMoaMmValue <I>pImage</I>, 
+  MoaLong <I>iXCoordinate</I>,
+  MoaLong <I>iY</I>Coordinate, 
+  <dd>MoaLong <I>iPixelValue</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>iXCoordinate</i></code> 
+  <DD>Integer with the pixel's X coordinate<BR>
+    <BR>
+  <DT><code><i>iYCoordinate</i></code> 
+  <DD>Integer with the pixel's Y coordinate<BR>
+    <BR>
+  <DT><code><i>iPixelValue</i></code> 
+  <DD>Integer with the new value to be used for the pixel. <BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Sets a specific pixel in a lingo image object using the passed in integer.<br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="LockPixels">LockPixels()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>LockPixels(ConstPMoaMmValue <I>pImage</I>, PMoaVoid * <I>ppPixels</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object<BR>
+    <BR>
+  <DT><code><i>ppPixels</i></code> 
+  <DD>Pointer to a location that will receive the pointer to the pixels.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Given a lingo image object, locks down an image handle and returns a pixel 
+    pointer. Must be matched with a later call to <code>UnlockPixels</code><br>
+ 
+</DL>
+
+<hr width=45% align=left>
+
+<h3><A NAME="UnlockPixels">UnlockPixels()</A></h3>
+
+<h4>Syntax</h4>
+
+<DL> 
+  <DT>
+  <code>UnlockPixels(ConstPMoaMmValue <I>pImage</I>) 
+  </code> </DL>
+
+<h4>Parameters</h4>
+
+<DL> 
+  <DD> 
+  <DT><code><i>pSourceImage</i></code> 
+  <DD>Pointer to a <code>MmValue</code> that contains the image object which had a previous call to
+  <code>LockPixels</code>.<BR>
+</DL>
+
+<h4>Returns</h4>
+
+<DL>
+<DT>
+<DD><CODE>MoaError</CODE>
+</DL>
+
+<h4>Description</h4>
+
+<DL> 
+  <DD> Given a lingo image object with previously locked pixels, unlocks down 
+    an image handle. Must be matched with a previous call to <code>LockPixels</code>
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

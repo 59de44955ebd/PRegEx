@@ -1,0 +1,194 @@
+<html><head><title>IMoaDrAlphaData</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A>
+<BR>
+<A HREF = "index.htm"> DR Interfaces</A> | 
+<A HREF = "drmthndx.htm">DR Methods</A> | 
+<A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+
+<h2><A name = "IMoaDrAlphaData">IMoaDrAlphaData</A></h2>
+
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaDrAlphaData</CODE><BR>
+Pointer type: <CODE>PIMoaDrAlphaData</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/driservc.h">driservc.h</A><BR>
+
+<p>This interface is obsolete has not been supported since Director 6.</p>
+<DL><DT><h4>Description</h4><DD>
+
+This interface is implemented by Director to represent internal data for RTF rendering.  
+With <A HREF="drrtaccs.htm">IMoaDrRTAccess</A>, this interface provides Xtras
+the means to render text in rtf at authoring time, then present it antialiased
+over any arbitrary background at playback time.  The <CODE>IMoaDrRTAccess</CODE> 
+interface provides access to the RTF rendering engine built into the Director authoring
+environment, while this interface provides a way to store rendering information about
+the text and render the text in a standard Moa graphics context.  
+<P>Instances of this interface are created by calling 
+<A HREF = "drrtaccs.htm#GenerateAlphaData">IMoaDrRTAccess::GenerateAlphaData()</A>, 
+passing in data representing the text and any formatting within it.  
+Asset Xtras can call the <A HREF="#Render"><CODE>Render()</CODE></A> method from their
+<A HREF="../mmref/mmxsprta.htm#Image"><CODE>IMoaMmXSpriteActor::Image()</CODE></A> method
+to present the results.  They can call the streaming methods of this interface, 
+<A HREF = "#StreamOut">StreamOut()</A>, <A HREF = "#StreamIn">StreamIn()</A>, and
+<A HREF = "#GetStreamOutSize">GetStreamOutSize()</A> to manage storage and retrieval 
+of the information.   
+
+</DL><BR>
+
+<DL><DT><h4>Methods</h4>
+<DD><!MethodListBegin>
+<DD><A HREF = "#Render">Render()</A>
+<BR><A HREF = "#StreamOut">StreamOut()</A>
+<BR><A HREF = "#StreamIn">StreamIn()</A>
+<BR><A HREF = "#GetStreamOutSize">GetStreamOutSize()</A>
+<BR><A HREF = "#GetDimensions">GetDimensions()</A>
+
+<!mcMiscellaneou>
+
+<!MethodListEnd></DL>
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetDimensions">GetDimensions()</A></h3>
+<DL><DT><h4>Syntax</h4><DD><CODE>
+<DL><DT>GetDimensions(PIMoaDrAlphaData <I>This</I>, <BR>
+<DD>MoaLong     FAR * <I>pWidth</I>, <BR>
+MoaLong     FAR * <I>pHeight)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrAlphaData</CODE> interface<BR><BR>
+<DT><CODE><I>pWidth</I></CODE><DD>Pixel width of rendered text<BR><BR>
+<DT><CODE><I>pHeight)</I></CODE><DD>Pixel height of rendered text<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</h4><DD>
+
+
+Call this method before calling <A HREF = "#Render"><CODE>Render()</CODE></A> 
+to determine the size of the text to be rendered.  
+
+</DL><BR>
+
+
+
+<hr width=45% align=left><h3><A name = "GetStreamOutSize">GetStreamOutSize()</A></h3>
+<DL><DT><h4>Syntax</h4><DD><CODE>
+<DL><DT>GetStreamOutSize(PIMoaDrAlphaData <I>This</I>, <BR>
+<DD>MoaUlong     FAR * <I>pSizeBytes)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrAlphaData</CODE> interface<BR><BR>
+<DT><CODE><I>pSizeBytes)</I></CODE><DD>Size of data to be written<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</h4><DD>
+
+When implementing an asset Xtra that uses an <CODE>IMoaDrAlphaData</CODE> object, call this
+method from your <A HREF = "../mmref/mmxasset.htm#GetStreamOutMediaSize">IMoaMmXAsset::GetStreamOutMediaSize() 
+</A> or <A HREF = "../mmref/mmxasset.htm#GetStreamOutPropsSize">IMoaMmXAsset::GetStreamOutPropsSize()</A> 
+methods to determine the size of the data to be streamed.  
+
+</DL><BR>
+
+
+
+<hr width=45% align=left><h3><A name = "Render">Render()</A></h3>
+<DL><DT><h4>Syntax</h4><DD><CODE>
+<DL><DT>Render(PIMoaDrAlphaData <I>This</I>, <BR>
+<DD>PIMoaMmGC    <I>pGC</I>, <BR>
+PMoaMmRGBTriple   <I>pColor</I>, <BR>
+PMoaRect    <I>pWhere)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrAlphaData</CODE> interface<BR><BR>
+<DT><CODE><I>pGC</I></CODE><DD>Graphics context to render into<BR><BR>
+<DT><CODE><I>pColor</I></CODE><DD>Color of rendered text<BR><BR>
+<DT><CODE><I>pWhere)</I></CODE><DD>Position and size of rendered text<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</h4><DD>
+
+Call this method to render the text represented by this <CODE>IMoaDrAlphaData</CODE>
+object into the graphics context of <CODE><i>pGC</i></CODE>.  The graphics context must be 
+a DIB on Windows, and can be any context supported on the Macintosh.  The <CODE><I>pWhere</I></CODE>
+parameter specifies the position and size of the text to render, in pixels.  To determine the 
+size of this rectangle for displaying the full text, call
+<A HREF="#GetDimensions"><CODE>GetDimensions()</CODE></A>.  Note 
+that the text will always be rendered in the color specified by <CODE><I>pColor</I></CODE>, 
+regardless of any color specified in the <CODE>PMoaDrCharStyleData</CODE> used to initially 
+create the <CODE>IMoaDrAlphaData</CODE> object from the <CODE>IMoaDrRTAccess</CODE> interface.
+
+  
+
+</DL><BR>
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "StreamIn">StreamIn()</A></h3>
+<DL><DT><h4>Syntax</h4><DD><CODE>
+<DL><DT>StreamIn(PIMoaDrAlphaData <I>This</I>, <BR>
+<DD>PIMoaStream    <I>pInStream)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrAlphaData</CODE> interface<BR><BR>
+<DT><CODE><I>pInStream)</I></CODE><DD>Stream to read data from<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</h4><DD>
+
+When implementing an asset Xtra that uses an <CODE>IMoaDrAlphaData</CODE> object, call this
+method from your <A HREF = "../mmref/mmxasset.htm#StreamInMedia">IMoaMmXAsset::StreamInMedia() 
+</A> or <A HREF = "../mmref/mmxasset.htm#StreamInProps">IMoaMmXAsset::StreamInProps()</A> 
+methods to retrieve the object.  
+
+</DL><BR>
+
+
+
+<hr width=45% align=left><h3><A name = "StreamOut">StreamOut()</A></h3>
+<DL><DT><h4>Syntax</h4><DD><CODE>
+<DL><DT>StreamOut(PIMoaDrAlphaData <I>This</I>, <BR>
+<DD>PIMoaStream    <I>pOutStream)</I>)</CODE></DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaDrAlphaData</CODE> interface<BR><BR>
+<DT><CODE><I>pOutStream)</I></CODE><DD>Stream to write data to<BR><BR>
+</DL>
+</DL>
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+<DL><DT><h4>Description</h4><DD>
+
+When implementing an asset Xtra that uses an <CODE>IMoaDrAlphaData</CODE> object, call this
+method from your <A HREF = "../mmref/mmxasset.htm#StreamOutMedia">IMoaMmXAsset::StreamOutMedia() 
+</A> or <A HREF = "../mmref/mmxasset.htm#StreamOutProps">IMoaMmXAsset::StreamOutProps()</A> 
+methods to save the object.  
+
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>
+

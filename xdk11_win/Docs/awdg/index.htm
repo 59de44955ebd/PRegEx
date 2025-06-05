@@ -1,0 +1,508 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Authorware Support API</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+
+</HEAD>
+<BODY>
+
+<P>
+<A HREF="../awref/index.htm">AW Interfaces</A> | <A HREF="../awref/awmthndx.htm">AW Methods</A>
+| <A HREF="../awref/awtypndx.htm">AW Types and Misc API</A>
+<HR width=45% align=left>
+
+<H3><A NAME="RTFToC2">Director 6.0/Authorware
+4.0 Xtra Development Kit </A></H3>
+
+<H2>Authorware Developer's Guide
+</H2>
+
+<HR width=45% align=left>
+
+<P>
+rev: 3/97<BR>
+
+<H3>Introduction</H3>
+
+<P>
+The Authorware support API provides ways for Xtras to access the
+Authorware object model to access icons, call functions, and access
+variables. Additionally, Authorware Xtras can define and generate
+specific events to interact with the icons in a presentation,
+and can store and retrieve themselves when the user pauses and
+resumes a presentation. Xtras can also subscribe to and be informed
+of events that occur in Authorware. <BR>
+<BR>
+
+<H3>Authorware Services<BR>
+</H3>
+
+<P>
+The Authorware service callbacks are a set of interfaces that
+provide access to objects representing internal data structures
+of Authorware. Through these interfaces, you can directly manipulate
+certain features of Authorware pieces. <BR>
+<BR>
+This discussion begins with an overview of the Authorware object
+model and how it shapes the interfaces provided by the Authorware
+services. The overview is followed by a detailed look at the interfaces
+to the model, describing how to use the Authorware features available
+through them. Next, there's a discussion of several supporting
+interfaces provided by the Authorware services API. Finally, there
+are several examples of accessing and using Authorware services.
+<BR>
+<BR>
+<BR>
+
+<H4><A NAME="RTFToC4">The </A>Authorware
+object model<BR>
+</H4>
+
+<P>
+To allow Xtras to manipulate pieces and their contents, the Authorware
+service callbacks represent two objects of Authorware's internal
+model, the player and the piece. <BR>
+<BR>
+The player can be the Authorware authoring application, a packaged
+Authorware piece, or Shockwave for Authorware. A player can have
+one open piece at a time. <BR>
+<BR>
+Authorware's callback object provides a number of interfaces including
+standard MOA callbacks. The Authorware callback interfaces include
+the general interface <CODE>IMoaMmUtils</CODE>
+(described in the <A HREF="../mmdg/index.htm">Multimedia Developer's Guide</A>).
+<BR>
+<BR>
+The callback object also provides the <CODE>IMoaAwPlayer</CODE>
+interface. This interface represents the player at the top of
+the Authorware object model. To get the <CODE>IMoaAwPiece</CODE>
+interface for a piece object, you call the <CODE>IMoaAwPlayer::GetPiece()</CODE>
+method. The remainder of this chapter describes various techniques
+for accessing and interacting with these Authorware objects. 
+<BR>
+<BR>
+<BR>
+
+<H4><A NAME="UTAOM">Using the Authorware
+object model</A><BR>
+<BR>
+</H4>
+
+<P>
+This discussion looks at the two interfaces of the Authorware
+object model, describing how you acquire these interfaces and
+detailing the behavior available through each of them. <BR>
+
+<H5><A NAME="RTFToC10">The IMoaAwPlayer
+interface</A> <BR>
+</H5>
+
+<P>
+The <A HREF="../awref/awplayer.htm"><CODE>IMoaAwPlayer</CODE></A>
+interface is provided by Authorware's callback object. Authorware
+provides an instance of this interface through the callback object.
+Methods of the player interface let you retrieve the active piece's
+interface (<A HREF="../awref/awplayer.htm#GetActivePiece"><CODE>GetActivePiece()</CODE></A>)
+and close a Windows MCI sound driver (<A HREF="../awref/awplayer.htm#CloseSoundDriver"><CODE>CloseSoundDriver()</CODE></A>).
+<BR>
+<BR>
+
+<H6><A NAME="RTFToC11">Acquiring
+IMoaAwPlayer </A><BR>
+</H6>
+
+<P>
+To get access to the application's single instance of <CODE>IMoaAwPlayer</CODE>,
+you call <CODE>QueryInterface()</CODE>
+on any Xtra object's <CODE>pCallback</CODE>
+instance variable. <BR>
+<BR>
+
+<H5><A NAME="RTFToC17">The IMoaAwPiece
+interface</A> <BR>
+</H5>
+
+<P>
+The <A HREF="../awref/awpiece.htm"><CODE>IMoaAwPiece</CODE></A>
+interface is used to represent presentation objects in the Authorware
+framework. You can acquire this interface for any active piece,
+and use the interface to access various features of the piece
+it represents. This interface supports access to icons, access
+to palettes, and access to graphics contexts for the presentation
+window in which the piece is drawn. It also provides scripting
+support.<BR>
+
+<H6><A NAME="RTFToC18">Acquiring
+an IMoaAwPiece interface </A><BR>
+</H6>
+
+<P>
+The <CODE>IMoaAwPlayer</CODE> interface
+provides the <A HREF="../awref/awplayer.htm#GetActivePiece"><CODE>GetActivePiece()</CODE></A>
+method for acquiring the interface of the currently active piece.
+A sprite asset Xtra can access the piece it belongs to through
+the <A HREF="../awref/awsprtcl.htm#GetPiece"><CODE>IMoaAwSpriteCallback::GetPiece()</CODE></A>
+method. <BR>
+<BR>
+<BR>
+
+<H6>Icon access<BR>
+</H6>
+
+<P>
+Icons in authorware are accessed by an icon ID, a unique number
+assigned to the icon when it is added to a piece. Using the API
+provided by IMoaAwPiece, you can get the unique ID for any icon,
+then use it to access the media of the icon and to get or set
+values of any variables in the icon. 
+<P>
+The <A HREF="../awref/awpiece.htm#GetIconId"><CODE>IMoaAwPiece::GetIconId()</CODE></A>
+method returns the icon ID for any named icon. To access the variables
+in an icon, call the <A HREF="../awref/awpiece.htm#GetVariable">IMoaAwPiece::GetVariable()</A>
+and <A HREF="../awref/awpiece.htm#SetVariable">IMoaAwPiece::SetVariable()</A>
+methods, passing the ID to specify the icon. To access the media
+in a display icon, call the methods <A HREF="../awref/awpiece.htm#GetMediaBitmap"><CODE>IMoaAwPiece::GetMediaBitmap()</CODE></A>
+and <A HREF="../awref/awpiece.htm#GetMediaImage"><CODE>IMoaAwPiece::GetMediaImage()</CODE></A>.
+<CODE>GetMediaBitmap()</CODE> returns
+the media of the display icon in bitmap format (as a DIB on Windows
+or a PICT on the Macintosh). <CODE>GetMediaImage()</CODE>
+returns the media of the display icon in vector format (as a metafile
+on Windows or a PICT on the Macintosh).<BR>
+<BR>
+
+<H6><A NAME="RTFToC20">Palette access
+</A><BR>
+</H6>
+
+<P>
+You can manipulate a piece's palette with the <A HREF="../awref/awpiece.htm#GetPalette"><CODE>GetPalette()</CODE></A>,
+<A HREF="../awref/awpiece.htm#SetPalette"><CODE>SetPalette()</CODE></A>,
+and <A HREF="../awref/awpiece.htm#ResetPalette"><CODE>ResetPalette()</CODE></A>
+methods. <CODE>GetPalette()</CODE>returns
+a handle to the currently active palette. You use <CODE>SetPalette()
+</CODE>to change the palette system colors. <CODE>ResetPalette()
+</CODE>sets the palette back to the default Authorware palette
+and system color settings.<BR>
+
+<H6><A NAME="RTFToC30">Imaging support
+</A><BR>
+</H6>
+
+<P>
+The <CODE>IMoaAwPiece</CODE> interface
+provides access to the graphics contexts for the presentation
+window. To get the offscreen drawing buffer, call the <A HREF="../awref/awpiece.htm#GetPresentationWindowGC"><CODE>IMoaAwPiece::GetPresentationWindowGC()</CODE></A>
+method. <BR>
+<BR>
+
+<H6>Scripting support<BR>
+</H6>
+
+<P>
+An Xtra can ask Authorware to evaluate any expression or script
+and get and set variables using the <CODE>IMoaAwPiece</CODE> methods
+<A HREF="../awref/awpiece.htm#EvalExpression"><CODE>EvalExpression()</CODE></A>,
+<A HREF="../awref/awpiece.htm#GetVariable"><CODE>GetVariable()</CODE></A>,
+and <A HREF="../awref/awpiece.htm#SetVariable"><CODE>SetVariable()</CODE></A>
+methods. <CODE>EvalExpression() </CODE>evaluates
+an expression or script supplied as a string and returns the result.
+<CODE>GetVariable() </CODE>gets
+the value of a global variable and <CODE>SetVariable()</CODE>
+sets the value of a global variable.<BR>
+
+<H6>Event handling<BR>
+</H6>
+
+<P>
+<CODE>IMoaAwPiece</CODE> provides the methods <CODE>SendEvent()</CODE>
+and <CODE>SendEventWithReply()</CODE> to handle events from an
+Xtra. These methods are described in the topic <A HREF="#EventSenderXtras">&quot;Event sender Xtras&quot;</A>.
+<BR>
+<BR>
+
+<H3>Asset support API</H3>
+
+<H4>The Authorware asset callback interface
+</H4>
+
+<P>
+After a media asset Xtra's <CODE>IMoaMmXAsset</CODE>
+interface is initialized by the host application, its <CODE>SetCallback()</CODE>
+method is called. This method provides an <A HREF="../mmref/mmasstcl.htm"><CODE>IMoaMmAssetCallback</CODE></A>
+interface to the Xtra. This interface is described in the earlier
+chapter &quot;<A HREF="../mmdg/mmdgc2.htm">Asset Xtras</A>.&quot;
+<BR>
+<BR>
+In Authorware, the object that provides <CODE>IMoaMmAssetCallback</CODE>
+also implements the <A HREF="../awref/awasstcl.htm"><CODE>IMoaAwAssetCallback</CODE></A>
+interface. To acquire this interface, your asset should call <CODE>QueryInterface(&amp;IID_IMoaAwAssetCallback,
+...)</CODE> on the callback object passed when the application
+calls your asset's <CODE>SetCallback()
+</CODE>method. Your Xtra can then call the methods described
+here to interact with its internal representation within a Authorware
+piece. <BR>
+
+<H5>Icon access<BR>
+</H5>
+
+<P>
+<CODE>IMoaAwAssetCallback</CODE>
+allows you to get the identification number of the icon for an
+asset with the <A HREF="../awref/awasstcl.htm#GetIconId"><CODE>GetIconId()</CODE></A>
+method. You specify the icon's title, then get the identification
+number. <BR>
+
+<H5>Scripting support <BR>
+</H5>
+
+<P>
+<CODE>IMoaAwAssetCallback</CODE>
+provides several methods for calling Authorware functions. The
+<A HREF="../awref/awasstcl.htm#GetExpression"><CODE>GetExpression()</CODE></A>
+method lets you retrieve the text of an expression. You evaluate
+an expression with <A HREF="../awref/awasstcl.htm#EvalExpression"><CODE>EvalExpression()</CODE></A>.
+<A HREF="../awref/awasstcl.htm#GetExpressionLength"><CODE>GetExpressionLength()</CODE></A>
+returns the length in bytes of an expression. <A HREF="../awref/awasstcl.htm#StoreExpression"><CODE>StoreExpression()</CODE></A>
+compiles and saves an expression; <A HREF="../awref/awasstcl.htm#DeleteExpression"><CODE>DeleteExpression()</CODE></A> 
+deletes it. You can start and stop a watch on an expression
+using <A HREF="../awref/awasstcl.htm#WatchExpression"><CODE>WatchExpression()</CODE></A> 
+and <A HREF="../awref/awasstcl.htm#StopWatchExpression"><CODE>StopWatchExpression()</CODE></A>.
+<BR>
+
+<H3>Sprite asset support API<BR>
+</H3>
+
+<P>
+After a sprite asset Xtra's <CODE>IMoaMmXSpriteActor</CODE>
+interface is initialized by the host application, its <CODE>SetCallback()</CODE>
+method is called. This method provides an <CODE>IMoaMmSpriteCallback</CODE>
+interface to the Xtra. This interface is described in &quot;<A HREF="../mmdg/mmdgc2.htm">Asset Xtras</A>.&quot;
+<BR>
+<BR>
+In Authorware, the object that provides <CODE>IMoaMmSpriteCallback</CODE>
+also implements the <A HREF="../awref/awsprtcl.htm"><CODE>IMoaAwSpriteCallback</CODE></A>
+interface. To acquire this interface, the media asset calls <CODE>QueryInterface(&amp;IID_IMoaAwSpriteCallback,
+...)</CODE> on the callback object passed to your Xtra by
+the host application in the <CODE>SetCallback()
+</CODE>call to gain access to the <CODE>IMoaMmSpriteCallback</CODE>
+interface. It can then call <CODE>GetPiece()</CODE>
+described here to interact with its Authorware piece. <BR>
+
+<H5>Acquiring IMoaAwPiece <BR>
+</H5>
+
+<P>
+A sprite can get access to the <CODE>IMoaAwPiece</CODE>
+interface of the piece in which it resides by calling <A HREF="../awref/awsprtcl.htm#GetPiece"><CODE>IMoaAwSpriteCallback::GetPiece()</CODE></A>.
+It can then interact with the piece, using the techniques described
+in &quot;<A HREF="#UTAOM">Using the Authorware object model</A>.&quot;
+<BR>
+
+<H3><A NAME="RTFToC57">Authorware
+</A>Xtra interfaces<BR>
+</H3>
+
+<P>
+The Authorware support API defines a couple of interfaces that
+can be implemented by Xtras. You implement the <CODE>IMoaAwEventSender</CODE>
+interface to provide information about events your Xtra can send
+to Authorware. Implement the <CODE>IMoaAwSaveState</CODE>
+interface to save state information so that a user can pause and
+resume an Authorware presentation. <BR>
+
+<H4><A NAME="EventSenderXtras">Event sender
+Xtras</A> <BR>
+</H4>
+
+<P>
+An event sender Xtra-one that implements the <A HREF="../awref/awevntsn.htm"><CODE>IMoaAwEventSender</CODE></A>
+interface-can pass information to Authorware and invoke responses
+defined by the author of a piece. For example, if your Xtra implements
+a calendar, it could define various events: one that reports when
+the user selects a new month, another that's triggered when a
+certain date and time are reached. Within an Authorware piece,
+the author could define a response-using Authorware functions-that
+updates another icon in the flowline, or that displays &quot;Times
+Up!&quot; to the user. 
+<P>
+To enable a piece to receive an event, the author adds an interaction
+icon to the flowline and specifies &quot;Event&quot; as the response
+type for a branch of the interaction. The author can then select
+specific events from the Properties: Response dialog. Events are
+listed in two categories: Icon events, sent by Sprite Xtras, and
+Xtra events, which can be sent by other types of Xtra. To define
+events, a Sprite Xtra implements <CODE>IMoaAwEventSender</CODE>
+in the same class that implements <CODE>IMoaMmXAsset</CODE>. Other
+Xtras can implement this interface in any class. 
+<P>
+The Authorware event mechanism is asynchronous. Events are placed
+in a queue, and processed in the order in which they're received.
+The method an Xtra calls to notify Authorware of an event always
+returns immediately. Authorware provides a mechanism to notify
+your Xtra when the event has been processed, and to pass any result
+data your Xtra needs to proceed.
+<P>
+An Xtra implements <CODE>IMoaAwEventSender</CODE> to define its
+events and to enable Authorware to notify the Xtra when a specific
+event has been received. The <CODE>IMoaAwSpriteCallback</CODE>
+interface provides methods for a specific sprite Xtra to send
+events to a response. The <CODE>IMoaAwPiece</CODE> interface provides
+methods for other types of Xtras to send events. <BR>
+
+<H5>Registering an event sender
+</H5>
+
+<P>
+Your Xtra should register any classes that implement the <CODE>IMoaAwEventSender</CODE>
+interface. To register an interface, you call <A HREF="../MOREF/CACHE.HTM#AddRegistryEntry">IMoaCache::AddRegistryEntry()</A>
+on the cache passed to your Xtra's <A HREF="../MOREF/REGISTER.HTM#Register">IMoaRegister::Register()</A>
+method.<BR>
+
+<H5>Retrieving the Xtra name<BR>
+</H5>
+
+<P>
+You implement <A HREF="../awref/awevntsn.htm#GetSenderXtraName"><CODE>IMoaAwEventSender::GetSenderXtraName()</CODE></A>
+to return the name of the Xtra to be shown in the list of event
+senders in Authorware's Properties: Response dialog. A Scripting
+Xtra should return the name string used in the message table.
+An Asset Xtra should return its display name string. Return an
+empty string if you don't want the Xtra to appear in the Response
+Properties dialog sender list. <BR>
+
+<H5>Retrieving event descriptions
+<BR>
+</H5>
+
+<P>
+You implement <A HREF="../awref/awevntsn.htm#GetXtraEventDescriptions"><CODE>IMoaAwEventSender::GetXtraEventDescriptions()</CODE></A>
+to return a list of event descriptions that the Xtra sends for
+all its instances. The events in this list are the events that
+are common to all instances of the Xtra-events that can be sent
+by any of its instantiated icons. If you don't want an event to
+appear in the list of available events in the Authorware Response
+Properties dialog, precede it with a '/'. <BR>
+<BR>
+When a sprite asset Xtra implements the <CODE>IMoaAwEventSender</CODE>
+interface, it should implement the <A HREF="../awref/awevntsn.htm"><CODE>GetInstanceEventDescriptions()</CODE></A>
+method to return the list of events sent by a sprite. <BR>
+
+<H5>Sending Events and Handling
+Replies</H5>
+
+<P>
+As an event sender Xtra performs in a piece, it will generate
+events and pass them to Authorware. Authorware provides two ways
+to send events: one for Sprite Asset Xtras and one for other Xtra
+types. It also defines two styles of events that an Xtra can send:
+without reply and with a reply back to the Xtra. <BR>
+
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=45><B>Event Type</B></TD><TD WIDTH=202><B>Without reply</B>
+</TD><TD WIDTH=256><B>With reply </B></TD></TR>
+
+<TR><TD WIDTH=45>Sprite Xtras</TD><TD WIDTH=202><A HREF="../awref/awsprtcl.htm#SendSpriteEvent">IMoaAwSpriteCallback::</A> 
+<BR>
+<A HREF="../awref/awsprtcl.htm#SendSpriteEvent"><CODE>SendSpriteEvent()</CODE></A>
+</TD><TD WIDTH=256><A HREF="../awref/awsprtcl.htm#SendSpriteEventWithReply"><CODE>IMoaAwSpriteCallback::</CODE></A> 
+<BR>
+<A HREF="../awref/awsprtcl.htm#SendSpriteEventWithReply"><CODE>SendSpriteEventWithReply()</CODE></A>
+</TD></TR>
+
+<TR><TD WIDTH=45>Other Xtras </TD><TD WIDTH=202><A HREF="../awref/awpiece.htm#SendEvent"><CODE>IMoaAwPiece::SendEvent()</CODE></A>
+</TD><TD WIDTH=256><A HREF="../awref/awpiece.htm#SendEventWithReply"><CODE>IMoaAwPiece::SendEventWithReply()</CODE></A>
+</TD></TR>
+
+</TABLE>
+
+<P>
+When you send an event with a reply, you pass Authorware a pointer to the
+<CODE>IMoaAwEventSender</CODE> interface that will respond to the
+reply. After the event has been processed, Authorware returns
+the reply by calling the <A HREF="../awref/awevntsn.htm#HandleReply"><CODE>HandleReply()</CODE></A>
+method of this interface. <BR>
+<BR>
+
+<H4>Pause and resume in Xtras </H4>
+
+<P>
+Authorware enables the user to stop and resume at any point in
+a presentation. Xtras can support this feature by implementing
+the <A HREF="../awref/awsvstt.htm">IMoaAwSaveState</A> interface.
+Authorware calls the methods of this interface at the appropriate
+times on any instances of <CODE>IMoaMmXAsset</CODE>,
+<CODE>IMoaMmXSpriteActor</CODE>,
+or <CODE>IMoaDrXLingo</CODE> whose
+Xtra has registered this interface. To register this interface,
+you call <A HREF="../MOREF/CACHE.HTM#AddRegistryEntry"><CODE>IMoaCache::AddRegistryEntry()</CODE></A>
+on the cache passed to the <A HREF="../MOREF/REGISTER.HTM#Register"><CODE>IMoaRegister::Register()</CODE></A>
+method.
+<P>
+The <CODE>IMoaAwSaveState</CODE> interface is implemented with
+three methods: <A HREF="../awref/awsvstt.htm#GetStreamOutSaveDataSize"><CODE>GetStreamOutSaveDataSize()</CODE></A>,
+<A HREF="../awref/awsvstt.htm#StreamOutSaveData"><CODE>StreamOutSaveData()</CODE></A>,
+and <A HREF="../awref/awsvstt.htm#StreamInSaveData"><CODE>StreamInSaveData()</CODE></A>.
+These methods are similar to those for streaming media and properties
+data in an asset Xtra. As with the asset methods, these methods
+save and retrieve data through an <A HREF="../MOREF/STREAM.HTM"><CODE>IMoaStream</CODE></A>
+interface. You determine which state your Xtra needs to save to
+restore itself properly. <BR>
+
+<H4>Authorware notification clients
+</H4>
+
+<P>
+Authorware uses the MOA notification interfaces to notify Xtras
+of specific events of interest. Xtras call the callback interface
+<A HREF="../moref/montfctn.htm">IMoaNotification</A> to register
+interest in specific events, and implement the <A HREF="../moref/montfcln.htm"><CODE>IMoaNotificationClient</CODE></A>
+interface to process the events requested. 
+<P> Authorware defines the following event notification IDs, which an Xtra uses to indicate the events it's interested in, 
+  and which the application uses to indicate the events its sending to the Xtra. For each event type, a specific data type 
+  is passed to the <A HREF="../moref/montfctn.htm#RegisterNotificationClient"><CODE>IMoaNotification::RegisterNotificationClient()</CODE></A> 
+  method when registering, and data is received from the application when it calls <A HREF="../moref/montfcln.htm#Notify"><CODE>IMoaNotificationClient::Notify()</CODE></A>. 
+  The following table lists Authorware event types and the associated Notification IDs and Data:<BR>
+
+<P>
+The Authorware API defines three notification events that any
+Xtra can respond to by implementing the <A HREF="../moref/montfcln.htm"><CODE>IMoaNotificationClient</CODE></A>
+interface. These events, defined in awiservc.h, are:
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=68><B>Event</B></TD><TD WIDTH=180><B>Notification ID </B>
+</TD>
+    <TD WIDTH=130><B>Data passed to <CODE>Register()</CODE></B> </TD>
+    <TD WIDTH=126><B>Data received by <CODE>Notify()</CODE></B> </TD>
+  </TR>
+
+<TR><TD WIDTH=68>Step frame</TD><TD WIDTH=180><CODE>NID_AwNStep</CODE>
+</TD><TD WIDTH=130>Xtra-specific data</TD><TD WIDTH=126>Xtra-specific data
+</TD></TR>
+
+<TR><TD WIDTH=68>Service background process</TD><TD WIDTH=180><CODE>NID_AwNIdle</CODE>
+</TD><TD WIDTH=130><CODE>PMoaLong</CODE> indicating max milliseconds between calls
+</TD><TD WIDTH=126><CODE>PMoaLong</CODE> indicating milliseconds since last call
+</TD></TR>
+
+<TR><TD WIDTH=68>Palette changed</TD><TD WIDTH=180><CODE>NID_AwNPaletteChanged</CODE>
+</TD><TD WIDTH=130>NULL</TD><TD WIDTH=126>NULL</TD></TR>
+
+</TABLE>
+
+<P>
+These events are equivalent to events sent to sprite actors through
+the <A HREF="../mmref/mmxsprta.htm#Notify"><CODE>IMoaMmSpriteActor::Notify()</CODE></A>
+method. However, any Xtra can implement the <CODE>IMoaNotificationClient</CODE>
+class and subscribe to these events through the host application's
+<A HREF="../moref/montfctn.htm"><CODE>IMoaNotification</CODE></A> callback
+interface. <BR>
+<BR>
+
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+
+</HTML>

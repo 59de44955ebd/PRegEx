@@ -1,0 +1,314 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaDrAssetCallback</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaDrAssetCallback</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrAssetCallback<BR>
+  </CODE>Pointer type: <CODE>PIMoaDrAssetCallback<BR>
+  </CODE>Inheritance: <A HREF = "../mmref/mmprpown.htm">IMoaMmPropOwner</A> <BR>
+  Header file: <A HREF = "../../include/driservc.h">driservc.h</A> <BR>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>IMoaDrAssetCallback</TT> interface is provided in Director by the class that implements <TT>IMoaMmAssetCallback</TT>,
+    which is provided by through the asset initialization method <TT>IMoaMmXAsset::SetCallback()</TT>.
+    To acquire <TT>IMoaDrAssetCallback</TT>,
+    the asset can call <TT>QueryInterface()</TT> on <TT>IMoaMmAssetCallback</TT>. <BR>
+    <BR>
+    This interface provides additional, Director-specific callback
+    services to a media asset. In Director, an asset Xtra has both
+    an external representation, implemented by the Xtra developer,
+    and an internal representation, provided by Director. The Xtra
+    developer defines custom behavior by implementing standard asset
+    Xtra interfaces. This interface provides controlled access to
+    the internal representation of the Xtra provided by Director. <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<h4>Property owner </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetProp">GetProp()</A> <BR>
+    <A HREF = "#SetProp">SetProp()</A>
+</DL>
+<h4>Internal cast member access </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetCMRef">GetCMRef()</A>
+</DL>
+<h4>Scripting support </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#CallCMHandler">CallCMHandler()</A>
+</DL>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CallCMHandler">CallCMHandler()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CallCMHandler(PIMoaDrAssetCallback<I>This</I>,
+  <DD>MoaMmSymbol<I>handlerName</I>, <BR>
+    MoaLong<I>nArgs</I>, <BR>
+    PMoaMmValue<I>pArgs</I>, <BR>
+    PMoaMmValue<I>pResult</I>, <BR>
+    MoaBool FAR *<I>pHandled</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>handlerName</I></CODE>
+  <DD><CODE>MoaMmSymbol</CODE> representing the handler
+    to call <BR>
+    <BR>
+  <DT><CODE><I>nArgs</I></CODE>
+  <DD><CODE>MoaLong</CODE>Number of arguments, excluding the Xtra
+    instance in <TT><I>pArgs</I>[0]</TT> <BR>
+    <BR>
+  <DT><CODE><I>pArgs</I></CODE>
+  <DD><CODE>PMoaMmValue</CODE>Array of arguments, with the first
+    valid argument at <TT><I>pArgs</I>[1]</TT> <BR>
+    <BR>
+  <DT><CODE><I>pResult</I></CODE>
+  <DD><CODE>PMoaMmValue</CODE>Pointer to a <TT>MoaMmValue</TT> to receive the result <BR>
+    <BR>
+  <DT><CODE><I>pHandled</I></CODE>
+  <DD><CODE>MoaBool FAR *</CODE>Boolean value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Calls a handler defined in the asset's cast member script. For <TT>CallCMHandler()</TT>, only
+    the cast member script is checked; the message does not proceed
+    up to the movie or frame level, as it does with the sprite <TT>SendMessage() </TT>call.<BR>
+    <BR>
+    Caller supplies a symbol for handler to call (<TT><I>name</I></TT>),
+    the arguments (<TT><I>nArgs</I></TT>, <TT><I>pArgs</I></TT>), and
+    a pointer to a <TT>MoaMmValue </TT>to
+    receive a result, if any, from the handler call.<BR>
+    <BR>
+    Upon return, <TT><I>pHandled </I></TT>is
+    set to <TT>TRUE </TT>if the
+    call was handled, that is the handler existed in the cast member
+    script. If message was not handled, it silently disappears and <TT>FALSE </TT>is returned. <BR>
+    <BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetCMRef">GetCMRef()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetCMRef(PIMoaDrAssetCallback<I>This</I>,
+  <DD>PMoaDrCMRef<I>pCMRef</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pCMRef</I></CODE>
+  <DD><CODE>PMoaDrCMRef</CODE>Pointer to a <TT>MoaDrCMRef</TT> to receive the reference for the cast member associated with your
+    asset <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the cast member reference for the cast member associated
+    with your asset. This lets you determine the Director cast member
+    with your asset is associated. The cast index supplied in this
+    reference is relative to the active movie. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetProp">GetProp()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetProp(PIMoaDrAssetCallback<I>This</I>,
+  <DD>MoaMmSymbol<I>symbol</I>, <BR>
+    PMoaMmValue<I>pPropValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>symbol</I></CODE>
+  <DD><CODE>MoaMmSymbol</CODE> representing the property to get <BR>
+    <BR>
+  <DT><CODE><I>pPropValue</I></CODE>
+  <DD><CODE>PMoaMmValue</CODE>Pointer to a <TT>MoaMmValue</TT> to receive the property's value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <TABLE BORDER="2">
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_NoErr</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Property exists and value was returned </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_BadParam</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Invalid <TT><I>pPropValue </I></TT>passed in </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Property isn't supported by this class </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_InternalError</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Property exists but couldn't get due to internal err </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_NoMemForString</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Couldn't allocate memory for string value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaErr_OutOfMem</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=412>Couldn't allocate memory for other value data </TD>
+      </TR>
+    </TABLE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Gets any property of the cast member associated with your asset.
+    This includes both built-in ones handled by the host application
+    (such as <TT>name</TT> in Director
+    for cast member name), as well as your own properties. If you
+    retrieve your own properties, it may result in a callback to your
+    own <TT>GetProp() </TT>method;
+    be careful not to get stuck in a loop.<BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SetProp">SetProp()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SetProp(PIMoaDrAssetCallback<I>This</I>,
+  <DD>MoaMmSymbol<I>symbol</I>, <BR>
+    ConstPMoaMmValue<I>pPropValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrAssetCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>symbol</I></CODE>
+  <DD><CODE>MoaMmSymbol</CODE> representing the property
+    to set <BR>
+    <BR>
+  <DT><CODE><I>pPropValue</I></CODE>
+  <DD><CODE>ConstPMoaMmValue</CODE>Pointer to a ConstPMoaMmValue
+    containing the property value <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <TABLE BORDER="2">
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaErr_NoErr</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Property exists and value was set </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaErr_BadParam</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Invalid <TT><I>pPropValue </I></TT>passed in </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_PropertyNotFound</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Property isn't supported by this class </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_InternalError</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Property exists, value ok, can't set--internal error </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_NoMemForString</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Can't allocate memory for setting string value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaErr_OutOfMem</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Can't allocate memory for setting other value data </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_IntegerExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: integer value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_SymbolExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: symbol value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_FloatExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: float value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_StringExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: string value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_PointExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: point value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_RectExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: rect value expected </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaMmErr_ValueTypeMismatch</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: other value expected (non-specific) </TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaDrErr_CastMemberExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=380>Type mismatch: <TT>CMRef</TT> value expected </TD>
+      </TR>
+    </TABLE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Sets any property of the cast member associated with your asset.
+    This includes both built-in ones handled by the host application
+    (such as <TT>name</TT> in Director
+    for cast member name), as well as your own properties. This may
+    result in a call back to your own <TT>SetProp() </TT>method; be careful not to get stuck in a loop.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

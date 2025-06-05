@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaRegister</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaRegister</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaRegister<BR>
+  </CODE>Pointer type: <CODE>PIMoaRegister<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    This standard Xtra interface must be implemented by at least one
+    class of an Xtra for use in registering itself with an application.
+    The Xtra must register each class and each interface implemented
+    by each class. The Xtra must also store application-specific registry
+    information in the cache through this interface. Xtras may also
+    store custom information in the registry for use in initializing
+    themselves or for other purposes. <BR>
+    <BR>
+    See the <A HREF = "cache.htm">IMoaCache</A>, <A HREF = "dict.htm">IMoaDict</A>, and <A HREF = "intfrmdc.htm">IMoaInitFromDict</A> interfaces for additional information. <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#Register">Register()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Register">Register()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Register(PIMoaRegister<I>This</I>,
+  <DD><BR>
+    PIMoaCache<I>pCache</I>, <BR>
+    PIMoaXtraEntryDict<I>pXtraDict</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaRegister</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCache</I></CODE>
+  <DD><CODE>PIMoaCache</CODE><TT>IMoaCache</TT> interface provided by the application <BR>
+    <BR>
+  <DT><CODE><I>pXtraDict</I></CODE>
+  <DD><CODE>PIMoaXtraEntryDict</CODE><TT>IMoaXtraEntryDict</TT> interface for the Xtra's dictionary <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Implement this method to provide registry information for
+    the Xtra to the application. Each Xtra must register all classes
+    and interfaces it provides, using the <TT>IMoaCache</TT> method <TT>AddRegistryEntry()</TT>.
+    Each Xtra may also need to cache other application or interface-specific
+    information within the implementation of this method.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

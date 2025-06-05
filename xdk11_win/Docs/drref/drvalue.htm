@@ -1,0 +1,289 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaDrValue</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+<h2><A NAME="IMoaDrValue">IMoaDrValue</A></h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrValue<BR>
+  </CODE>Pointer type: <CODE>PIMoaDrValue<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/drivalue.h">drivalue.h</A> <BR>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Data conversion </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#ValueToCMRef">ValueToCMRef()</A> <BR>
+    <A HREF = "#CMRefToValue">CMRefToValue()</A><BR>
+    <A HREF = "#SpriteRefToValue">SpriteRefToValue()</A> <BR>
+    <A HREF = "#ValueToCastLibRef">ValueToCastLibRef()</A> <BR>
+    <A HREF = "#CastLibRefToValue">CastLibRefToValue()</A> <BR>
+    <A HREF = "#ValueToSoundSpriteRef">ValueToSoundSpriteRef()</A> <BR>
+    <A HREF = "#SoundSpriteRefToValue">SoundSpriteRefToValue()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CastLibRefToValue">CastLibRefToValue()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CastLibRefToValue(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaDrCastLibRef <I>pCLRef</I>, <BR>
+    PMoaMmValue <I>pValue) </I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCLRef</I></CODE>
+  <DD>ConstPMoaDrCastLibRef<BR>
+    <BR>
+  <DT><CODE><I>pValue) </I></CODE>
+  <DD>PMoaMmValue<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="CMRefToValue">CMRefToValue()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>CMRefToValue(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaDrCMRef <I>pCMRef</I>, <BR>
+    PMoaMmValue <I>pValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pCMRef</I></CODE>
+  <DD>Pointer to a <TT>ConstPMoaDrCMRef</TT> to be used as the basis for the new value<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>Pointer to <TT>MoaMmValue</TT> to receive the result<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates a new cast member reference-type <TT>MoaMmValue </TT>from a <TT>MoaDrCMRef</TT>. <TT><I>pCMRef </I></TT>is a
+    pointer to a <TT>MoaDrCMRef </TT>to
+    be used as the basis for the new value. <TT><I>pValue </I></TT>contains a pointer to a <TT>MoaMmValue </TT>to receive the result. This call populates the <TT>MoaMmValue </TT>at <TT><I>pValue </I></TT>with
+    a new <TT>MoaMmValue</TT>,
+    overwriting any current value. Make sure to release any preexisting
+    value before making this call. The caller is responsible for releasing
+    the returned value using <TT>IMoaMmUtils::ValueRelease()</TT>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SoundSpriteRefToValue">SoundSpriteRefToValue()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SoundSpriteRefToValue(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaDrSoundSpriteRef <I>pSRef</I>, <BR>
+    PMoaMmValue <I>pValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pSRef</I></CODE>
+  <DD>ConstPMoaDrSoundSpriteRef<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>PMoaMmValue<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SpriteRefToValue">SpriteRefToValue()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SpriteRefToValue(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaDrSpriteRef <I>pSRef</I>, <BR>
+    PMoaMmValue <I>pValue</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pSRef</I></CODE>
+  <DD>ConstPMoaDrSpriteRef<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>PMoaMmValue<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ValueToCastLibRef">ValueToCastLibRef()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ValueToCastLibRef(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaMmValue <I>pValue</I>, <BR>
+    PMoaDrCastLibRef <I>pCLRef</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>ConstPMoaMmValue<BR>
+    <BR>
+  <DT><CODE><I>pCLRef</I></CODE>
+  <DD>PMoaDrCastLibRef<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ValueToCMRef">ValueToCMRef()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ValueToCMRef(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaMmValue <I>pValue</I>, <BR>
+    PMoaDrCMRef <I>pCMRef</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>Pointer to a cast member reference type<BR>
+    <BR>
+  <DT><CODE><I>pCMRef</I></CODE>
+  <DD>Pointer to a MoaDrCMRef to receive the result<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DD>
+    <TABLE BORDER="2">
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaErr_NoErr</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>successful</TD>
+      </TR>
+      <TR>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216><TT>kMoaDrErr_CastMemberExpected</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>Type mismatch: <TT>CMRef</TT> expected </TD>
+      </TR>
+    </TABLE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Obtains the <TT>MoaDrCMRef </TT>for
+    a cast member reference-type <TT>MoaMmValue</TT>. <TT><I>pCMRef </I></TT>is a
+    pointer to a <TT>MoaDrCMRef </TT>to
+    receive the result. Returns <TT>kMoaDrErr_CastMemberExpected </TT>if <TT><I>pValue </I></TT>is
+    not an cast member reference-type value.<BR>
+    <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ValueToSoundSpriteRef">ValueToSoundSpriteRef()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ValueToSoundSpriteRef(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaMmValue <I>pValue</I>, <BR>
+    PMoaDrSoundSpriteRef <I>pSRef</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>ConstPMoaMmValue<BR>
+    <BR>
+  <DT><CODE><I>pSRef</I></CODE>
+  <DD>PMoaDrSoundSpriteRef<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="ValueToSpriteRef">ValueToSpriteRef()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>ValueToSpriteRef(PIMoaDrValue <I>This</I>,
+  <DD>ConstPMoaMmValue <I>pValue</I>, <BR>
+    PMoaDrSpriteRef <I>pSRef</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrValue</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pValue</I></CODE>
+  <DD>ConstPMoaMmValue<BR>
+    <BR>
+  <DT><CODE><I>pSRef</I></CODE>
+  <DD>PMoaDrSpriteRef<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

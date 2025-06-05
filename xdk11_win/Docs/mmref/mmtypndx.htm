@@ -1,0 +1,2388 @@
+<HTML>
+
+<HEAD> <TITLE>Multimedia Types and Miscellaneous API</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+
+<body>
+
+<P>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A> | 
+<A NAME="RTFToC3"></A><A HREF="../drdg/index.htm">Director Developer's Guide</A>
+<BR>
+<A HREF="index.htm">MM Interfaces</A> | <A HREF="mmmthndx.htm">MM Methods</A>
+
+<hr width=45% align=left>
+
+<H3>Director Xtra Development Kit: Multimedia API Reference</H3>
+
+<H2>Multimedia Types and Miscellaneous API
+</H2>
+
+<HR width=45% align=left>
+
+<P>This document contains the following sections:
+<UL>
+  <LI><A HREF = "#MMTYPES">Multimedia Types</A> 
+<LI><A HREF = "#Types3D">Multimedia 3D Types</A> &nbsp;added in Director 8.5
+  <LI><A HREF = "#MMMACROS">Multimedia Macros</A> 
+  <LI><A HREF = "#MMCONSTS">Multimedia Constants</A> 
+  <LI><A HREF = "#MMNIDS">Multimedia Notification IDs</A> 
+  <LI><A HREF = "#MMREGKEYS">Multimedia Registry Keys</A> 
+  <LI><A HREF = "#MMERRS">Multimedia Error Codes</A> 
+</UL>
+
+<HR width=45% align=left>
+
+<h3><A NAME="MMTYPES">Multimedia Types</A></h3>
+
+
+<h4>Color types </h4>
+
+<P>
+Defined in: mmtypes.h
+<h5><A NAME="MoaMmColorSpec">MoaMmColorSpec</A>,
+<BR>
+PMoaMmColorSpec </h5>
+
+<PRE>
+<TT>typedef struct
+{
+        union 
+        { 
+                MoaMmRGBTriple rgb;
+                MoaByte index;
+        } color;
+        MoaByte type;
+} MoaMmColorSpec, FAR *PMoaMmColorSpec;
+</TT>
+</PRE>
+<TABLE BORDER="2">
+<TR><TD WIDTH=73><TT>color </TT>
+</TD><TD WIDTH=431><TT>U</TT>nion representing the possible types of color values
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>rgb </TT>
+</TD><TD WIDTH=431>RGB color value</TD></TR>
+
+<TR><TD WIDTH=73><TT>index </TT>
+</TD><TD WIDTH=431><TT>I</TT>ndexed color value
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>type </TT>
+</TD><TD WIDTH=431>Type of color value specified</TD></TR>
+
+</TABLE>
+
+<P>
+This structure represents color specifications in a device-independent
+way. On devices that use true color representations, the RGB field
+of the color union represents the specified color. On devices
+that use color palettes or color lookup tables, the index field
+represents the specified color.
+<P>
+A <TT>MoaMmColorSpec</TT> can
+be of two types: <TT>kMoaMmColorSpec_Index
+</TT>or <TT>kMoaMmColorSpec_RGB</TT>.
+Any code that receives a <TT>MoaMmColorSpec</TT>
+must be able to handle both types. The <TT>type</TT>
+field specifies the type, and which of the color union fields
+contains the color value. Valid values for this field are defined
+as MOA constants:
+<TABLE BORDER="2">
+<TR><TD WIDTH=160><TT>kMoaMmColorSpec_Index</TT> 
+</TD><TD WIDTH=344>Color value in index field of color union</TD>
+</TR>
+
+<TR><TD WIDTH=160><TT>kMoaMmColorSpec_RGB</TT> 
+</TD><TD WIDTH=344>Color value in rgb field of color union</TD>
+</TR>
+
+</TABLE>
+
+<P>
+In general, the host application supplies you with a <TT>MoaMmColorSpec
+</TT>of type <TT>kMoaMmColorSpec_Index
+</TT>if the associated graphics context uses indexed colors
+(8 bit or less color pixels). A <TT>MoaMmColorSpec
+</TT>of type <TT>kMoaMmColorSpec_RGB
+</TT>is supplied for a direct color graphics context (greater
+than 8 bit color pixels).
+<P>
+If the <TT>MoaMmColorSpec </TT>is
+<TT>kMoaMmColorSpec_Index</TT>,
+the color index is supplied in the <TT>index</TT>
+field of the <TT>color</TT>
+union in the structure. If it's <TT>kMoaMmColorSpec_RGB,
+</TT>the RGB value, stored as a <TT>MoaMmRGBTriple</TT>,
+is supplied in the <TT>rgb</TT>
+field of the <TT>color</TT>
+union.
+<P>
+The <A HREF="#MacToMoaRGB" >MacToMoaRGB()</A>,
+<A HREF="#MoaToMacRGB" >MoaToMacRGB()</A>,
+<A HREF="#WinToMoaRGB" >WinToMoaRGB()</A>,
+<A HREF="#MoaToWinRGB" >MoaToWinRGB()</A><TT>
+</TT>macros are provided for converting between native
+and <TT>MoaRGB </TT>types.
+<A HREF="#MoaEqualRGB" >MoaEqualRGB()</A><TT>
+</TT>compares two <TT>MoaRGBTriples</TT>.
+The macros <A HREF="#ColorSpec_MakeFromIndex" >ColorSpec_MakeFromIndex()</A>,
+<A HREF="#ColorSpec_MakeFromMacRGB" >ColorSpec_MakeFromMacRGB()</A>,
+and <A HREF="#ColorSpec_MakeFromWinRGB" >ColorSpec_MakeFromWinRGB()</A>
+are supplied for creating new <TT>MoaMmColorSpecs
+</TT>from an index, Macintosh RGBColor, or Windows 32-bit
+RGB value.<BR>
+
+<h5><A NAME="MoaMmRGBTriple">MoaMmRGBTriple</A>,
+<BR>
+PMoaMmRGBTriple</h5>
+
+<PRE>
+typedef struct{
+        MoaByte red;
+        MoaByte green;
+        MoaByte blue;
+} MoaMmRGBTriple, FAR *PMoaMmRGBTriple;
+</PRE>
+<hr width=45% align=left>
+<h4>Cue Point Types</h4>
+<P>
+Defined in: mmtypes.h 
+<h5><A NAME="MoaMmCuePoint">MoaMmCuePoint</A>,
+<BR>
+PMoaMmCuePoint,<BR>
+ConstPMoaMmCuePoint</h5>
+<PRE>
+typedef struct {
+	MoaUlong	nMilliseconds;
+	MoaChar		sName[kMoaMmCuePointMaxNameLen];
+} MoaMmCuePoint, FAR * PMoaMmCuePoint;
+</PRE>
+<h5><A NAME="MoaMmCuePoint">MoaMmCuePointPassedInfo</A>,
+<BR>
+MoaMmCuePointPassedInfo,<BR>
+PMoaMmCuePointPassedInfo, <BR>
+ConstPMoaMmCuePointPassedInfo</h5>
+<PRE>
+typedef struct {
+	MoaMmValue	vChannel;
+	MoaLong		nIndex;
+	MoaMmCuePoint cuePoint;
+} MoaMmCuePointPassedInfo, FAR * PMoaMmCuePointPassedInfo;
+</PRE>
+Use the <A HREF="#CPMACROS">cue point macros</A> to access the data in these structures. 
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC5">Event types</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+<h5><A NAME="MoaMmEventInfo">MoaMmEventInfo</A>,
+<BR>
+PMoaMmEventInfo,<BR>
+ConstPMoaMmEventInfo </h5>
+
+<PRE>
+<TT>typedef struct
+{
+        </TT>Mo<TT>aMmEventType type;
+        MoaLong target;
+        MoaPoint where;
+        MoaLong when;
+        union 
+        { 
+                MoaMmKeyInfo keyInfo;
+                struct 
+                { 
+                        MoaLong data1;
+                        MoaLong data2;
+                        MoaLong data3;
+                        MoaLong data4;
+                } aux;
+        } data;
+} MoaMmEventInfo;
+</TT>
+</PRE>
+Structure passed to the <A HREF="mmxsprta.htm#Event">IMoaMmXSpriteActor::Event()</A>
+method to describe the event being sent. <BR>
+
+<P>
+<TABLE BORDER="2">
+<TR><TD WIDTH=73><TT>type</TT> 
+</TD><TD WIDTH=538>Type of the event</TD></TR>
+
+<TR><TD WIDTH=73><TT>target</TT> 
+</TD><TD WIDTH=538>Reserved</TD></TR>
+
+<TR><TD WIDTH=73><TT>where</TT> 
+</TD><TD WIDTH=538>Mouse location. <TT>where </TT>is filled out for mouse, keyboard, idle, and step events.
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>when</TT> 
+</TD><TD WIDTH=538>Timestamp (milliseconds). <TT>when </TT>is filled out for mouse and keyboard events
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>data</TT> 
+</TD><TD WIDTH=538>Substructure event-specific data</TD></TR>
+
+<TR><TD WIDTH=73><TT>keyInfo</TT> 
+</TD><TD WIDTH=538><TT>MoaMmKeyInfo</TT> structure containing information relevant to key events
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>aux</TT> 
+</TD><TD WIDTH=538>Substructure for additional event-specific data
+</TD></TR>
+
+<TR><TD WIDTH=73><TT>data1</TT> 
+</TD><TD WIDTH=538>Event-specific data</TD></TR>
+
+<TR><TD WIDTH=73><TT>data2</TT> 
+</TD><TD WIDTH=538>Event-specific data</TD></TR>
+
+<TR><TD WIDTH=73><TT>data3</TT> 
+</TD><TD WIDTH=538>Event-specific data</TD></TR>
+
+<TR><TD WIDTH=73><TT>data4</TT> 
+</TD><TD WIDTH=538>Event-specific data</TD></TR>
+
+</TABLE>
+
+<P>
+Structure representing information relevant to mouse and key events,
+passed as a parameter to the <A HREF="mmxsprta.htm#Event">IMoaMmXSpriteActor::Event()</A>
+method. Your implementation of this method should evaluate data
+in this structure and determine the corresponding behavior.
+<TABLE BORDER="2">
+<TR><TD WIDTH=164><TT>MoaMmEventInfo</TT> 
+</TD><TD WIDTH=440>Structure representing event information</TD>
+</TR>
+
+<TR><TD WIDTH=164><TT>PMoaMmEventInfo</TT> 
+</TD><TD WIDTH=440>Pointer to <TT>MoaMmEventInfo</TT> information structure
+</TD></TR>
+
+<TR><TD WIDTH=164><TT>ConstPMoaMmEventInfo</TT> 
+</TD><TD WIDTH=440>Constant pointer to <TT>MoaMmEventInfo</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<P>
+The <TT>where </TT>and <TT>when
+</TT>fields are not valid for all events. Here's a list
+of events for which the fields are valid in Director:
+<UL>
+<LI><TT>mouseDown</TT>
+<LI><TT>mouseUp</TT>
+<LI><TT>mouseUpOutside</TT>
+<LI><TT>mouseDblClick</TT>
+<LI><TT>rightMouseDown</TT>
+<LI><TT>rightMouseUp</TT>
+<LI><TT>rightMouseUpOutside</TT>
+<LI><TT>rightmouseDblClick</TT>
+<LI><TT>keyDown</TT>
+<LI><TT>keyUp</TT>
+<LI><TT>Idle</TT>
+<LI><TT>Step</TT>
+</UL>
+
+<P>
+See the following sections for descriptions of these events.
+<h5><A NAME="MoaMmEventType">MoaMmEventType</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> used in the
+structure <TT>MoaMmEventInfo</TT>
+to represent the type of an event. The valid values for this type
+are defined as MOA constants: mouse event, key event, playback
+event, and environment event.
+<H6><A NAME="RTFToC8">Mouse event constants</A>
+</H6>
+
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=277><B>Name</B></TD><TD WIDTH=321><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_Idle</TT>
+</TD><TD WIDTH=321>Idle (null) event</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_MouseDown</TT>
+</TD><TD WIDTH=321>Mouse button down</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_MouseDblClick</TT>
+</TD><TD WIDTH=321>Mouse double click</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_MouseUp</TT>
+</TD><TD WIDTH=321>Mouse up within clicked-on actor</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_MouseUpOutside</TT>
+</TD><TD WIDTH=321>Mouse up outside clicked-on actor</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_RightMouseDown</TT>
+</TD><TD WIDTH=321>Right mouse button down</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_RightMouseDblClick</TT>
+</TD><TD WIDTH=321>Right mouse button double click</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_RightMouseUp</TT>
+</TD><TD WIDTH=321>Right up within clicked-on actor</TD></TR>
+
+<TR><TD WIDTH=277><TT>kMoaMmEvent_RightMouseUpOutside</TT>
+</TD><TD WIDTH=321>Right up outside clicked-on actor</TD></TR>
+
+<TR><TD WIDTH=277><CODE>kMoaMmEvent_MouseEnter</CODE></TD><TD WIDTH=321>Rollover support
+</TD></TR>
+
+<TR><TD WIDTH=277><CODE>kMoaMmEvent_MouseExit</CODE></TD><TD WIDTH=321>Rollover support
+</TD></TR>
+
+<TR><TD WIDTH=277><CODE>kMoaMmEvent_MouseWithin</CODE></TD><TD WIDTH=321>Rollover support
+</TD></TR>
+
+</TABLE>
+
+
+<P>
+A full double-click sequence for Sprite Xtras should be
+<UL>
+<LI><TT>kMoaMmEvent_MouseDown</TT>
+<LI><TT>kMoaMmEvent_MouseUp</TT>
+<LI><TT>kMoaMmEvent_MouseDblClick</TT>
+<LI><TT>kMoaMmEvent_MouseUp</TT>
+</UL>
+
+<P>
+Instead of getting a <TT>kMoaMmEvent_MouseDown
+</TT>for the second click, you'll get a <TT>kMoaMmEvent_MouseDblClick</TT>.
+<TT>kMoaMmEvent_RightMouseDblClick
+</TT>is used for the right mouse button. Odd numbered clicks
+in a sequence come in as regular <TT>kMoaMmEvent_MouseDown
+</TT>(in accordance with Microsoft Windows conventions).
+For example, a third click is a <TT>kMoaMmEvent_MouseDown</TT>,
+not a <TT>kMoaMmEvent_MouseDblClick</TT>.
+If you just want to make sure you get every mouse down event (and
+don't care about distinguishing double-clicks), you must test
+for both <TT>kMoaMmEvent_MouseDown
+</TT>and <TT>kMoaMmEvent_MouseDblClick</TT>.
+<P>
+<B>Lingo users:</B> Lingo does not yet recognize the double-click
+events, therefore these events get propogated as normal <TT>&quot;mouseDown&quot;</TT>
+or <TT>&quot;mouseUp&quot;</TT>
+messages to Lingo handlers.
+<P>
+In Director on the Macintosh, a Control-click simulates a right
+mouse click sequence if the Lingo global property, <TT>the
+emulateMultiButtonMouse </TT>is set <TT>TRUE</TT>.
+The default is <TT>FALSE</TT>.
+Other applications may have their own conventions for mapping
+right mouse events on the Macintosh.
+<H6><A NAME="RTFToC9">Key event constants</A>
+</H6>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=247><I><B>Name</B></I></TD><TD WIDTH=314><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_KeyDown</TT>
+</TD><TD WIDTH=314>Key down</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_KeyUp</TT>
+</TD><TD WIDTH=314>Key up</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_KeyFocusEnter</TT>
+</TD><TD WIDTH=314>Actor has just received keyboard focus</TD>
+</TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_KeyFocusExit</TT>
+</TD><TD WIDTH=314>Actor has just lost keyboard focus</TD></TR>
+
+</TABLE>
+
+
+<H6><A NAME="RTFToC10">Playback event constants</A>
+</H6>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=247><B>Name</B></TD><TD WIDTH=373><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_Step</TT>
+</TD><TD WIDTH=373>Playback head has moved to next frame</TD>
+</TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_SpanBegin</TT>
+</TD><TD WIDTH=373>A sprite span for actor has started</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_SpanEnd</TT>
+</TD><TD WIDTH=373>A sprite span for actor has ended</TD></TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_PlayBegin</TT>
+</TD><TD WIDTH=373>Movie started playing (authoring only)</TD>
+</TR>
+
+<TR><TD WIDTH=247><TT>kMoaMmEvent_PlayEnd</TT>
+</TD><TD WIDTH=373>Movie stopped playing (authoring only)</TD>
+</TR>
+
+</TABLE>
+
+
+<P>
+<B>Note</B>: In Director, <TT>PlayBegin
+</TT>and <TT>playEnd </TT>are
+tied to playing and stopping movies when authoring. Because they
+are actor event, you get these only when you are on-stage while
+the movie starts or stops playing; they are not generated in projectors.
+Use the <TT>playerStateInfo </TT>field
+to check if the movie is playing when the actor is not on-stage.
+
+<H6><A NAME="RTFToC11">Environment event constants</A>
+</H6>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=248><B>Name</B></TD><TD WIDTH=380><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=248><TT>kMoaMmEvent_StageWindowOpen</TT>
+</TD><TD WIDTH=380>Stage window opened</TD></TR>
+
+<TR><TD WIDTH=248><TT>kMoaMmEvent_StageWindowClose</TT>
+</TD><TD WIDTH=380>Stage window hidden or destroyed</TD></TR>
+
+<TR><TD WIDTH=248><TT>kMoaMmEvent_StageWindowDepth</TT>
+</TD><TD WIDTH=380>Stage window/buffer changed bit depth</TD>
+</TR>
+
+<TR><TD WIDTH=248><TT>kMoaMmEvent_SoundState </TT>
+</TD><TD WIDTH=380>Global sound on/off state changed</TD></TR>
+
+<TR><TD WIDTH=248><TT>kMoaMmEvent_AssetModified</TT>
+</TD><TD WIDTH=380>Asset associated with actor was modified</TD>
+</TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmKeyInfo">MoaMmKeyInfo</A>,
+<BR>
+PMoaMmKeyInfo </h5>
+
+<PRE>
+<TT>typedef struct
+{
+</TT>        <TT>MoaLong character;
+</TT>        <TT>MoaLong modifiers;
+</TT>        <TT>MoaLong nativeKeyCode;
+</TT>        <TT>MoaLong nativeModifiers;
+} MoaMmKeyInfo, FAR * PMoaMmKeyInfo;
+</TT>
+</PRE>
+<TABLE BORDER="2">
+<TR><TD WIDTH=128><TT>character </TT>
+</TD><TD WIDTH=496></TD></TR>
+
+<TR><TD WIDTH=128><TT>modifiers </TT>
+</TD><TD WIDTH=496>Modifier keys pressed (Cmd, Ctrl, etc.)</TD>
+</TR>
+
+<TR><TD WIDTH=128><TT>nativeKeyCode </TT>
+</TD><TD WIDTH=496><TT>P</TT>latform-specific native key code
+</TD></TR>
+
+<TR><TD WIDTH=128><TT>nativeModifiers </TT>
+</TD><TD WIDTH=496><TT>P</TT>latform-specific modifier key information
+</TD></TR>
+
+</TABLE>
+
+<P>
+Note that while the mouse button is down, the modifier keys aren't
+updated as subsequent events are passed to the <A HREF="mmxsprta.htm#Event">IMoaMmXSpriteActor::Event()</A>
+method.
+<TABLE BORDER="2">
+<TR><TD WIDTH=145><TT>MoaMmKeyInfo</TT> 
+</TD><TD WIDTH=464>Structure containing information relevant to keydown events
+</TD></TR>
+
+<TR><TD WIDTH=145><TT>PMoaMmKeyInfo</TT> 
+</TD><TD WIDTH=464>Pointer to <TT>MoaMmKeyInfo</TT> information structure
+</TD></TR>
+
+</TABLE>
+
+<H6><A NAME="RTFToC13">MoaMmKeyInfo masks</A>
+</H6>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=194><B>Name</B></TD><TD WIDTH=414><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_None</TT>
+</TD><TD WIDTH=414>No modifier keys pressed</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_Shift</TT>
+</TD><TD WIDTH=414>Shift key pressed</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_Command</TT>
+</TD><TD WIDTH=414>Command (Macintosh) or Control (Windows) pressed
+</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_Option</TT>
+</TD><TD WIDTH=414>Option (Macintosh) or Alt (Windows) pressed
+</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_Alt</TT>
+</TD><TD WIDTH=414>Option (Macintosh) or Alt (Windows) pressed
+</TD></TR>
+
+<TR><TD WIDTH=194><TT>kMoaMmModifier_Control</TT>
+</TD><TD WIDTH=414>Control key pressed</TD></TR>
+
+</TABLE>
+
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC14">Graphics context types</A> </h4>
+
+<P>
+Defined in: mmtypes.h 
+<h5><A NAME="MoaMmGCType">MoaMmGCType</A>
+</h5>
+
+<P>
+Type representing the platform-dependent graphics context provided
+for drawing by the host platform. Valid values for this type are
+defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=192><B>Name</B></TD><TD WIDTH=662><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_Null</TT>
+</TD><TD WIDTH=662>No graphics context or graphics context unknown
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinWindow</TT>
+</TD><TD WIDTH=662>Microsoft Windows window graphics context</TD>
+</TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinDIBDC</TT>
+</TD><TD WIDTH=662>Microsoft Windows device-independent bitmap context
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinDDBDC</TT>
+</TD><TD WIDTH=662>Microsoft Windows device-dependent bitmap context
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_MacWindow</TT>
+</TD>
+    <TD WIDTH=662>Macintosh window graphics context. The value is a WindowRef rather than a WindowPtr</TD>
+  </TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_MacGWorld</TT>
+</TD><TD WIDTH=662>Macintosh graphics world graphics context</TD>
+</TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_Aux</TT>
+</TD><TD WIDTH=662>(reserved)</TD></TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmWinDIBDCFlags">MoaMmWinDIBDCFlags</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> representing
+Microsoft Windows device context flags in the win_dibdc variant
+of <TT>MoaMmNativeGCInfo</TT>
+structure. These flags are set as the bitwise OR (<TT>|</TT>)
+of MOA constants that specify certain states. Currently, there
+is one flag used to indicate when WinG is available. Valid values
+are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=241><B>Name</B></TD><TD WIDTH=257><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=241><TT>kMoaMmWinDIBDCFlags_None</TT>
+</TD><TD WIDTH=257>No device context flags set</TD></TR>
+
+<TR><TD WIDTH=241><TT>kMoaMmWinDIBDCFlags_WinG</TT>
+</TD>
+    <TD WIDTH=257>(No longer supported)</TD>
+  </TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmNativeGCInfo">MoaMmNativeGCInfo</A>
+</h5>
+
+<PRE>
+<TT>typedef struct
+{
+        MoaMmGCType type;
+        union 
+        { 
+                struct 
+                { 
+                        MoaMmWinHdl32 Hdc
+                        MoaMmWinHdl32 hWND;
+                } win_window;
+                struct 
+                { 
+                        MoaMmWinHdl32 hDC;
+                        PMoaVoid lpBitMapInfo;
+                        PMoaVoid lpBits;
+                        MoaMmWinDIBDCFlags flags;
+                } win_dibdc;
+                struct 
+                { 
+                        MoaMmWinHdl32 hDC;
+                        PMoaVoid hBITMAP;
+                } win_ddbdc;
+                struct 
+                { 
+                        PMoaMmMacWindow windowPtr; // this is a WindowRef rather than a WindowPtr
+                        PMoaVoid qdGlobalsPtr;	// NULL for OS X and later
+                } mac_window;
+                struct 
+                { 
+                        PMoaMmMacGWorld gworldPtr;
+                        PMoaVoid qdGlobalsPtr;  // NULL for OS X and later
+                } mac_gworld;
+                struct 
+                { 
+                        PMoaVoid data1;
+                        PMoaVoid data2;
+                        PMoaVoid data3;
+                        PMoaVoid data4;
+                } aux;
+        } data;
+} MoaMmNativeGCInfo;
+</TT>
+</PRE>
+
+
+<TABLE BORDER = "2">
+<TR><TD WIDTH=188><TT>MoaMmNativeGCInfo</TT> 
+</TD><TD WIDTH=470>Structure containing graphic context information
+</TD></TR>
+
+<TR><TD WIDTH=188><TT>PMoaMmNativeGCInfo</TT> 
+</TD><TD WIDTH=470>Pointer to <TT>MoaMmNativeGCInfo</TT> information structure
+</TD></TR>
+
+<TR><TD WIDTH=188><TT>ConstPMoaMmNativeGCInfo</TT> 
+</TD><TD WIDTH=470>Constant pointer to <TT>MoaMmNativeGCInfo</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<P>
+Platform-specific graphics context information structure. This
+structure consists of two parts: a field specifying a particular
+graphics context of the host platform and a union of structures,
+each relevant to a specific graphics context. The members of this
+union are:
+<H6><A NAME="RTFToC18">win_window</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=47><TT>hDC </TT>
+</TD>
+    <TD WIDTH=457>Win16: only low 16-bits used </TD>
+  </TR>
+
+<TR><TD WIDTH=47><TT>hWND </TT>
+</TD><TD WIDTH=457>Win16: only low 16-bits used</TD></TR>
+
+</TABLE>
+
+<P>
+This member structure defines the graphics context for a Microsoft
+Windows window.
+<H6><A NAME="RTFToC19">win_dibdc</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=98><TT>hDC </TT>
+</TD>
+    <TD WIDTH=406>Win16: only low 16-bits used </TD>
+  </TR>
+
+<TR><TD WIDTH=98><TT>lpBitMapInfo</TT>
+</TD><TD WIDTH=406></TD></TR>
+
+<TR><TD WIDTH=98><TT>lpBits</TT>
+</TD><TD WIDTH=406></TD></TR>
+
+<TR><TD WIDTH=98><TT>flags</TT>
+</TD><TD WIDTH=406></TD></TR>
+
+</TABLE>
+
+<P>
+This member structure defines the graphics context for a Microsoft
+Windows device-independent bitmap.
+<H6><A NAME="RTFToC20">win_ddbdc</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=63><TT>hDC </TT>
+</TD>
+    <TD WIDTH=441>Win16: only low 16-bits used </TD>
+  </TR>
+
+<TR><TD WIDTH=63><TT>hBitmap </TT>
+</TD><TD WIDTH=441></TD></TR>
+
+</TABLE>
+
+<P>
+This member structure defines the graphics context for a Microsoft
+Windows device-dependent bitmap.
+<H6><A NAME="RTFToC21">mac_window</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=252><TT>windowPtr </TT>
+</TD>
+    <TD WIDTH=252>a WindowRef</TD>
+  </TR>
+
+<TR><TD WIDTH=252><TT>qdGlobalsPtr </TT>
+</TD>
+    <TD WIDTH=252>NULL for OS X and later</TD>
+  </TR>
+
+</TABLE>
+
+<P>
+This member structure defines the graphics context for a Macintosh
+window.
+<H6><A NAME="RTFToC22">mac_gworld</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=252><TT>gworldPtr </TT>
+</TD>
+    <TD WIDTH=252>a GWorldPtr </TD>
+  </TR>
+
+<TR><TD WIDTH=252><TT>qdGlobalsPtr </TT>
+</TD>
+    <TD WIDTH=252>NULL for OS X and later</TD>
+  </TR>
+
+</TABLE>
+
+<P>
+This member structure defines the graphics context for a Macintosh
+graphics world.
+<H6><A NAME="RTFToC23">aux</A></H6>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=47><TT>data1 </TT>
+</TD><TD WIDTH=457></TD></TR>
+
+<TR><TD WIDTH=47><TT>data2 </TT>
+</TD><TD WIDTH=457></TD></TR>
+
+<TR><TD WIDTH=47><TT>data3 </TT>
+</TD><TD WIDTH=457></TD></TR>
+
+<TR><TD WIDTH=47><TT>data4 </TT>
+</TD><TD WIDTH=457></TD></TR>
+
+</TABLE>
+
+<P>
+This member defines a general structure that can be redefined
+for various graphics contexts.
+<H6><A NAME="RTFToC24">Handles</A></H6>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=134><B>Name</B></TD><TD WIDTH=597><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=134><TT>MoaMmWinHdl32</TT>
+</TD><TD WIDTH=597>32-bit value used to hold both 16- and 32-bit Windows handles
+</TD></TR>
+
+<TR><TD WIDTH=134><TT>MoaMmWinHandle</TT>
+</TD><TD WIDTH=597>Matches Windows HANDLE. Win16: 16-bit unsigned integer; Win32: 32-bit void *
+</TD></TR>
+
+<TR><TD WIDTH=134><TT>MoaMmHInst</TT>
+</TD><TD WIDTH=597>A MoaMmWinHandle (16- or 32-bits depending on the Windows version)
+</TD></TR>
+
+<TR><TD WIDTH=134><TT>MoaMmHWnd</TT>
+</TD><TD WIDTH=597>A MoaMmWinHandle (16- or 32-bits depending on the Windows version)
+</TD></TR>
+
+<TR><TD WIDTH=134><TT>PMoaMmMacWindow</TT>
+</TD>
+    <TD WIDTH=597>A Macintosh WindowRef</TD>
+  </TR>
+
+<TR><TD WIDTH=134><TT>PMoaMmMacGWorld</TT>
+</TD><TD WIDTH=597>A Macintosh GWorldPtr</TD></TR>
+
+</TABLE>
+
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC25">Macintosh window types</A> </h4>
+
+<h5><A NAME="MoaMmRegWindowFlags">MoaMmRegWindowFlags</A>,
+<BR>
+PMoaMmRegWindowFlags,<BR>
+ConstPMoaMmRegWindowFlags </h5>
+
+<P>
+<TT>MoaLong</TT> value used
+in registering a Macintosh window with the <A HREF="mmwndmac.htm#MacRegisterWindow">IMoaMmWndMac::MacRegisterWindow()</A>
+method. To form a value for this type, create the bitwise OR (|)
+or the various values representing the Window's capabilities.
+These values are defined as MOA constants:
+<P>
+<TT>kMoaMmRegWindowFlags_None</TT>
+<P>
+<TT>kMoaMmRegWindowFlags_AuthorIdle</TT>
+<P>
+When the <TT>AuthorIdle</TT>
+flag is set, the window receives null events in all cases. When
+not set, the window receives null events only when it is active.
+<P>
+<TT>kMoaMmMacEvent_CloseWindow</TT>
+<P>
+Special event passed to your <A HREF="mmmcevnt.htm">IMoaMmMacEventHandler</A>
+when the host application wants you to close your window.
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC27">Media asset types</A> </h4>
+
+<h5><A NAME="MoaMmModifyFlags">MoaMmModifyFlags</A>,
+<BR>
+PMoaMmModifyFlags,<BR>
+ConstPMoaMmModifyFlags </h5>
+
+<P>
+<TT>MoaLong</TT> representing
+the modification state of a media asset. To form a value for this
+type, create the bitwise OR (|) or the various values representing
+the modification state. Valid values for this type are defined
+as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=229><B>Name</B></TD><TD WIDTH=399><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=229><TT>kMoaMmModifyFlags_None</TT>
+</TD><TD WIDTH=399>Nothing was modified</TD></TR>
+
+<TR><TD WIDTH=229><TT>kMoaMmModifyFlags_Media</TT>
+</TD><TD WIDTH=399>Media data was modified</TD></TR>
+
+<TR><TD WIDTH=229><TT>kMoaMmModifyFlags_Props</TT>
+</TD><TD WIDTH=399>Property data was modified</TD></TR>
+
+</TABLE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=229><TT>MoaMmModifyFlags</TT> 
+</TD><TD WIDTH=399>Long value containing modification flags</TD>
+</TR>
+
+<TR><TD WIDTH=229><TT>PMoaMmModifyFlags</TT> 
+</TD><TD WIDTH=399>Pointer to <TT>MoaMmModifyFlags</TT> modification flags
+</TD></TR>
+
+<TR><TD WIDTH=229><TT>ConstPMoaMmModifyFlags</TT> 
+</TD><TD WIDTH=399>Constant pointer to <TT>MoaMmModifyFlags</TT> modification flags
+</TD></TR>
+
+</TABLE>
+
+<P>
+These flags are passed from an asset to the host in the <A HREF="mmxasset.htm">IMoaMmXAsset</A>
+methods <A HREF="mmxasset.htm#InvokeMediaEditor">InvokeMediaEditor()</A>
+and <A HREF="mmxasset.htm#FinishPropsEditor">FinishPropsEditor()</A>.
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC35">Property types</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+<h5><A NAME="MoaMmSymbol">MoaMmSymbol</A>,
+<BR>
+PMoaMmSymbol,<BR>
+ConstPMoaMmSymbol </h5>
+
+<P>
+<TT>MoaLong</TT> type representing
+unique run-time IDs used for properties, asset types, etc. The
+<TT>MoaMmSymbol</TT> for an
+item is guaranteed unique only for the current session, so these
+values should never be stored on disk or otherwise transferred
+outside the running application. To acquire a unique symbol for
+a particular string value, use the <TT>StringToSymbol()</TT>
+method of the <A HREF="mmvalue.htm">IMoaMmValue</A> callback interface.
+To acquire the string for a particular symbol, use the<TT>SymbolToString()</TT>
+method of the <A HREF="mmvalue.htm">IMoaMmValue</A> interface.
+Symbol strings are case-insensitive.
+<TABLE BORDER = "2">
+<TR><TD WIDTH=252><TT>MoaMmSymbol</TT> 
+</TD><TD WIDTH=252>Type</TD></TR>
+
+<TR><TD WIDTH=252><TT>PMoaMmSymbol</TT> 
+</TD><TD WIDTH=252>Pointer type</TD></TR>
+
+<TR><TD WIDTH=252><TT>ConstPMoaMmSymbol</TT> 
+</TD><TD WIDTH=252>Constant pointer type</TD></TR>
+
+</TABLE>
+
+<h5><A NAME="MoaMmValue">MoaMmValue</A>,
+<BR>
+  PMoaMmValue,<BR>
+ConstPMoaMmValue </h5>
+
+<P> Do not access fields of <TT>MoaMmValue </TT>directly. Use the value conversion methods in <A HREF="mmvalue.htm">IMoaMmValue</A>. 
+  The one exception to this rule is when you want to specify initialization values for a new MoaMmValue structure. There are 
+  two macros in xmmvalue.h that can used for this purpose: <code>kVoidMoaMmValueInitializer</code> and <code>kNullMoaMmValueInitializer</code>.
+<TABLE BORDER = "2">
+<TR><TD WIDTH=252><TT>MoaMmValue </TT>
+</TD><TD WIDTH=252>Structure type</TD></TR>
+
+<TR><TD WIDTH=252><TT>PMoaMmValue</TT> 
+</TD><TD WIDTH=252>Pointer type</TD></TR>
+
+<TR><TD WIDTH=252><TT>ConstPMoaMmValue</TT> 
+</TD><TD WIDTH=252>Constant pointer type</TD></TR>
+
+</TABLE>
+
+<h5><A NAME="MoaMmValueType">MoaMmValueType</A></h5>
+
+<P>
+<TT>MoaLong </TT>representing
+the type of a <TT>MoaMmValue</TT>.
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC39">Scripting Xtra types</A></h4>
+
+Call information structure passed to <A HREF="mmxscrpt.htm#Call">IMoaMmXScript::Call()</A>.
+<h5><A NAME="MoaMmCallInfo">MoaMmCallInfo</A>,
+<BR>
+PMoaMmCallInfo </h5>
+
+<PRE>
+struct MoaMmCallInfo
+{
+      PMoaVoid xinst;
+      MoaLong methodFlags;
+      MoaMmSymbol methodSelector;
+      MoaMmValue resultValue;
+      MoaLong nargs;
+      PMoaMmValue pArgs
+};
+</PRE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=99><TT>xinst</TT>
+</TD><TD WIDTH=405>MoaHandle to XtraInstRec</TD></TR>
+
+<TR><TD WIDTH=99><TT>methodFlags</TT>
+</TD><TD WIDTH=405>Reserved</TD></TR>
+
+<TR><TD WIDTH=99><TT>methodSelector</TT>
+</TD><TD WIDTH=405>Method index or symbol</TD></TR>
+
+<TR><TD WIDTH=99><TT>resultValue</TT>
+</TD><TD WIDTH=405>Slot for result</TD></TR>
+
+<TR><TD WIDTH=99><TT>nargs</TT>
+</TD><TD WIDTH=405>Number of arguments passed</TD></TR>
+
+<TR><TD WIDTH=99><TT>pArgs</TT>
+</TD><TD WIDTH=405>Pointer to array of arguments</TD></TR>
+
+</TABLE>
+
+<hr width=45% align=left>
+
+<h4>Sprite Xtra types </h4>
+
+Defined in: mmtypes.h 
+<h5><A NAME="MoaMmXSpriteCaps">MoaMmXSpriteCaps</A></h5>
+
+<PRE>
+<TT>typedef struct
+{
+</TT>       <TT>MoaMmEventMask eventMask;
+        MoaMmXSpriteCapsFlags flags;
+        MoaMmXSpriteImageMode requiredImageMode;
+        MoaMmXSpriteImageMode preferredImageMode;
+} MoaMmXSpriteCaps, FAR * PMoaMmXSpriteCaps;
+</TT>
+</PRE>
+<TABLE BORDER="2">
+<TR><TD WIDTH=152><TT>eventMask </TT>
+</TD><TD WIDTH=407>Mask representing event types handled by the sprite
+</TD></TR>
+
+<TR><TD WIDTH=152><TT>flags </TT>
+</TD><TD WIDTH=407>Flag representing other capabilities of the sprite
+</TD></TR>
+
+<TR><TD WIDTH=152><TT>requiredImageMode </TT>
+</TD><TD WIDTH=407>Required image mode (if any)</TD></TR>
+
+<TR><TD WIDTH=152><TT>preferredImageMode </TT>
+</TD><TD WIDTH=407>Preferred image mode (if any)</TD></TR>
+
+</TABLE>
+
+<P>
+Structure representing the capabilities of a particular Sprite Xtra.
+<TABLE BORDER = "2">
+<TR><TD WIDTH=152><TT>MoaMmXSpriteCaps </TT>
+</TD><TD WIDTH=410>Structure of information about Sprite Xtra capabilities
+</TD></TR>
+
+<TR><TD WIDTH=152><TT>PMoaMmXSpriteCaps </TT>
+</TD><TD WIDTH=410>Pointer to <TT>MoaMmXSpriteCaps</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<H6><A NAME="RTFToC41">Sprite event mask constants</A>
+</H6>
+
+<P>
+Use these in the <TT>eventMask</TT>
+<TT>MoaMmXSpriteCaps</TT> field
+for sprite actors. To receive events from multiple event classes,
+combine your masks with the OR operator, for example, <TT>kMoaMmEventMask_Mouse
+| kMoaMmEventMask_Key</TT>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=261><B>Name</B></TD><TD WIDTH=338><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Every</TT>
+</TD><TD WIDTH=338>Receive all events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_None</TT>
+</TD><TD WIDTH=338>Receive no events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Idle</TT>
+</TD><TD WIDTH=338>Receive idles (play-time only)</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Mouse</TT>
+</TD><TD WIDTH=338>Receive all mouse events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Key</TT>
+</TD><TD WIDTH=338>Receive all key and focus events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Play</TT>
+</TD><TD WIDTH=338>Receive all play events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Span</TT>
+</TD><TD WIDTH=338>Receive span events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Step</TT>
+</TD><TD WIDTH=338>Receive step events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Environment</TT>
+</TD><TD WIDTH=338>Receive all environment change events</TD>
+</TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmXSpriteCapsFlags">MoaMmXSpriteCapsFlags</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> type used
+in the <TT>MoaMmXSpriteCaps</TT>
+structure to represent the capabilities of a particular Sprite
+Xtra. The valid values for this type are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=304><B>Name</B></TD><TD WIDTH=227><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmXSpriteCapsFlags_None</TT>
+</TD><TD WIDTH=227>No capabilities defined</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmXSpriteCapsFlags_IsStatic</TT>
+</TD><TD WIDTH=227>Sprite seldom changes</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmXSpriteCapsFlags_AutoTabEnabled </TT>
+</TD><TD WIDTH=227>Application handles Tab key</TD></TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmXSpriteImageMode">MoaMmXSpriteImageMode</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> type representing
+the imaging mode of a particular Sprite Xtra. The valid values
+for this type are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=308><B>Name</B></TD><TD WIDTH=223><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=308><TT>kMoaMmXSpriteImageMode_Any</TT>
+</TD><TD WIDTH=223>Sprite draws in any mode</TD></TR>
+
+<TR><TD WIDTH=308><TT>kMoaMmXSpriteImageMode_Offscreen</TT>
+</TD><TD WIDTH=223>Sprite draws offscreen</TD></TR>
+
+<TR><TD WIDTH=308><TT>kMoaMmXSpriteImageMode_DirectToScreen</TT>
+</TD><TD WIDTH=223>Sprite draws to screen</TD></TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmXSpriteInfo">MoaMmXSpriteInfo</A>,
+<BR>
+PMoaMmXSpriteInfo,<BR>
+ConstPMoaMmXSpriteInfo<BR></h5>
+<PRE>
+<TT>typedef struct
+{
+        MoaRect spriteRect;
+</TT>        <TT>MoaMmXSpriteImageMode imageMode;
+</TT>        <TT>MoaMmXSpriteFlags flags;
+</TT>        <TT>MoaMmInk ink;
+</TT>        <TT>MoaMmInkParams
+inkParams;
+</TT>        <TT>MoaLong aux;
+} MoaMmXSpriteInfo;
+</TT>
+</PRE>
+<TABLE BORDER="2">
+<TR><TD WIDTH=179><TT>spriteRect</TT> 
+</TD><TD WIDTH=479>Rectangle on stage where sprite appears</TD>
+</TR>
+
+<TR><TD WIDTH=179><TT>imageMode</TT> 
+</TD><TD WIDTH=479>Imaged direct or to an offscreen buffer</TD>
+</TR>
+
+<TR><TD WIDTH=179><TT>flags</TT> 
+</TD><TD WIDTH=479>Sprite FX flags</TD></TR>
+
+<TR><TD WIDTH=179><TT>ink</TT> 
+</TD><TD WIDTH=479>Sprite ink mode</TD></TR>
+
+<TR><TD WIDTH=179><TT>inkParams</TT> 
+</TD><TD WIDTH=479>Extra parameters for some inks</TD></TR>
+
+<TR><TD WIDTH=179><TT>aux</TT> 
+</TD><TD WIDTH=479>Reserved</TD></TR>
+</TABLE>
+
+<TABLE BORDER=2>
+<TR><TD WIDTH=180><TT>MoaMmXSpriteInfo</TT> 
+</TD><TD WIDTH=477>Structure representing various information about a sprite Xtra
+</TD></TR>
+
+<TR><TD WIDTH=180><TT>PMoaMmXSpriteInfo</TT> 
+</TD><TD WIDTH=477>Pointer to <TT>MoaMmXSpriteInfo</TT> information structure
+</TD></TR>
+
+<TR><TD WIDTH=180><TT>ConstPMoaMmXSpriteInfo</TT> 
+</TD><TD WIDTH=477>Constant pointer to <TT>MoaMmXSpriteInfo</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<h5><A NAME="MoaMmXSpriteFlags">MoaMmXSpriteFlags</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> included as
+a field in the <TT>MoaMmXSpriteInfo</TT>
+structure to represent the capabilities of a specific Sprite Xtra.
+To form a value for this type, create the bitwise OR (|) or the
+various values representing capabilities of the Xtra. These values
+are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=246><B>Name</B></TD><TD WIDTH=323><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=246><TT>kMoaMmXSpriteFlags_None</TT>
+</TD><TD WIDTH=323>No unique capabilities</TD></TR>
+
+<TR><TD WIDTH=246><TT>kMoaMmXSpriteFlags_Moveable</TT>
+</TD><TD WIDTH=323>Sprite is movable</TD></TR>
+
+<TR><TD WIDTH=246><TT>kMoaMmXSpriteFlags_Editable</TT>
+</TD><TD WIDTH=323>Sprite is editable</TD></TR>
+
+<TR><TD WIDTH=246><TT>kMoaMmXSpriteFlags_Blend</TT>
+</TD><TD WIDTH=323></TD></TR>
+
+</TABLE>
+
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC46">Sprite Xtra Actor types</A> </h4>
+
+<P>
+Supplied as parameters to Xtra Actor methods
+<h5><A NAME="PMoaMmInk">PMoaMmInk</A></h5>
+
+<P>
+MoaLong representing the image transfer types or ink modes available
+for raster imaging operations. Valid values for this type are
+defined as MOA constants.
+<PRE>
+<TT>kMoaMmInk_Copy
+kMoaMmInk_Transparent
+kMoaMmInk_Reverse
+kMoaMmInk_Ghost
+kMoaMmInk_NotCopy
+kMoaMmInk_NotTransparent
+kMoaMmInk_NotReverse
+kMoaMmInk_NotGhost
+kMoaMmInk_Matte
+kMoaMmInk_Mask
+kMoaMmInk_AddPin
+kMoaMmInk_Add
+kMoaMmInk_SubtractPin
+kMoaMmInk_BackgroundTransparent
+kMoaMmInk_Lightest
+kMoaMmInk_Subtract
+kMoaMmInk_Darkest</TT>
+</PRE>
+<P>
+These ink types correspond to standard transfer modes defined
+by both Macintosh and Windows graphics systems
+<h5><A NAME="MoaMmInkParams">MoaMmInkParams</A>,
+<BR>
+PMoaMmInkParams,<BR>
+ConstPMoaMmInkParams </h5>
+
+<PRE>
+<TT>typedef struct
+{
+</TT>        <TT>MoaMmColorSpec fgColor;
+</TT>        <TT>MoaMmColorSpec bgColor;
+</TT>        <TT>MoaLong blendValue;
+</TT>        <TT>MoaBool obeyBlend;
+} MoaMmInkParams;
+</TT>
+</PRE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=88><TT>fgColor</TT> 
+</TD><TD WIDTH=416>Ink foreground color</TD></TR>
+
+<TR><TD WIDTH=88><TT>bgColor</TT> 
+</TD><TD WIDTH=416>Ink background color</TD></TR>
+
+<TR><TD WIDTH=88><TT>blendValue</TT> 
+</TD><TD WIDTH=416>Sprite blend value (v5.0: 0-255)</TD></TR>
+
+<TR><TD WIDTH=88><TT>obeyBlend</TT> 
+</TD><TD WIDTH=416>If TRUE, use <TT>blendValue</TT>
+</TD></TR>
+
+</TABLE>
+
+<P>
+Structure representing the ink parameters of a sprite. If <TT>obeyBlend</TT>
+is <TT>TRUE</TT>, the <TT>blendValue</TT>
+field should be obeyed.
+<TABLE BORDER = "2">
+<TR><TD WIDTH=232><TT>MoaMmInkParams</TT> 
+</TD><TD WIDTH=388>Structure representing the ink parameters of a sprite
+</TD></TR>
+
+<TR><TD WIDTH=232><TT>PMoaMmInkParams</TT> 
+</TD><TD WIDTH=388>Pointer to <TT>MoaMmInkParams</TT> information structure
+</TD></TR>
+
+<TR><TD WIDTH=232><TT>ConstPMoaMmInkParams</TT> 
+</TD><TD WIDTH=388>Constant pointer to <TT>MoaMmInkParams</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<h5><A NAME="MoaMmPlayState">MoaMmPlayState</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> included as
+a field in the <TT>MoaMmPlayerStateInfo</TT>
+structure to represent the playback state of a specific player.
+Valid values for this type are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=235><B>Name</B></TD><TD WIDTH=385><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=235><TT>kMoaMmPlayState_Stopped</TT>
+</TD><TD WIDTH=385>Movie has stopped (authoring only)</TD></TR>
+
+<TR><TD WIDTH=235><TT>kMoaMmPlayState_Playing</TT>
+</TD><TD WIDTH=385>Movie is playing</TD></TR>
+
+</TABLE>
+
+
+<P>
+Note that in a player application, a presentation is always playing.
+<h5><A NAME="MoaMmSoundState">MoaMmSoundState</A>
+</h5>
+
+<P>
+<TT>MoaLong</TT> type included
+as a field in the <TT>MoaMmPlayerStateInfo</TT>
+structure to represent the playback state of a specific player.
+Valid values for this type are defined as MOA constants:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=236><B>Name</B></TD><TD WIDTH=374><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=236><TT>kMoaMmSoundState_Disabled</TT>
+</TD><TD WIDTH=374>Sound is disabled</TD></TR>
+
+<TR><TD WIDTH=236><TT>kMoaMmSoundState_Enabled</TT>
+</TD><TD WIDTH=374>Sound is enabled</TD></TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmPlayerStateInfo">MoaMmPlayerStateInfo</A>,
+<BR>
+PMoaMmPlayerStateInfo,<BR>
+ConstPMoaMmPlayerStateInfo </h5>
+
+<PRE>
+<TT>typedef struct
+{
+</TT>        <TT>MoaMmPlayState playState;
+</TT>        <TT>MoaMmSoundState soundState;
+} MoaMmPlayerStateInfo;
+</TT>
+</PRE>
+<TABLE BORDER="2">
+<TR><TD WIDTH=239><TT>playState</TT> 
+</TD><TD WIDTH=423>Playing or stopped</TD></TR>
+
+<TR><TD WIDTH=239><TT>soundState</TT> 
+</TD><TD WIDTH=423>Sound should be on/off</TD></TR>
+
+<TR><TD WIDTH=239><TT>MoaMmPlayerStateInfo</TT> 
+</TD><TD WIDTH=423>Structure containing player state information
+</TD></TR>
+
+<TR><TD WIDTH=239><TT>PMoaMmPlayerStateInfo </TT>
+</TD><TD WIDTH=423>Pointer to <TT>MoaMmPlayerStateInfo</TT> information structure
+</TD></TR>
+
+<TR><TD WIDTH=239><TT>ConstPMoaMmPlayerStateInfo </TT>
+</TD><TD WIDTH=423>Constant pointer to <TT>MoaMmPlayerStateInfo </TT>structure
+</TD></TR>
+
+</TABLE>
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC49">Transition types</A> </h4>
+Defined in: mmtypes.h
+<h5><A NAME="MoaMmTransCaps">MoaMmTransCaps</A>, <BR>
+PMoaMmTransCaps </h5>
+
+<P>
+Type representing the capabilities of a transition provided by
+an Xtra. If <TT>_DoesScreenAccess</TT>
+is set, the application copies any windows in front of the transition
+area back into the offscreen buffer before doing the transition.
+Provides special handling for Macintosh Powerbooks with mirrored
+displays. Valid values include the following:
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=304><B>Name</B></TD><TD WIDTH=316><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_None</TT>
+</TD><TD WIDTH=316>Has no special capabilities</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_ChangeArea</TT>
+</TD><TD WIDTH=316>Supports change area option</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_ChunkSize</TT>
+</TD><TD WIDTH=316>Supports chunk size control</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_Duration</TT>
+</TD><TD WIDTH=316>Supports duration control</TD></TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_CantPaletteInterleave </TT>
+</TD><TD WIDTH=316>Can't interleave with palette change </TD>
+</TR>
+
+<TR><TD WIDTH=304><TT>kMoaMmTransCaps_DoesScreenAccess</TT>
+</TD><TD WIDTH=316>Draws directly to screen </TD></TR>
+
+</TABLE>
+
+
+<h5><A NAME="MoaMmTransInfo">MoaMmTransInfo</A>,
+<BR>
+PMoaMmTransInfo,<BR>
+ConstPMoaMmTransInfo </h5>
+
+<PRE>
+<TT>typedef struct
+{
+        MoaLong chunkSize;
+        MoaLong duration;
+        MoaLong realTime;
+        MoaLong elapsedTime;
+        MoaLong aux;
+} MoaMmTransInfo
+</TT>
+</PRE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=126><TT>chunkSize</TT> 
+</TD><TD WIDTH=493>Chunkiness</TD></TR>
+
+<TR><TD WIDTH=126><TT>duration</TT> 
+</TD><TD WIDTH=493>Duration (milliseconds)</TD></TR>
+
+<TR><TD WIDTH=126><TT>realTime</TT> 
+</TD><TD WIDTH=493>Non-zero if running in real time, 0 if frame-by-frame export
+</TD></TR>
+
+<TR><TD WIDTH=126><TT>elapsedTime</TT> 
+</TD><TD WIDTH=493>Elapsed time (milliseconds)</TD></TR>
+
+<TR><TD WIDTH=126><TT>aux</TT> 
+</TD><TD WIDTH=493>Reserved</TD></TR>
+
+</TABLE>
+
+<P>
+Structure providing transition cueing information, passed as a
+parameter to a transition actor's <TT>Cue</TT>
+method.
+<TABLE BORDER = "2">
+<TR><TD WIDTH=252><TT>MoaMmTransInfo </TT>
+</TD><TD WIDTH=365>Structure representing transition cueing information
+</TD></TR>
+
+<TR><TD WIDTH=252><TT>PMoaMmTransInfo </TT>
+</TD><TD WIDTH=365>Pointer to <TT>MoaMmTransInfo</TT> structure
+</TD></TR>
+
+<TR><TD WIDTH=252><TT>ConstPMoaMmTransInfo</TT> 
+</TD><TD WIDTH=365>Constant pointer to <TT>MoaMmTransInfo</TT> structure
+</TD></TR>
+
+</TABLE>
+
+<P>
+<hr width=45% align=left>
+
+<h3><A NAME="Types3D">Multimedia 3D types</A> 
+  </h3>
+
+<P> Defined in: m3dtypes.h 
+
+<h5><A NAME="MoaMmTransInfo">3D Coordinates, Vectors and Matrices</A> </h5>
+<tt>
+typedef MoaFloat 	Moa3dCoord; <br>
+typedef Moa3dCoord 	Moa3dVector[4]; <br>
+typedef Moa3dCoord 	Moa3dMatrix[16];
+</tt>
+
+<PRE>
+<TT>/* Note: this 3dPoint structure is compatible with the Moa3dVector type */
+typedef struct
+{
+	Moa3dCoord x;
+	Moa3dCoord y;
+	Moa3dCoord z;
+	Moa3dCoord h;	/* also known as w */
+} Moa3dPoint;
+</TT>
+</PRE>
+<hr width=45% align=left>
+
+<h3><A NAME="MMMACROS">Multimedia Macros</A></h3>
+
+<h4><A NAME="RTFToC53">Color access and conversion</A> </h4>
+
+<P> Defined in: mmtypes.h 
+<h5><A NAME="MoaToMacRGB">MoaToMacRGB</A>()
+</h5>
+
+<P>
+<TT>MoaToMacRGB</TT>(<TT>PMoaMmRGBTriple</TT>
+<TT>pMoaColor</TT>, <TT>RGBColor
+FAR *</TT> <TT>pMacColor</TT>)
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=154><TT>pMoaColor</TT><I> </I>
+</TD><TD WIDTH=526>Pointer to a <TT>MoaMmRGBTriple </TT>containing a color
+</TD></TR>
+
+<TR><TD WIDTH=154><TT>pMacColor</TT><I> </I>
+</TD><TD WIDTH=526>Pointer to an <TT>RGBColor </TT>to receive the Macintosh-specific RGB result
+</TD></TR>
+
+</TABLE>
+
+<P>
+Converts the value located in <TT>pMoaColor</TT>
+into a Macintosh-specific <TT>RGBColor</TT>
+and places the result in the location specified by <TT>pMacColor</TT>.
+<h5><A NAME="MacToMoaRGB">MacToMoaRGB</A>()
+</h5>
+
+<PRE WIDTH=132>
+<TT>MacToMoaRGB</TT>(<TT>RGBColor FAR * pMacColor</TT>, <TT>PMoaMmRGBTriple pMoaColor</TT>)
+</PRE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=128><TT>pMacColor</TT><I> </I>
+</TD><TD WIDTH=553>Pointer to an <TT>RGBColor</TT>
+</TD></TR>
+
+<TR><TD WIDTH=128><TT>pMoaColor</TT><I> </I>
+</TD><TD WIDTH=553>Pointer to a to receive <TT>MoaMmRGBTriple </TT>the MOA-specific result
+</TD></TR>
+
+</TABLE>
+
+<P>
+Converts the value located in <TT>pMacColor</TT>
+into a MOA-specific <TT>PMoaMmRGBTriple
+</TT>and places the result in the location specified by
+<TT>pMoaColor</TT>.
+<h5><A NAME="MoaToWinRGB">MoaToWinRGB</A>()
+</h5>
+
+<P>
+<TT>MoaToWinRGB(PMoaMmRGBTriple pMoaColor,</TT>
+<TT>COLORREF winColor)</TT>
+<P>
+Converts the value located in <TT>pMoaColor</TT>
+into a Windows-specific <TT>COLORREF
+</TT>and places the result in the location specified by
+<TT>pWinColor</TT>.
+<h5><A NAME="WinToMoaRGB">WinToMoaRGB</A>()
+</h5>
+
+<P>
+<TT>WinToMoaRGB(COLORREF winColor,
+PMoaMmRGBTriple pMoaColor)</TT>
+<P>
+Converts the value located in <TT>pWinColor</TT>
+into a MOA-specific <TT>PMoaMmRGBTriple
+</TT>and places the result in the location specified by
+<TT>pMoaColor</TT>.
+<h5><A NAME="MoaEqualRGB">MoaEqualRGB()</A>
+</h5>
+
+<P>
+<TT>MoaBool MoaEqualRGB(PMoaMmRGBTriple
+pMoaColorOne, PMoaMmRGBTriple pMoaColorOne)</TT>
+<P>
+Compares two colors.
+<h5><A NAME="ColorSpec_MakeFromIndex">ColorSpec_MakeFromIndex()</a></h5>
+
+<P>
+<TT>ColorSpec_MakeFromIndex(PMoaMmColorSpec
+pSpec, MoaByte theIndex)</TT>
+<TABLE BORDER="2">
+<TR><TD WIDTH=135><TT>pSpec</TT> 
+</TD><TD WIDTH=494>Pointer to a <TT>PMoaMmColorSpec </TT>containing the new color specification
+</TD></TR>
+
+<TR><TD WIDTH=135><TT>theIndex</TT> 
+</TD><TD WIDTH=494>Indexed color value</TD></TR>
+
+</TABLE>
+
+<P>
+Creates a new color specification from the index.
+<h5><A NAME="ColorSpec_MakeFromMacRGB">ColorSpec_MakeFromMacRGB</A>()
+</h5>
+
+<PRE>
+<TT>ColorSpec_MakeFromMacRGB(PMoaMmColorSpec pSpec,</TT> <TT>MoaMmRGBTriple FAR * pMacRGBColor)
+</TT>
+</PRE>
+
+<TABLE BORDER="2">
+<TR><TD WIDTH=137><TT>pSpec</TT> 
+</TD><TD WIDTH=488>Pointer to a <TT>PMoaMmColorSpec </TT>containing the new color specification
+</TD></TR>
+
+<TR><TD WIDTH=137><TT>pMacRGBColor</TT> 
+</TD><TD WIDTH=488>The Macintosh RGB color</TD></TR>
+
+</TABLE>
+
+<P>
+Makes a new RGB color specification from a Macintosh RGB value.
+<h5><A NAME="ColorSpec_MakeFromWinRGB">ColorSpec_MakeFromWinRGB</A>()
+</h5>
+
+<P>
+<TT>ColorSpec_MakeFromWinRGB(pSpec,
+winColorRef)</TT>
+<TABLE BORDER="2">
+<TR><TD WIDTH=141><TT>pSpec</TT> 
+</TD><TD WIDTH=480>Pointer to a <TT>PMoaMmColorSpec </TT>containing the new color specification
+</TD></TR>
+
+<TR><TD WIDTH=141><TT>winColorRef</TT> 
+</TD><TD WIDTH=480>The Windows, 32-bit RGB value</TD></TR>
+
+</TABLE>
+
+<P>
+Makes a new RGB color specification from a Windows COLORREF
+
+<hr width=45% align=left>
+
+<h4>Scripting Xtra Macros</h4>
+
+<P>
+Defined in: mmixscrp.h
+<h5><A NAME="AccessArgByIndex">AccessArgByIndex</A>
+</h5>
+
+<P>
+<CODE>AccessArgByIndex(<I>n</I>,
+<I>pValue</I>)</CODE>
+<P>
+Access an argument to a scripting language function by numerical
+index and return in <CODE><I>pValue</I></CODE>.
+<hr width=45% align=left>
+
+<h4><A NAME="CPMACROS">Cue Point Macros</A></h4>
+
+<P> Defined in: mmtypes.
+<h5><A NAME="CuePoint_GetChannel">CuePoint_GetChannel</A>
+</h5>
+
+<P>
+<CODE>CuePoint_GetChannel(<I>pCuePoint</I>)
+</CODE>
+<P>
+Returns the channel of a cue point structure.
+
+<h5><A NAME="CuePoint_GetIndex">CuePoint_GetIndex</A>
+</h5>
+
+<P>
+<CODE>CuePoint_GetIndex(<I>pCuePoint</I>)</CODE>
+<P>
+Returns index of a cue point structure.
+
+<h5><A NAME="CuePoint_GetName">CuePoint_GetName</A>
+</h5>
+
+<P>
+<CODE>CuePoint_GetName(<I>pCuePoint</I>)</CODE>
+<P>
+Returns name of cue point structure.
+
+<hr width=45% align=left>
+
+<h3><A NAME="MMCONSTS">Multimedia Constants</A></h3>
+
+
+<h4><A NAME="RTFToC62">General constants</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=237><B>Constant</B></TD><TD WIDTH=36><B>Val</B>
+</TD><TD WIDTH=460><B>Description</B></TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmMaxXtraName</TT>
+</TD><TD WIDTH=36>32</TD><TD WIDTH=460>Max byte lgth of Xtra name symbol string
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmMaxPropName</TT>
+</TD><TD WIDTH=36>32</TD><TD WIDTH=460>Max byte lgth of property name symbol string
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmMaxXtraDisplayName</TT>
+</TD><TD WIDTH=36>64</TD><TD WIDTH=460>Max byte length of Xtra display name 
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmMaxXtraDisplayCategory</TT>
+</TD><TD WIDTH=36>64</TD><TD WIDTH=460>Max byte length of Xtra display category
+</TD></TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC63">Graphics context constants</A> </h4>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=192><B>Constant</B></TD><TD WIDTH=549><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_Null</TT>
+</TD><TD WIDTH=549>No graphics context or graphics context unknown
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinWindow</TT>
+</TD><TD WIDTH=549>Microsoft Windows window graphics context</TD>
+</TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinDIBDC</TT>
+</TD><TD WIDTH=549>Microsoft Windows device-independent bitmap context
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_WinDDBDC</TT>
+</TD><TD WIDTH=549>Microsoft Windows device-dependent bitmap context
+</TD></TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_MacWindow</TT>
+</TD>
+    <TD WIDTH=549>Macintosh window graphics context. The value is a WindowRef, not a WindowPtr</TD>
+  </TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_MacGWorld</TT>
+</TD><TD WIDTH=549>Macintosh graphics world graphics context</TD>
+</TR>
+
+<TR><TD WIDTH=192><TT>kMoaMmGCType_Aux</TT>
+</TD><TD WIDTH=549>(reserved)</TD></TR>
+
+</TABLE>
+
+<h5>WIN_DIBDC variant of graphics context constants
+</h5>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=196><B>Constant</B></TD><TD WIDTH=525><B>Description</B>
+</TD></TR>
+
+<TR>
+    <TD WIDTH=196><TT>kMoaMmWinDIBDCFlags_None</TT> </TD>
+    <TD WIDTH=525></TD></TR>
+
+<TR>
+    <TD WIDTH=196><TT>kMoaMmWinDIBDCFlags_WinG</TT> </TD>
+    <TD WIDTH=525></TD></TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC64">Transition constants</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=237><B>Constant</B></TD><TD WIDTH=391><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmTransArea_FullStage</TT>
+</TD><TD WIDTH=391>Transition applies to whole stage</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmTransArea_ChangeArea</TT>
+</TD><TD WIDTH=391>Transition applies to change area only</TD>
+</TR>
+
+</TABLE>
+
+
+<P>
+These constants represent valid values for a transition Xtras'
+<TT>defaultTransArea</TT> registry
+entry. If the transition Xtras <TT>kMoaMmTransCaps_ChangeArea</TT>
+is set, this entry determines the default state of the transition
+area control. If <TT>kMoaMmTransCaps_ChangeArea</TT>
+is not set, the default is automatically forced to <TT>kMoaMmTransArea_FullStage</TT>.
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=237><B>Constant</B></TD><TD WIDTH=389><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmTrans_IsNotComplete</TT>
+</TD><TD WIDTH=389>FALSE. Returned if the transition isn't complete</TD>
+</TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmTrans_IsComplete</TT>
+</TD><TD WIDTH=389>TRUE. Returned when the transition is complete</TD>
+</TR>
+
+</TABLE>
+
+<P>
+Use these constants as return values to the <TT>pFinished</TT> parameter of the <A HREF="mmxtrnst.htm#Continue">IMoaMmXTransitionActor::Continue()</A><TT>
+</TT>method.
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC65">Media asset category constants</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+
+<P>
+Although an asset Xtra can register any string as its <TT>displayCategoryString</TT>
+(<TT>kMoaMmDictKey_DisplayCategoryString</TT>),
+using one of these predefined categories is recommended. Using
+the predefined categories helps the user locate asset Xtras, by
+grouping similar types together. The predefined categories are
+also recognized by the application, and the correct translation
+is automatically substituted in internationalized versions.
+
+<P>
+An Xtra should register the most-specific category applicable.
+Some applications, however, may combine some of the categories
+into one group. For example, Director 5 combines Media Element,
+Sound, Video and ThreeD in the same submenu.
+
+<P>
+<A NAME="_Toc350759264">Sprite category constants</A>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=261><B>Category</B></TD><TD WIDTH=97><B>Value</B>
+</TD><TD WIDTH=356><B>Description</B></TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Unknown</TT>
+</TD><TD WIDTH=97><TT>&quot;&quot;</TT>
+</TD><TD WIDTH=356>Default category</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Media</TT>
+</TD><TD WIDTH=97><TT>&quot;Media&quot;</TT>
+</TD><TD WIDTH=356>Static media: e.g., bitmaps, static text</TD>
+</TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Control</TT>
+</TD><TD WIDTH=97><TT>&quot;Control&quot;</TT>
+</TD><TD WIDTH=356>UI controls, e.g., buttons, check boxes.</TD>
+</TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Behavior</TT>
+</TD><TD WIDTH=97><TT>&quot;Behavior&quot;</TT>
+</TD><TD WIDTH=356>behaviors, interactions, scripts: e.g., &quot;gravity&quot;
+</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Database</TT>
+</TD><TD WIDTH=97><TT>&quot;Database&quot;</TT>
+</TD><TD WIDTH=356>Database management or connectivity</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Sound</TT>
+</TD><TD WIDTH=97><TT>&quot;Sound&quot;</TT>
+</TD><TD WIDTH=356>Any audio</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Video</TT>
+</TD><TD WIDTH=97><TT>&quot;Video&quot;</TT>
+</TD><TD WIDTH=356>Any video or animation</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_ThreeD</TT>
+</TD><TD WIDTH=97><TT>&quot;ThreeD&quot;</TT>
+</TD><TD WIDTH=356>Modeling, virtual worlds, etc.</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmSpriteCategory_Network</TT>
+</TD><TD WIDTH=97><TT>&quot;Network&quot;</TT>
+</TD><TD WIDTH=356>Communications and connectivity</TD></TR>
+
+</TABLE>
+
+
+<P>
+Asset caps constants
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=236><B>Name</B></TD><TD WIDTH=485><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=236><TT>kMoaMmAssetCaps_CanLinkMedia</TT>
+</TD>
+<TD WIDTH=485>When this flag is set and you allow an author to create an asset through the import dialog (i.e., importing a Flash movie creates a Flash asset in your cast), they have the option of importing the file as linked, just like with sounds and bitmaps.
+</TD></TR>
+
+<TR><TD WIDTH=236><TT>kMoaMmAssetCaps_MustLinkMedia</TT>
+</TD>
+<TD WIDTH=485>This means it is <I>always</I> imported as linked, regardless of what the user asks for. QT3 uses this flag, since you can not have an internal QT3 member embedded in the Director file.
+</TD></TR>
+
+<TR><TD WIDTH=236><TT>kMoaMmAssetCaps_CanStream</TT>
+</TD>
+<TD WIDTH=485>If this flag is not set when a linked Xtra is playing an URL, it first downloads the entire file, then tells your asset to load from the local file, as well as creates any actors for the stage, etc. However, if this flag is set, Director loads your member right away, assuming that you can handle loading yourself from the URL. The Flash asset uses this setting.
+</TD></TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC66">Sprite event mask constants</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+<P>
+Use these in the eventMask <TT>MoaMmXSpriteCaps</TT>
+field for sprite actors. To receive events from multiple event
+classes, combine your masks together using the OR operator (|),
+for example, <TT>kMoaMmEventMask_Mouse
+| kMoaMmEventMask_Key</TT>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=261><B>Name</B></TD><TD WIDTH=368><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Every</TT>
+</TD><TD WIDTH=368>Receive all events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_None</TT>
+</TD><TD WIDTH=368>Receive no events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Idle</TT>
+</TD><TD WIDTH=368>Receive idles (play-time only)</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Mouse</TT>
+</TD><TD WIDTH=368>Receive all mouse events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Key</TT>
+</TD><TD WIDTH=368>Receive all key and focus events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Step</TT>
+</TD><TD WIDTH=368>Receive frame update events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Span</TT>
+</TD><TD WIDTH=368>Receive sprite span events</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Play</TT>
+</TD><TD WIDTH=368>Receive play events (authoring only)</TD></TR>
+
+<TR><TD WIDTH=261><TT>kMoaMmEventMask_Environment</TT>
+</TD><TD WIDTH=368>Receive all environment change events</TD>
+</TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC67">Event constants</A> </h4>
+
+<P>
+Defined in: mmtypes.h
+<P>
+Mac event handler constant
+<P>
+<TT>kMoaMmMacEvent_CloseWindow</TT>
+<A HREF="mmmcevnt.htm">IMoaMacEventHandler</A> constant to close
+window
+<P>
+Sprite actor event handling
+<P>
+Use these constants as return values to the <TT>pHandled</TT><I>
+</I>parameter of the <A HREF="mmxsprta.htm#Event">IMoaMmXSpriteActor::Event()</A><TT>
+</TT>method.
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=223><B>Name</B></TD><TD WIDTH=488><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=223><TT>kMoaMmSprEvent_Handled </TT>
+</TD><TD WIDTH=488>TRUE</TD></TR>
+
+<TR><TD WIDTH=223><TT>kMoaMmSprEvent_Pass</TT>
+</TD><TD WIDTH=488>FALSE</TD></TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h4>Tool Xtra constants </h4>
+
+<P>
+Defined in: mmtypes.h
+<P>
+Used to indicate the state and category of <A HREF="mmxtool.htm">IMoaMmXTool</A>
+implementations.
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=220><B>Name</B></TD><TD WIDTH=491><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=220><TT>kMoaMmEnabledState_Disabled</TT>
+</TD><TD WIDTH=491><TT>MoaMmEnabledState</TT> value for a disabled tool 
+</TD></TR>
+
+<TR><TD WIDTH=220><TT>kMoaMmEnabledState_Enabled</TT>
+</TD><TD WIDTH=491><TT>MoaMmEnabledState</TT> value for a disabled tool 
+</TD></TR>
+
+<TR><TD WIDTH=220><TT>kMoaMmToolCategory_Unknown</TT>
+</TD><TD WIDTH=491>Empty string-the default category for tools that don't specify a category
+</TD></TR>
+
+</TABLE>
+
+
+<P>
+<hr width=45% align=left>
+
+<h3><A NAME="MMNIDS">Multimedia Notification IDs</A></h3>
+
+<P>
+Defined in: mmiservc.h
+
+<PRE>
+NID_MmNPaletteChanged
+NID_MmNStep
+NID_MmNIdle
+</PRE>
+
+<hr width=45% align=left>
+
+<h3><A NAME="MMREGKEYS">Multimedia Registry Keys</A></h3>
+
+<P>
+Defined in: mmtypes.h
+
+<P>
+<A NAME="RTFToC70">Registry keys are used in an Xtra's </A><A HREF="../moref/register.htm">IMoaRegister</A>
+interface to indicate the capabilities it provides. 
+<h4>Shockwave keys </h4>
+
+<P> <A NAME="RTFToC71">Keys used to register Xtras that are safe to be used in 
+  Shockwave. These may be asset, transition or script Xtras</A>. 
+<h5>Symbol string </h5>
+
+<P>
+key: <TT>kMoaMmDictKey_SafeForShockwave</TT>
+<P> string: &quot;safeForShockwave&quot; 
+<P>
+type: <TT>kMoaMmDictType_SafeForShockwave</TT>
+<P> base type: kMoaDictType_Bool
+<h4>Asset keys </h4>
+
+<P>
+<A NAME="RTFToC71">Keys used to register Xtras implementing the
+</A><A HREF="mmxasset.htm">IMoaMmXAsset</A> interface.
+<h5>Symbol string </h5>
+
+<P>
+key: <TT>kMoaMmDictKey_SymbolString</TT>
+<P>
+string: &quot;symbolString&quot;
+<P>
+type: <TT>kMoaMmDictType_SymbolString</TT>
+<P>
+base type: <TT>kMoaDictType_CString</TT>
+<h5><A NAME="RTFToC72">Display name string</A>
+</h5>
+
+<P>
+key: <TT>kMoaMmDictKey_DisplayNameString</TT>
+<P>
+string: &quot;displayNameString&quot;
+<P>
+type: <TT>kMoaMmDictType_DisplayNameString</TT>
+<P>
+base type: <TT>kMoaDictType_CString</TT>
+<P>
+Specifies the name to appear for your Xtra in the host application's
+user interface. If your Xtra doesn't specify a value for this
+key, the host application uses your symbol string.
+<h5><A NAME="RTFToC73">Display category string</A>
+</h5>
+
+<P>
+key: <TT>kMoaMmDictKey_DisplayCategoryString</TT>
+<P>
+string: &quot;displayCategoryString&quot;
+<P>
+type: <TT>kMoaMmDictType_DisplayCategoryString</TT>
+<P>
+base type: kMoaDictType_CString
+<h5><A NAME="RTFToC74">Color icon</A></h5>
+
+<P>
+key: <TT>kMoaMmDictKey_ColorIcon</TT>
+<P>
+string: &quot;colorIcon&quot;
+<P>
+type: <TT>kMoaMmDictType_ColorIcon</TT>
+<P>
+base type: kMoaDictType_Bytes
+<P>
+Customizes the asset type icon for your asset by registering a
+color icon using this dictionary entry. On both Macintosh and
+Windows, you register a &quot;bag of bytes&quot; for each icon.
+On the Macintosh, this is the contents of a PicHandle (PICT resource)
+representing the icon. On Windows, this is the contents of a packed
+DIB handle (a BITMAP resource). See the OvalSprite sample for
+the code you need to handle this. In the future, we may provide
+this is common support code or build resource registration into
+MOA.
+<h5><A NAME="RTFToC75">Black &amp; white icon</A>
+</h5>
+
+<P>
+key: kMoaMmDictKey_BWIcon
+<P>
+string: &quot;BWIcon&quot;
+<P>
+type: kMoaMmDictType_BWIcon
+<P>
+base type: kMoaDictType_Bytes
+<P>
+Customizes the asset type icon for your asset by registering a
+black and white icon using this dictionary entry. On both Macintosh
+and Windows, you register a &quot;bag of bytes&quot; for each
+icon. On the Macintosh, this is the contents of a PicHandle (PICT
+resource) representing the icon. On Windows, this is the contents
+of a packed DIB handle (a BITMAP resource). See the InkTest sample
+for the code you need to handle this. In the future, we may provide
+this is common support code or build resource registration into
+MOA.
+<h5><A NAME="RTFToC76">Actor type</A></h5>
+
+<P>
+key: kMoaMmDictKey_ActorType
+<P>
+string: &quot;actorType&quot;
+<P>
+type: kMoaMmDictType_ActorType
+<P>
+base type: kMoaDictType_Long
+<h5><A NAME="RTFToC77">Asset capabilities</A>
+</h5>
+
+<P>
+key: kMoaMmDictKey_AssetCaps
+<P>
+string: &quot;assetCaps&quot;
+<P>
+type: kMoaMmDictType_AssetCaps
+<P>
+base type: kMoaDictType_Bytes
+<h5>Message table</h5>
+
+<P>
+key: kMoaMmDictKey_MessageTable
+<P>
+string: &quot;msgTable&quot;
+<P>
+type: kMoaMmDictType_MessageTable
+<P>
+base type: kMoaDictType_CString
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC78">Transition keys</A> </h4>
+
+<P>
+<A NAME="RTFToC79">Keys used to register Xtras implementing the
+</A><A HREF="mmxtrnst.htm">IMoaMmXTransitionActor</A> interface.
+
+<h5>Transition capabilities </h5>
+
+<P>
+key: kMoaMmDictKey_TransitionCaps
+<P>
+string: &quot;transitionCaps&quot;
+<P>
+type: kMoaMmDictType_TransitionCaps
+<P>
+base type: kMoaDictType_Bytes
+<h5><A NAME="RTFToC80">Transition chunk size</A>
+</h5>
+
+<P>
+key: kMoaMmDictKey_TransDefaultChunkSize
+<P>
+string: &quot;transitionDefaultChunkSize&quot;
+<P>
+type: kMoaMmDictType_TransDefaultChunkSize
+<P>
+base type: kMoaDictType_Long
+<h5><A NAME="RTFToC81">Transition default area</A>
+</h5>
+
+<P>
+key: kMoaMmDictKey_TransDefaultArea
+<P>
+string: &quot;transitionDefaultArea&quot;
+<P>
+type: kMoaMmDictType_TransDefaultArea
+<P>
+base type: kMoaDictType_Long
+<h5><A NAME="RTFToC82">Transition default duration</A>
+</h5>
+
+<P>
+key: kMoaMmDictKey_TransDefaultDuration
+<P>
+string: &quot;transitionDefaultDuration&quot;
+<P>
+type: kMoaMmDictType_TransDefaultDuration
+<P> base type: kMoaDictType_Long
+<hr width=45% align=left>
+
+<h4>Scripting Xtra keys </h4>
+
+<P>
+Key used to register Xtras implementing the <A HREF="mmxscrpt.htm">IMoaMmXScript</A>
+interface. 
+<P>
+key: <TT>kMoaMmDictKey_MessageTable</TT>
+<P>
+symbol: &quot;msgTable&quot;
+<P>
+type: <TT>kMoaMmDictType_MessageTable</TT>
+<P>
+base type: <TT>kMoaDictType_CString</TT>
+<hr width=45% align=left>
+
+<h4>Tool Xtra keys </h4>
+
+<P>
+Key used to register Xtras implementing the <A HREF="mmxtool.htm">IMoaMmXTool</A>
+interface. 
+<P>
+key: <TT>kMoaMmDictKey_AlwaysEnabled</TT>
+<P>
+symbol: &quot;alwaysEnabled&quot;
+<P>
+type:<TT>kMoaMmDictType_AlwaysEnabled</TT>
+<P>
+base type: <TT>kMoaDictType_Long</TT>
+
+<hr width=45% align=left>
+
+<h3><A NAME="MMERRS">Multimedia Error Codes</A> </h3>
+
+<P>
+Defined in: mmtypes.h
+
+<h4><A NAME="RTFToC84">General errors</A> </h4>
+
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+<TR><TD WIDTH=237><B>Error</B></TD><TD WIDTH=481><B>Description</B>
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_Base</TT>
+</TD><TD WIDTH=481>Base for MOA Multimedia API error codes</TD>
+</TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_NotImplemented</TT>
+</TD><TD WIDTH=481>Method not implemented</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_InterfaceNotFound</TT>
+</TD><TD WIDTH=481>Interface not provided by Xtra or application
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_InternalError</TT>
+</TD><TD WIDTH=481>Internal error</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_XAssetTypeUnknown</TT>
+</TD><TD WIDTH=481>Unknown Xtra type</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_GCTypeNotSupported</TT>
+</TD><TD WIDTH=481>Unsupported graphics context specified</TD>
+</TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_GCNotModifiable</TT>
+</TD><TD WIDTH=481>An attempt is made to modify an application-owned graphics context
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_GCNotAvailable</TT>
+</TD><TD WIDTH=481>Attempted to get a stage window graphics context or a stage buffer graphics context and one isn't available
+</TD></TR>
+
+<TR><TD WIDTH=237><TT>kMoaMmErr_NotRegistered</TT>
+</TD><TD WIDTH=481>You attempted to unregister an object (such as a <TT>PIMoaMmMacEventHandler</TT>) that is not currently registered.
+</TD></TR>
+
+</TABLE>
+
+<P>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC85">Call handler errors</A> </h4>
+
+<P>
+<TT>kMoaMmErr_FunctionNotFound</TT><br>
+<TT>kMoaMmErr_NoArgExpected</TT><br>
+<TT>kMoaMmErr_OneArgExpected</TT><br>
+<TT>kMoaMmErr_TwoArgsExpected</TT><br>
+<TT>kMoaMmErr_ThreeArgsExpected</TT><br>
+<TT>kMoaMmErr_FourArgsExpected</TT><br>
+<TT>kMoaMmErr_WrongNumberOfArgs</TT><br>
+<TT>kMoaMmErr_NotRegistered</TT>
+
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC86">Property access errors</A> </h4>
+
+<P>
+Errors returned by methods of the <A HREF="mmprpown.htm">IMoaMmPropOwner</A>
+interface.
+<P>
+<TT>kMoaMmErr_PropertyNotFound</TT><br>
+<TT>kMoaMmErr_CannotSetProperty</TT><br>
+<TT>kMoaMmErr_NoMemForString</TT><br>
+<TT>kMoaMmErr_ArgOutOfRange</TT><br>
+<TT>kMoaMmErr_IntegerExpected</TT><br>
+<TT>kMoaMmErr_SymbolExpected</TT><br>
+<TT>kMoaMmErr_FloatExpected</TT><br>
+<TT>kMoaMmErr_StringExpected</TT><br>
+<TT>kMoaMmErr_PointExpected</TT><br>
+<TT>kMoaMmErr_RectExpected</TT>
+<hr width=45% align=left>
+
+<h4><A NAME="RTFToC87">Tool Xtra errors</A></h4>
+
+<P>
+Error returned by Xtras implementing the <A HREF="mmxtool.htm">IMoaMmXTool</A>
+interface. 
+<P>
+<TT>kMoaMmErr_ToolDisabled</TT>
+Tool disabled
+<hr width=45% align=left>
+
+<h4>Miscellaneous errors</h4>
+
+<TT>kMoaMmErr_NotRegistered</TT><br>
+<TT>kMoaMmErr_StreamInFailed</TT><br>
+<TT>kMoaMmErr_StreamOutFailed</TT><br>
+<TT>kMoaMmErr_FreeFailed</TT><br>
+<TT>kMoaMmErr_AssetCreationFailed</TT><br>
+<TT>kMoaMmErr_GCNotModifiable</TT><br>
+<TT>kMoaMmErr_GCNotAvailable</TT><br>
+<TT>kMoaMmErr_WinGNotEnabled</TT><br>
+<TT>kMoaMmErr_UnknownNotifyMsgCode</TT><br>
+<TT>kMoaMmErr_ValueTypeMismatch</TT><br>
+<TT>kMoaMmErr_MatrixValueExpected</TT><br>
+<TT>kMoaMmErr_VectorValueExpected</TT>
+
+<hr width=45% align=left>
+
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

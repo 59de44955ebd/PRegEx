@@ -1,0 +1,7 @@
+LIBRARY   PRegEx.x32
+EXPORTS
+			DllGetClassObject PRIVATE
+			DllGetInterface
+			DllGetClassForm
+			DllCanUnloadNow PRIVATE
+			DllGetClassInfo

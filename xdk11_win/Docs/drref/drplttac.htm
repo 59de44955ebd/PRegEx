@@ -1,0 +1,136 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaDrPaletteAccess</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+<h2><A NAME="IMoaDrPaletteAccess">IMoaDrPaletteAccess</A></H2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrPaletteAccess<BR>
+  </CODE>Pointer type: <CODE>PIMoaDrPaletteAccess<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/driservc.h">driservc.h</A> <BR>
+<H3>Description</H3>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>IMoaDrPaletteAccess</TT> interface is provided in Director
+    by the main callback object. Use this interface to access the
+    media of the built in palettes supplied by director. To acquire <TT>IMoaDrPaletteAccess,</TT> call <TT>QueryInterface()</TT> on
+    the main callback object. <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Media access </H4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetBuiltInPaletteCount">GetBuiltInPaletteCount()</A> <BR>
+    <A HREF = "#GetNthBuiltInPaletteSymbol">GetNthBuiltInPaletteSymbol()</A> <BR>
+    <A HREF = "#GetBuiltInPaletteMedia">GetBuiltInPaletteMedia()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetBuiltInPaletteCount">GetBuiltInPaletteCount()</A> </H3>
+<h4>Syntax</H4>
+<DL>
+  <DD>
+  <CODE>GetBuiltInPaletteCount(PIMoaDrPaletteAccess <I>This</I>,
+  <DD> MoaUlong FAR * <I>pCount</I>)
+  </CODE>
+  </DL>
+<h4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrPaletteAccess</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pCount</I></CODE>
+  <DD>returns the number of build in palettes in Director<BR>
+    <BR>
+</DL>
+<h4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</H4>
+<DL>
+  <DT>
+  <DD><BR>
+    Returns the number of palettes supported internally by Director. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetBuiltInPaletteMedia">GetBuiltInPaletteMedia()</A> </H3>
+<h4>Syntax</H4>
+<DL>
+  <DD>
+  <CODE>GetBuiltInPaletteMedia(PIMoaDrPaletteAccess <I>This</I>,
+  <DD> MoaMmSymbol <I>paletteSymbol</I>, <BR>
+    PMoaVoid FAR * <I>pPaletteMedia</I>)
+  </CODE>
+  </DL>
+<h4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrPaletteAccess</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>paletteSymbol</I></CODE>
+  <DD>the symbol for the palette to access<BR>
+    <BR>
+  <DT><CODE><I>pPaletteMedia</I></CODE>
+  <DD>returns the actual palette media<BR>
+    <BR>
+</DL>
+<h4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE> <BR>
+</DL>
+<h4>Description</H4>
+<DL>
+  <DT>
+  <DD>Returns the system-dependent palette media as a handle in <I>pPaletteMedia</I>.  This handle references a <CODE>CTable</CODE> on the Macintosh, and an <CODE>HTable</CODE> on Windows.  The
+    caller owns rule applies to the returned media.
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetNthBuiltInPaletteSymbol">GetNthBuiltInPaletteSymbol()</A> </H3>
+<h4>Syntax</H4>
+<DL>
+  <DD>
+  <CODE>GetNthBuiltInPaletteSymbol(PIMoaDrPaletteAccess <I>This</I>,
+  <DD> MoaUlong <I>nPalette</I>, <BR>
+    PMoaMmSymbol <I>pPaletteSymbol</I>)
+  </DL>
+<h4>Parameters</H4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrPaletteAccess</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>nPalette</I></CODE>
+  <DD>the index of the palette to access.<BR>
+    <BR>
+  <DT><CODE><I>pPaletteSymbol</I></CODE>
+  <DD>returns the symbol for the palette<BR>
+    <BR>
+</DL>
+<h4>Returns</H4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE> <BR>
+</DL>
+<h4>Description</H4>
+<DL>
+  <DT>
+  <DD>Returns the symbol for the built in palette at <I>nPalette</I>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>

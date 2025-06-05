@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaProgressBox</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h3>IMoaProgressBox</h3>
+<P>Interface ID: <CODE>IID_IMoaProgressBox<BR>
+  </CODE>Pointer type: <CODE>PIMoaProgressBox<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A>
+  
+<DL>
+<DT class="heading4">Description</DT>
+  <DD>
+    This optional callback interface may be provided by an application's callback object to provide methods for reporting progress to the user.
+    In Director this interface is only provided in the Authoring environment, it is not available in Projectors or Shockwave.
+</DL>
+
+<h4>Methods</h4>
+<DL>
+<DT class="heading5">Opening and closing </DT>
+  <DD><A HREF = "#OpenProgress">OpenProgress()</A> <BR>
+    <A HREF = "#CloseProgress">CloseProgress()</A>
+</DL>
+<DL>
+<DT class="heading5">Setting text</DT>
+  <DD><A HREF = "#SetCaption">SetCaption()</A> <BR>
+    <A HREF = "#SetUserMessage">SetUserMessage()</A>
+</DL>
+<DL>
+<DT class="heading5">Showing progress</DT>
+  <DD><A HREF = "#SetUserProgress">SetUserProgress()</A>
+</DL>
+<DL>
+<DT class="heading5">Testing for cancel</DT>
+  <DD><A HREF = "#TestUserCanceled">TestUserCanceled()</A>
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="CloseProgress">CloseProgress()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DT><CODE>CloseProgress()</CODE></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD>void</DD>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Closes the progress dialog box.
+</DL>
+<hr width=45% align=left>
+<h4><A NAME="OpenProgress">OpenProgress()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DD>
+  <DT><CODE>OpenProgress(MoaBoolParam <I>showStopButton</I>)</CODE></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DD>
+  <DT><CODE><I>showStopButton</I></CODE>
+  <DD>Determines whether progress box displays Stop button
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><TT>void</TT>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DT>
+  <DD>Opens the progress dialog box for an operation. 
+  If <TT><I>showStopButton</I></TT> is TRUE, the progress dialog box displays a Stop button, allowing the user to cancel the operation.
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="SetCaption">SetCaption()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DT><code>SetCaption(ConstPMoaChar <I>sCaption</I>)</code></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DT><CODE><I>sCaption</I></CODE></DT>
+  <DD>String representing the caption for the progress dialog box</DD>
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Assigns the provided string as the caption for the progress box.</DD>
+</DL>
+<hr width=45% align=left>
+<h4><A NAME="SetUserMessage">SetUserMessage()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DD>
+  <DT><CODE>SetUserMessage(ConstPMoaChar <I>sMessage</I>)</CODE></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DT><CODE><I>sMessage</I></CODE>
+  <DD>String representing the user message for the progress dialog box</DD>
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Sets an optional message <TT><I>sMessage</I></TT> to display in the dialog box. 
+  This message can be updated periodically to report changes in processing status.
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="SetUserProgress">SetUserProgress()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DT><CODE>SetUserProgress(MoaUlong <I>done</I>, MoaUlong <I>total</I>)</CODE></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+  <DT><CODE><I>done</I></CODE>
+  <DD>Integer representing the amount of processing completed
+  <DT><CODE><I>total</I></CODE>
+  <DD>Integer representing total processing to be completed
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Sets the amount of progress displayed in the dialog box. 
+  The progress displayed will be the proportion of the value of <I>done</I> to the value of <I>total</I>.
+</DL>
+
+<hr width=45% align=left>
+<h4><A NAME="TestUserCanceled">TestUserCanceled()</A></h4>
+<DL>
+<DT class="heading5">Syntax</DT>
+  <DT><CODE>TestUserCanceled()</CODE></DT>
+  </DL>
+<DL>
+<DT class="heading5">Parameters</DT>
+</DL>
+<DL>
+<DT class="heading5">Returns</DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<DL>
+<DT class="heading5">Description</DT>
+  <DD>Tests whether the user has canceled the process from the progress dialog box.
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

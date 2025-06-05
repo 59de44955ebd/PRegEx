@@ -1,0 +1,314 @@
+<html><head><title>IMoaAwPlayer</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<A HREF = "index.htm"> AW Interfaces </A> | <A HREF = "awmthndx.htm"> AW Methods</A> | <A HREF = "awtypndx.htm">AW Types and Misc API </A><BR>
+
+<BR>
+
+<hr width=45% align=left>
+
+<h2><A name = "IMoaAwPlayer">IMoaAwPlayer</A></h2><hr width=45% align=left><BR>
+
+
+
+Interface ID: <CODE>IID_IMoaAwPlayer</CODE><BR>
+
+Pointer type: <CODE>PIMoaAwPlayer</CODE><BR>
+
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+
+Header file: <A HREF = "../../../includes/awiservc.h">awiservc.h</A><BR>
+
+
+
+<DL><DT><h3>Description</h3><DD>
+
+
+
+The <tt>IMoaAwPlayer</tt> interface provides Authorware player-specific
+
+services.
+
+
+
+</DL><BR>
+
+
+
+<h3>Methods</h3>
+
+<!MethodListBegin>
+
+<h4>Piece
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#GetActivePiece">GetActivePiece()</A>
+
+</DL><!mcPiece>
+
+
+
+<h4>Sound
+
+
+
+</h4>
+
+<DL>
+
+<DD><A HREF = "#CloseSoundDriver">CloseSoundDriver()</A>
+
+</DL><!mcSound>
+
+<!mcMiscBegin><h4>Streaming</h4>
+
+<DL>
+
+<DD><A HREF = "#GetStreamOutSaveDataSize">GetStreamOutSaveDataSize()</A>
+
+<BR><A HREF = "#StreamOutSaveData">StreamOutSaveData()</A>
+
+
+
+<BR><A HREF = "#StreamInSaveData">StreamInSaveData()</A>
+
+
+
+</DL><!mcMiscellaneou>
+
+
+
+<!MethodListEnd></DL>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "CloseSoundDriver">CloseSoundDriver()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>CloseSoundDriver(PIMoaAwPlayer <I>This</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPlayer</CODE> interface<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+The <tt>IMoaAwSaveState</tt> interface is optionally supplied by an asset,
+
+sprite actor, or
+
+scripting Xtra.  Authorware obtains it through a QueryInterface on
+
+<tt>IMoaMmXAsset</tt>, <tt>IMoaMmXSpriteActor</tt>,
+
+or <tt>IMoaDrXLingo</tt>.  It provides a way for these objects to persist
+
+from one session to the next,
+
+that is,  when a piece resumes after quit.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetActivePiece">GetActivePiece()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetActivePiece(PIMoaAwPlayer <I>This</I>, <BR>
+
+<DD>PIMoaAwPiece FAR *  <I>ppIMoaAwPiece</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPlayer</CODE> interface<BR><BR>
+
+<DT><CODE><I>ppIMoaAwPiece</I></CODE><DD>Pointer to the returned interface<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+
+
+Returns an interface that can be used to access the currently active piece.
+
+
+
+</DL><BR>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "GetStreamOutSaveDataSize">GetStreamOutSaveDataSize()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>GetStreamOutSaveDataSize(PIMoaAwPlayer <I>This</I>, <BR>
+
+<DD>MoaUlong FAR <I>*pSizeBytes</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPlayer</CODE> interface<BR><BR>
+
+<DT><CODE><I>*pSizeBytes</I></CODE><DD>Pointer to size of data to save<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR>
+
+</TABLE>
+
+</DL>
+
+
+
+
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "StreamInSaveData">StreamInSaveData()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>StreamInSaveData(PIMoaAwPlayer <I>This</I>, <BR>
+
+<DD>PIMoaStream   <I>pInStream</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPlayer</CODE> interface<BR><BR>
+
+<DT><CODE><I>pInStream</I></CODE><DD><TT>IMoaStream</TT> interface to use for reading data<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR>
+
+</TABLE>
+
+</DL>
+
+
+
+
+
+<hr width=45% align=left><h3><A name = "StreamOutSaveData">StreamOutSaveData()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD><CODE>
+
+<DL><DT>StreamOutSaveData(PIMoaAwPlayer <I>This</I>, <BR>
+
+<DD>PIMoaStream   <I>pOutStream</I>)</CODE></DL><BR>
+
+</DL>
+
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaAwPlayer</CODE> interface<BR><BR>
+
+<DT><CODE><I>pOutStream</I></CODE><DD><TT>IMoaStream</TT> interface to use for saving data<BR><BR>
+
+</DL>
+
+</DL>
+
+<DL><DT><h4>Returns</h4>
+
+<DD><TABLE BORDER="2">
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><TT>kMoaErr_NoErr</TT>
+
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355>Function call succeeded
+
+</TD></TR>
+
+</TABLE>
+
+</DL>
+
+<hr width=45% align=left>
+
+<A HREF = "../copyrite.htm">Copyright &#169; 1996-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

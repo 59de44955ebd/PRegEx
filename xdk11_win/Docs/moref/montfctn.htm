@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaNotification</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2><A NAME="IMoaNotification">IMoaNotification</A></h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaNotification<BR>
+  </CODE>Pointer type: <CODE>PIMoaNotification<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/moanotif.h">moanotif.h</A> <BR>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#RegisterNotificationClient">RegisterNotificationClient()</A> <BR>
+    <A HREF = "#UnregisterNotificationClient">UnregisterNotificationClient()</A> <BR>
+    <A HREF = "#SendNotification">SendNotification()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="RegisterNotificationClient">RegisterNotificationClient()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>RegisterNotificationClient(PIMoaNotification <I>This</I>,
+  <DD><BR>
+    PIMoaNotificationClient <I>pClient</I>, <BR>
+    ConstPMoaNotifyID <I>nid</I>, <BR>
+    ConstPMoaVoid <I>pNData</I>, <BR>
+    ConstPMoaVoid <I>pRefCon) </I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaNotification</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pClient</I></CODE>
+  <DD>PIMoaNotificationClient <BR>
+    <BR>
+  <DT><CODE><I>nid</I></CODE>
+  <DD>ConstPMoaNotifyID <BR>
+    <BR>
+  <DT><CODE><I>pNData</I></CODE>
+  <DD>ConstPMoaVoid <BR>
+    <BR>
+  <DT><CODE><I>pRefCon) </I></CODE>
+  <DD>ConstPMoaVoid <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SendNotification">SendNotification()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>SendNotification(PIMoaNotification <I>This</I>,
+  <DD><BR>
+    ConstPMoaNotifyID <I>nid</I>, <BR>
+    ConstPMoaVoid <I>pNData) </I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaNotification</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>nid</I></CODE>
+  <DD>ConstPMoaNotifyID <BR>
+    <BR>
+  <DT><CODE><I>pNData) </I></CODE>
+  <DD>ConstPMoaVoid <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="UnregisterNotificationClient">UnregisterNotificationClient()</A> </h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>UnregisterNotificationClient(PIMoaNotification <I>This</I>,
+  <DD><BR>
+    PIMoaNotificationClient <I>pClient</I>, <BR>
+    ConstPMoaNotifyID <I>nid</I>, <BR>
+    ConstPMoaVoid <I>pNData) </I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaNotification</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pClient</I></CODE>
+  <DD>PIMoaNotificationClient <BR>
+    <BR>
+  <DT><CODE><I>nid</I></CODE>
+  <DD>ConstPMoaNotifyID <BR>
+    <BR>
+  <DT><CODE><I>pNData) </I></CODE>
+  <DD>ConstPMoaVoid <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<P>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

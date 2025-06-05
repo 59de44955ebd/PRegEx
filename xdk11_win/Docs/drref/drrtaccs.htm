@@ -1,0 +1,181 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaDrRTAccess</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+<h2><A NAME="IMoaDrRTAccess">IMoaDrRTAccess</A></h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrRTAccess<BR>
+  </CODE>Pointer type: <CODE>PIMoaDrRTAccess<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/driservc.h">driservc.h</A> <BR>
+<h4>Description</h4>
+<p>This interface is obsolete has not been supported since Director 6.</p>
+
+<DL>
+  <DT>
+  <DD>This Director callback interface is used to convert a text
+    string containing arbitrary formatting to an <A HREF = "dralphdt.htm"><CODE>IMoaDrAlphaData</CODE></A> object that can be rendered in any graphics context. Two of the
+    three methods of this interface are available only at authoring
+    time.
+    <P>To create an <CODE>IMoaDrAlphaData</CODE> object, you
+      call the <A HREF = "#GenerateAlphaData"><CODE>IMoaDrRTAccess::GenerateAlphaData()</CODE></A> method, passing a string representing the text to render, and
+      arrays of information about any style runs contained within the
+      text. Styles in runs are specified using the <A HREF="drtypndx.htm#MoaDrCharStyleData"><CODE>MoaDrCharStyleData</CODE></A> structure. <BR>
+</DL>
+<h4>Methods</h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetFontFromUser">GetFontFromUser()</A> <BR>
+    <A HREF = "#GenerateAlphaData">GenerateAlphaData()</A> <BR>
+    <A HREF = "#NewAlphaData">NewAlphaData()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GenerateAlphaData">GenerateAlphaData()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GenerateAlphaData(PIMoaDrRTAccess <I>This</I>,
+  <DD>PMoaDrCharStyleData <I>pStyleData</I>, <BR>
+    MoaLong FAR * <I>selStart</I>, <BR>
+    MoaLong FAR * <I>selEnd</I>, <BR>
+    MoaLong <I>styleCount</I>, <BR>
+    MoaLong <I>width</I>, <BR>
+    const MoaChar FAR * <I>pText</I>, <BR>
+    PIMoaDrAlphaData FAR * <I>pAlphaData</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrRTAccess</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pStyleData</I></CODE>
+  <DD>Array of <A HREF="drtypndx.htm#MoaDrCharStyleData">MoaDrCharStyleData</FONT></A> structures<BR>
+    <BR>
+  <DT><CODE><I>selStart</I></CODE>
+  <DD>Array of indexes to starting positions<BR>
+    <BR>
+  <DT><CODE><I>selEnd</I></CODE>
+  <DD>Array of indexes to ending positions<BR>
+    <BR>
+  <DT><CODE><I>styleCount</I></CODE>
+  <DD>Number of entries in style arrays<BR>
+    <BR>
+  <DT><CODE><I>width</I></CODE>
+  <DD>Wrap width of text<BR>
+    <BR>
+  <DT><CODE><I>pText</I></CODE>
+  <DD>Text<BR>
+    <BR>
+  <DT><CODE><I>pAlphaData</I></CODE>
+  <DD>Interface for rendering specified text<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to convert a string formatting specification
+    to an <CODE>IMoaDrAlphaData</CODE> object to use to render the
+    formatted text as specified. The string formatting specification
+    consists of several paramaters.
+    <P>The three arrays, <CODE><I>pStyleData</I></CODE>, <CODE><I>selStart</I></CODE>,
+      and <CODE><I>selStart</I></CODE>,
+      represent the position and formatting of particular style runs
+      within the string <CODE><I>pText</I></CODE>.
+      The <CODE><I>styleCount</I></CODE> parameter represents the number of entries in these arrays. When
+      you call this method, it creates and returns an <CODE>IMoaDrAlphaData</CODE> object to render the string according to the styles represented
+      in the arrays. You can then call methods of the <A HREF = "dralphdt.htm"><CODE>IMoaDrAlphaData</CODE></A> interface to render the text in a graphics context, and to save
+      and retrieve it. According to the &quot;caller owns&quot; rule,
+      you are responsible for releasing this interface when you are
+      through with it.
+    <P>This method performs as documented only at
+      authoring time, when the Director rtf rendering engine is available
+      to support it.   At playback time, it simply returns <CODE>kMoaDrErr_AuthorTimeOnly</CODE>. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetFontFromUser">GetFontFromUser()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetFontFromUser(PIMoaDrRTAccess <I>This</I>,
+  <DD>PMoaDrCharStyleData <I>pStyleData</I>, <BR>
+    PMoaDrCharApplyStyle <I>pApplyStyleFlags</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrRTAccess</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pStyleData</I></CODE>
+  <DD>Structure representing style data<BR>
+    <BR>
+  <DT><CODE><I>pApplyStyleFlags</I></CODE>
+  <DD>Value representing user accepting or cancelling font selection <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Displays the standard Font dialog to let the user specify
+    a font. The <CODE><I>pStyleData</I></CODE> parameter returns the formatting information. The <CODE><I>pApplyStyleFlags</I></CODE> specifies whether the user has accepted the selected font or cancelled.
+    <P>When
+      you call this method, you supply a <CODE>PMoaDrSyleData</CODE> structure to be filled with formatting information. Fill this
+      structure before calling to specify the defaults to display in
+      the Font dialog.
+    <P>This method performs as documented only at
+      authoring time.  At playback time, it simply returns <CODE>kMoaDrErr_AuthorTimeOnly</CODE>.
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="NewAlphaData">NewAlphaData()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>NewAlphaData(PIMoaDrRTAccess <I>This</I>,
+  <DD>PIMoaDrAlphaData FAR * <I>pAlphaData</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrRTAccess</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pAlphaData</I></CODE>
+  <DD>Instance of <CODE>IMoaDrAlphaData<BR>
+    <BR>
+    </CODE>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Creates and returns an instance of the <A HREF = "dralphdt.htm"><CODE>IMoaDrAlphaData</CODE></A> interface. If you implement an Asset Xtra that uses an <CODE>IMoaDrAlphaData</CODE> object to render text, call this method in your <A HREF = "../mmref/mmxasset.htm#StreamInMedia"><CODE>IMoaMmXAsset::StreamInMedia() </CODE></A>or <A HREF = "../mmref/mmxasset.htm#StreamInProps"><CODE>IMoaMmXAsset::StreamInProps()</CODE></A> methods to create an instance, then call <A HREF="dralphdt.htm#StreamIn"><CODE>IMoaDrAlphaData::StreamIn()</CODE></A> on the resulting object to actually perform the streaming.
+    <P>This is the only method of this interface
+      available at playback time.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>

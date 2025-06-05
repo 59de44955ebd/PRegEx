@@ -1,0 +1,78 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMuiAlert</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../mudg/index.htm" >MUI Developer's Guide</A> <BR>
+<A HREF="index.htm" >MUI Interfaces</A> | <A HREF="mumthndx.htm" >MUI Methods</A> | <A HREF="mutypndx.htm" >MUI Types and Misc API</A>
+<HR width=45% align=left>
+<h2><A NAME="IMuiAlert">IMuiAlert</A></h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMuiAlert<BR>
+  </CODE>Class ID: <CODE>CLSID_MuiAlert<BR>
+  </CODE>Pointer type: <CODE>PIMuiAlert<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/mui.h">mui.h</A> <BR>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#Alert">Alert()</A>
+</DL>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD>Platform independent interface for displaying alert boxes,
+    provided by the Mui Xtra.
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Alert">Alert()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Alert(PIMuiAlert <I>This</I>,
+  <DD> PMoaChar <I>message</I>, <BR>
+    PMoaChar <I>title</I>, <BR>
+    TMuiAlertButtonType <I>buttons</I>, <BR>
+    MoaLong <I>defaultButton</I>, <BR>
+    TMuiAlertIcon <I>icon </I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</FONT></I></CODE>
+  <DD>Pointer to the <CODE>IMuiAlert</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>message</FONT></I></CODE>
+  <DD>String for alert message<BR>
+    <BR>
+  <DT><CODE><I>title</FONT></I></CODE>
+  <DD>String for window title <BR>
+    <BR>
+  <DT><CODE><I>buttons</FONT></I></CODE>
+  <DD><A HREF="mutypndx.htm#TMuiAlertButtonType">TMuiAlertButtonType</A> value for the button combination to display<BR>
+    <BR>
+  <DT><CODE><I>defaultButton</FONT></I></CODE>
+  <DD>Value to select the default button by position (1 for left-most,
+    etc.)<BR>
+    <BR>
+  <DT><CODE><I>icon </FONT></I></CODE>
+  <DD><A HREF="mutypndx.htm#TMuiAlertIcon">TMuiAlertIcon</A> value
+    for the icon type<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Displays a platform-independent dialog box.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body>
+</html>

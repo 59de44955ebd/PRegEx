@@ -1,0 +1,222 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaMmWndWin</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<P> <A HREF="../mmdg/index.htm">MM Developer's Guide</A> <BR>
+  <A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A> | <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+<h2><A NAME="IMoaMmWndWin">IMoaMmWndWin</A></h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaMmWndWin<BR>
+  </CODE>Pointer type: <CODE>PIMoaMmWndWin<BR>
+  </CODE>Inheritance: <CODE>IMoaUnknown<BR>
+  </CODE>Header file: <A HREF = "../../include/mmiwndw.h">mmiwndw.h</A> <BR>
+<h3>Description</h3>
+<P> This interface supports Windows-specific user interface display.
+<P> As an alternative to this platform-specific API, consider using
+  the MUI XDK instead. It
+  provides platform-independent interfaces that support dialogs
+  containing a variety of widget types, including dynamic layout
+  capabilities and a standard event-handling mechanism. The MUI
+  API also lets you easily display system alerts, file dialogs,
+  and URL dialogs.  See the <A HREF="../mudg/index.htm">MUI Developer's
+  Guide</A> for information on which applications support the MUI API and
+  MUI Xtra.
+<P> With <A HREF="mmutils2.htm">IMoaMmUtils2</A>, <A HREF="mmvalue.htm">IMoaMmValue</A>,
+  and <A HREF="mmwndmac.htm">IMoaMmWndMac</A>, this interface supercedes <CODE>IMoaMmUtils</CODE>, which has been made redundant. <BR>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#WinDialogBox">WinDialogBox()</A> <BR>
+    <A HREF = "#WinGetParent">WinGetParent()</A> <BR>
+    <A HREF = "#WinDialogBoxParam">WinDialogBoxParam()</A> <BR>
+    <A HREF = "#WinPrepareDialogBox">WinPrepareDialogBox()</A> <BR>
+    <A HREF = "#WinUnprepareDialogBox">WinUnprepareDialogBox()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WinDialogBox">WinDialogBox()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WinDialogBox(PIMoaMmWndWin <I>This</I>,
+  <DD>XtraResourceCookie <I>resCookie</I>, <BR>
+    ConstPMoaChar <I>lpszTemplate</I>, <BR>
+    PMoaVoid <I>dlgprc</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmWndWin</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>resCookie</I></CODE>
+  <DD>XtraResourceCookie<BR>
+    <BR>
+  <DT><CODE><I>lpszTemplate</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+  <DT><CODE><I>dlgprc</I></CODE>
+  <DD>PMoaVoid<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><TT>MoaLong</TT>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Use this on Windows instead of calling the Windows API <TT>DialogBox()</TT>function.
+    This allows the host application to perform any special handling
+    it may require when a modal dialog is displayed. This also sets
+    the parent window correctly so there is no need to pass the window
+    in as an argument. Be sure to bracket your call to <TT>WinDialogBox()</TT> with calls to <TT>MoaBeginUsingResources()</TT>, <TT>MoaEndUsingResources()</TT>.
+    Pass in the cookie you get as a return value from <TT>MoaBeginUsingResources()</TT> as the first argument to <TT>WinDialogBox()</TT> (the HINST). <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WinDialogBoxParam">WinDialogBoxParam()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WinDialogBoxParam(PIMoaMmWndWin <I>This</I>,
+  <DD>XtraResourceCookie <I>resCookie</I>, <BR>
+    ConstPMoaChar <I>lpszTemplate</I>, <BR>
+    PMoaVoid <I>dlgprc</I>, <BR>
+    MoaLong <I>lparamInit</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmWndWin</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>resCookie</I></CODE>
+  <DD>XtraResourceCookie<BR>
+    <BR>
+  <DT><CODE><I>lpszTemplate</I></CODE>
+  <DD>ConstPMoaChar<BR>
+    <BR>
+  <DT><CODE><I>dlgprc</I></CODE>
+  <DD>PMoaVoid<BR>
+    <BR>
+  <DT><CODE><I>lparamInit</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><TT>MoaLong</TT>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Same as <TT>WinDialogBox()</TT>,
+    except takes the <TT><I>lparamInit</FONT></I></TT> argument to pass as an initial value to the event processor function.
+    Use this on Windows instead of calling the Windows API <TT>DialogBoxParam()</TT>function. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WinGetParent">WinGetParent()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WinGetParent(PIMoaMmWndWin <I>This</I>,
+  <DD>MoaMmHInst FAR * <I>phInst</I>, <BR>
+    MoaMmHWnd FAR * <I>phWnd</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmWndWin</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>phInst</I></CODE>
+  <DD><CODE>MoaMmHInst FAR *</CODE>Handle to the host application's <TT>HINSTANCE</TT> <BR>
+    <BR>
+  <DT><CODE><I>phWnd</I></CODE>
+  <DD><CODE>MoaMmHWnd FAR *</CODE>Handle to the host application's
+    parent window <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the <TT>HINSTANCE</TT> handle of the host application and the <TT>HWND</TT> handle to the parent window. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WinPrepareDialogBox">WinPrepareDialogBox()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WinPrepareDialogBox(PIMoaMmWndWin <I>This</I>,
+  <DD>PMoaMmDialogCookie <I>pDialogCookie</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmWndWin</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDialogCookie</I></CODE>
+  <DD>PMoaMmDialogCookie<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method before showing a system or other type of
+    dialog box on Windows. If you're using <TT>WinDialogBox() </TT>or <TT>WindDialogBoxParam()</TT>,
+    you do not need to call this method. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="WinUnprepareDialogBox">WinUnprepareDialogBox()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>WinUnprepareDialogBox(PIMoaMmWndWin <I>This</I>,
+  <DD>MoaMmDialogCookie <I>dialogCookie</I>) 
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmWndWin</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>dialogCookie</I></CODE>
+  <DD>MoaMmDialogCookie<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method after showing a system or other type of dialog
+    box on Windows. If you're using <TT>WinDialogBox() </TT>or <TT>WindDialogBoxParam()</TT>,
+    you do not need to call this method.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

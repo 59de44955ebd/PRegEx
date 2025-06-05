@@ -1,0 +1,163 @@
+=================================================
+PRegEx Version 2.0 Build Notes
+=================================================
+
+	This document should be read by people who want to build, modify,
+	or review the source code for PRegEx.  Everyone else can ignore it.
+
+	Part of the philosophy of an open source project is to include
+	everything anyone would need to completely rebuild the project
+	from scratch.
+
+	Accordingly, PRegEx is always released along with the complete
+	source and documentation and all of the rest of the files you will
+	need to build the project yourself from scratch and get started
+	right away working with the source code.
+
+
+Prerequisites:
+
+	- Director 11.0 or later for both Mac OS X and Windows XP
+
+	- Latest XCode for the Mac
+
+	- Latest patched Visual Studio for Windows, plus MinGW and MSYS packages
+
+Build instructions
+
+	- Unzip the distribution file into a folder called "pregex".
+
+	- Follow the instructions in these files:
+	  - pregex/build_mac/DeveloperNotes.txt
+	  - pregex/build_win/DeveloperNotes.txt
+
+	- The release builds of the Xtra end up here:
+	  - pregex/xtras/PRegEx.xtra
+	  - pregex/xtras/PRegEx.x32
+
+	- The debug builds end up here:
+	  - pregex/build_mac/Debug/PRegEx.xtra
+	  - pregex/build_win/Debug/PRegEx.x32
+
+Testing
+
+	- In Director (Mac or Win), open the test movie here:
+	  - pregex/project/test/PRegExTestMovie.dir
+
+	- Click play. (This loads the Xtra.)
+
+	- (optional) Check the button on the stage to use the Debug builds    
+	  - (Click play again to re-load the Debug build any time.)
+
+	- Click the button to run the test suite.
+
+	- Watch the output in the Message Window.	
+
+Source files:
+
+	1) primary xtra source files
+
+	   - pregex/project/source/re_main.cpp		==> All the source is in here.
+	   - pregex/project/source/re_main.h
+	   - pregex/project/source/re_reg.cpp		==> Entry point descriptions for Lingo
+	   - pregex/project/source/re_reg.h
+	   - pregex/project/source/re_xtra.cpp		==> MOA Housekeeping stuff.
+
+	2) pcre_custom files
+
+	   - pregex/project/source/pcre_custom/....
+
+	These files are PRegEx's customized versions of the files that
+	must be customized by any project that wants to use PCRE.  After
+	building, You can compare them to the ones in pregex/pcre-7.7 to
+	see the differences.
+
+	chartables.c is a file that was built, according to the
+	instructions included with PCRE, when first preparing a build of
+	PCRE.  It contains a list of character classes for PRegEx
+	processing.
+
+	3) libiconv_custom files
+
+	   - pregex/project/source/libiconv_custom/....
+
+	These are the files we used to add 2 new encodings to the iconv
+	library (MACROMANFULL and CP1252FULL).
+	   
+	4) Director 11 (MOA) XDK for Mac and Win
+
+	These are distributed along with the pregex distribution and
+	unzipped into pregex/xdk11_mac and xdk11_win as part of the build
+	process.
+
+How to prepare a release of PRegEx:
+
+	- Share the pregex folder between Mac and Windows (use File
+      Sharing on the Mac, and Map Network Drive on Windows)
+
+	- Do a complete, fresh, build on both platforms.  
+
+	- Open the test movie on one platform.
+
+	- Run the full test suite, with leak testing turned on.  Make sure
+      it comes up clean.
+
+	- Close the test movie.
+
+	- Open the test movie on the other platform.
+
+	- Run the full test suite, with leak testing turned on.  Make sure
+      it comes up clean.
+
+	- Import the spec one more time for good measure.  This also adds
+      a date stamp to the top of the scrolling field.
+
+	- Save and Compact the Director file.
+
+	- Remove any backup / temporary files in the current project tree.
+
+	- On the Mac:
+	  - cd to pregex/project
+	  - run this script: ./make_dist/make_dist.bash
+
+	- The script will print out the name of the zip file that got created.
+
+Note to Contributors:
+
+	I (Chris) very much hope you'll send me contributed enhancements
+	to PRegEx.  I would love to add them.
+
+	However, please don't contribute any source code for new PRegEx
+	features unless you do all of the following:
+
+	- Build and test on BOTH Mac and Windows.
+
+	- Write a Director-based test suite, including leak testing, that
+      tests all behaviors and all paths through your new function, and
+      verify that it runs cleanly on both platforms.  Be sure you test
+      the test, too, to make sure it's not simply failing to report
+      errors that may be present.
+
+	- Write documentation for your new function or feature similar in
+      style, tone, level, and depth to that in the current PRegEx Spec.
+
+	- Clearly specify which version of PRegEx your modified source code
+      was based on.  Knowing this will help in merging into the
+      current build, if different.
+
+	- Send a .zip file of the COMPLETE, BUILDABLE PRegEx project tree
+      that contains a complete set of your changes as well as the
+      testing information and any other documentation.  Please follow
+      all the packaging instructions listed in the previous sections.
+
+	- Include a road map of what you changed, as a text file in the
+      docs folder of the distribution itself.
+
+	- Include a brief cover note in your e-mail saying what I should
+      look for after I unpack the attachment.
+
+	In other words: it should take me about 3 minutes to review and
+	test your proposed changes and about another 10 for me to merge
+	them into the master release.  If it takes much longer than this,
+	I might not have the time.
+

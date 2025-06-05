@@ -1,0 +1,88 @@
+<html><head><title>IMoaMmPropReferenceValue</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<BR><BR><hr width=45% align=left>
+<h2><A name = "IMoaMmPropReferenceValue"></A>IMoaMmPropReferenceValue</h2>
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaMmPropReferenceValue</CODE><BR>
+Pointer type: <CODE>PIMoaMmPropReferenceValue</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/mmipref.h">mmipref.h</A><BR>
+
+
+<DL><DT><h3>Methods</h3>
+
+<DD><!MethodListBegin>
+<DD><A HREF = "#ValueToPropReference">ValueToPropReference()</A>
+<BR><A HREF = "#PropReferenceToValue">PropReferenceToValue()</A>
+<!MethodListEnd>
+</DL>
+<hr width=45% align=left>
+<h3><A name = "PropReferenceToValue">PropReferenceToValue()</A></h3>
+
+<DL><DT>
+<h4>Syntax</h4>
+<DD>
+<CODE>
+<DL>PropReferenceToValue(PIMoaMmPropertyReference <I>pPropRef</I>, PMoaMmValue <I>pValue</I>)</DL>
+</CODE>
+</DL>
+
+<DL><DT>
+<h4>Parameters</h4><DD>
+
+<DL><CODE><I>pPropRef</I></CODE><DD><CODE>PIMoaMmPropertyReference</CODE></DL>
+<DL><CODE><I>pValue</I></CODE><DD><CODE>PMoaMmValue</CODE></DL>
+</DL>
+
+<DL><DT>
+<h4>Returns</h4>
+<DL><CODE>MoaError</CODE></DL>
+</DL>
+
+<DL><DT>
+<h4>Description</h4>
+<dd>This method converts a property reference to a Lingo value. The caller must release this interface when done with it.</dd>
+</DL>
+
+<hr width=45% align=left><h3>
+<A name = "ValueToPropReference">ValueToPropReference()</A></h3>
+
+<DL><DT>
+<h4>Syntax</h4>
+<DL>
+<CODE>
+<DT>ValueToPropReference(ConstPMoaMmValue <I>pValue</I>, PIMoaMmPropertyReference * <I>ppPropRef</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT>
+<h4>Parameters</h4>
+
+<DL><CODE><I>pValue</I></CODE><DD><CODE>ConstPMoaMmValue</CODE></DL>
+<DL><CODE><I>ppPropRef</I></CODE><DD><CODE>PIMoaMmPropertyReference *</CODE></DL>
+</DL>
+
+<DL><DT>
+<h4>Returns</h4>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+<DL><DT>
+<h4>Description</h4>
+<dd>This method converts a value containing a Lingo wrapper around a property reference to the actual interface.</dd>
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>
+

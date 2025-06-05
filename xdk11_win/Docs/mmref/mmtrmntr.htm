@@ -1,0 +1,72 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaMmTerminator</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<P> <A HREF="../mmdg/index.htm">MM Developer's Guide</A> <BR>
+  <A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A> | <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaMmTerminator</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaMmTerminator<BR>
+  </CODE>Pointer type: <CODE>PIMoaMmTerminator<BR>
+  </CODE>Inheritance: <A HREF = "../moref/unknown.htm">IMoaUnknown</FONT></A> <BR>
+  Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    All classes supporting this interface are instantiated at shut-down
+    before the application quits. The class' <CODE>Terminate()</CODE> method is called; the class is released. This allows Xtras to
+    perform their own shut- down and global clean-up. The corresponding
+    start-up interface is <CODE>IMoaMmInterrogator</CODE>. <BR>
+    <BR>
+    Implement <CODE>IMoaMmInterrogator</CODE> and <CODE>IMoaMmTerminator</CODE> only when absolutely necessary to make your Xtra work. Using these
+    interfaces means that your Xtra is always called at start-up and
+    shutdown, which eliminates the benefits of having an Xtra registry. <BR>
+    <BR>
+    <B>Important</B>: You must register the class that implements <CODE>IMoaMmTerminator</CODE> for
+    it to be instantiated at shutdown. You do this by calling<CODE> AddRegistryEntry()</CODE> with the class and interface in
+    the <CODE>Register()</CODE> method
+    of your Xtra's registsration class. <BR>
+    <BR>
+    If you support both <CODE>IMoaMmInterrogator </CODE>and <CODE>IMoaMmTerminator</CODE> on the same class, two instances are created--one at start-up
+    and one at shut-down.<BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#Terminate">Terminate()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Terminate">Terminate()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>Terminate(PIMoaMmTerminator<I>This</I>)
+  </CODE>
+</DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</FONT></I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmTerminator</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>void</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Implement this method to perform shutdown deallocation, process termination, and other activities 
+    required to free an Xtra.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

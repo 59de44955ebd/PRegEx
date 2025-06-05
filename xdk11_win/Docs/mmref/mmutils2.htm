@@ -1,0 +1,222 @@
+<HTML>
+
+<HEAD><TITLE>IMoaMmUtils2</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+
+<P>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+
+<h3><A NAME="IMoaMmUtils2"></A>IMoaMmUtils2</h3>
+
+<P>
+Interface ID: <CODE>IID_IMoaMmUtils2<BR>
+</CODE>Pointer type: <CODE>PIMoaMmUtils2<BR>
+</CODE>Inheritance: <CODE>IMoaUnknown<BR>
+</CODE>Header file: <A HREF = "../../include/mmiutil.h">mmiutil.h</A>
+<BR>
+
+<h5>Description</h5>
+
+<DL>
+<DD>
+This interface provides utilities for printing messages in the
+scripting window, for getting a graphics context from the host
+platform, and for converting colors between RGB and the current
+palette. 
+<P>
+With <A HREF="mmvalue.htm">IMoaMmValue</A>, <A HREF="mmwndmac.htm">IMoaMmWndMac</A>,
+and <A HREF="mmwndwin.htm">IMoaMmWndWin</A>, this interface supersedes
+<CODE>IMoaMmUtils</CODE>, which has been made redundant. <BR>
+</DL>
+<h4>Methods</h4>
+
+<h5>General utilities </h5>
+
+<DL>
+<DT>
+<DD><A HREF = "#PrintMessage">PrintMessage()</A> <BR>
+<A HREF = "#PrintMessage1">PrintMessage1()</A> <BR>
+<A HREF = "#PrintMessage2">PrintMessage2()</A> <BR>
+<A HREF = "#PrintMessage3">PrintMessage3()</A> <BR>
+<A HREF = "#PrintMessage4">PrintMessage4()</A> 
+</DL>
+
+<h5>Imaging support </h5>
+
+<DL>
+<DT>
+<DD><A HREF = "#NewGC">NewGC()</A> <BR>
+<A HREF = "#RGBToIndex">RGBToIndex()</A> <BR>
+<A HREF = "#IndexToRGB">IndexToRGB()</A> 
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="IndexToRGB">IndexToRGB()</A></h4>
+<h5>Syntax</h5>
+<DL>
+<DT class="code">IndexToRGB(MoaMmColorIndex <em>index</em>, PMoaMmRGBTriple <em>pRGBColor</em>)</DT>
+</DL>
+<h5>Parameters</h5>
+<DL>
+<DT><CODE><I>index</I></CODE>
+<DD>The color index of the palette entry</DD>
+<DT><CODE><I>pRGBColor</I></CODE>
+  <DD>Pointer to a<TT><I> </I>MoaMmRGBTriple </TT>to receive the result</DD>
+</DL>
+<h5>Returns</h5>
+<DD><CODE>MoaError</CODE>
+</DL>
+<h5>Description</h5>
+<DL> 
+  <DD>
+    Replaces <TT>Index2Color()</TT> on the Macintosh. <BR><BR>
+    Cross-platform method to convert color index specified to the corresponding 
+    RGB color in the current color palette. The palette currently in use by the 
+    playback window device is used for the lookup,. The device must be set to 
+    indexed color (less than or equal to 8 bits pixel depth) for this method to 
+    work properly. If the device is set to a direct color mode (greater than 8 
+    bits), the results are unpredictable. <TT><I>index </I></TT>specifies the 
+    color index of the palette entry of interest. <TT><I>pRGBColor </I></TT>contains 
+    a pointer to a <TT>MoaMmRGBTriple </TT>to receive the result. <BR>
+  </DD>
+  
+    <hr width=45% align=left>
+
+    <h4><a name = "RGBToIndex">RGBToIndex()</a></h4>
+    <dl> 
+      <dt> 
+        <h5>Syntax</h5>
+      <dt><code>RGBToIndex(<code>ConstPMoaMmRGBTriple <i>pRGBColor</i>, PMoaMmColorIndex <i>pIndex</i>) </code>
+    </dl>
+    <dl> 
+      <dt> 
+        <h5>Parameters</h5>
+      <dt><code><i>pRGBColor</i></code>
+      <dd><code>ConstPMoaMmRGBTriple</code>
+      <dt><code><i>pIndex</i></code>
+      <dd><code>PMoaMmColorIndex</code>
+    </dl>
+    <dl> 
+      <dt> 
+        <h5>Returns</h5>
+      <dd><code>MoaError</code> 
+    </dl>
+    <p>Description</p>
+    <p>Cross-platform method to convert RGB value specified to the closest corresponding 
+      index in the current color palette. </p>
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="NewGC">NewGC()</A></h4>
+<h5>Syntax</h5>
+<DL>
+<CODE><DT>NewGC(ConstPMoaMmNativeGCInfo <I>pNativeGCInfo</I>, PIMoaMmGC * ppGC)
+</CODE>
+</DL>
+<h5>Parameters</h5>
+<DT><CODE><I>pNativeGCInfo</I></CODE>
+<DD>ConstPMoaMmNativeGCInfo
+<DT><CODE><I>ppGC</I></CODE>
+<DD>PIMoaMmGC *<BR>
+</DL>
+<h5>Returns</h5>
+<DD><CODE>MoaError</CODE>
+</DL>
+<h5>Description</h5>
+<DL>
+<DD>
+    Creates a new <TT>IMoaMmGC </TT>interface for the native drawing context you 
+    specify (Macintosh <TT>WindowPtr </TT>or <TT>GWorld</TT>; Windows HWND, DDB 
+    DC, or DIB DC). Note that for Macintosh graphic contexts, you need to fill 
+    in only the <TT>WindowPtr</TT>or the <TT>GWorldPtr </TT>of the <TT>MoammNativeGCInfo</TT>; 
+    the host application handles the <TT>qdGlobalsPtr </TT>for you. For OS X and 
+    later, the qdGlobalsPtr is not relevant.<BR>
+<BR>
+For Windows HWND, DIB, or DDB-based graphics contexts,
+you must supply an HDC (device context). The caller continues
+to own the DC and is responsible for releasing it after releasing
+the GC interface. Specific Windows GC types require additional
+information (such as the HWND for a Window GC).
+</DL>
+
+<hr width=45% align=left>
+
+<h4><A NAME="PrintMessage">PrintMessage()</A>, <A NAME="PrintMessage1">PrintMessage1()</A>,
+<A NAME="PrintMessage2">PrintMessage2()</A>, <A NAME="PrintMessage3">PrintMessage3()</A>,
+<A NAME="PrintMessage4">PrintMessage4()</A></h4>
+<h5>Syntax</h5>
+<DL>
+<CODE><DT>PrintMessage(>ConstPMoaChar <I>pMsg</I>)</DT>
+<DT>PrintMessage1(ConstPMoaChar <I>pMsg</I>, MoaLong <I>arg1</I>)</DT>
+<DT>PrintMessage2(ConstPMoaChar <I>pMsg</I>, MoaLong <I>arg1</I>, MoaLong <I>arg2</I>)</DT>
+<DT>PrintMessage3(ConstPMoaChar <I>pMsg</I>, MoaLong <I>arg1</I>, MoaLong <I>arg2</I>, MoaLong <I>arg3</I>)</DT>
+<DT>PrintMessage4(ConstPMoaChar <I>pMsg</I>, MoaLong <I>arg1</I>, MoaLong <I>arg2</I>, MoaLong <I>arg3</I>, MoaLong <I>arg4</I>)</DT>
+</CODE>
+</DL>
+<h5>Parameters</h5>
+<DL>
+<DT><CODE><I>pMsg</I></CODE>
+<DD>Pointer to the <TT>ConstPMoaChar</TT> containing the message string
+<DT><CODE><I>arg1</I></CODE>
+<DD><TT>MoaLong</TT> used in place of printf() % constructions, which format variables 
+<DT><CODE><I>arg2</I></CODE>
+<DD><TT>MoaLong</TT> used in place of printf() % constructions, which format variables 
+<DT><CODE><I>arg3</I></CODE>
+<DD><TT>MoaLong</TT> used in place of printf() % constructions, which format variables 
+<DT><CODE><I>arg4</I></CODE>
+<DD><TT>MoaLong</TT> used in place of printf() % constructions, which format variables 
+</DL>
+<h5>Returns</h5>
+<DL>
+<DD><CODE>MoaError</CODE>
+</DL>
+<h5>Description</h5>
+<DL>
+Prints the message <TT>pMsg </TT>in
+the host application debugging or message window. These methods
+are similar to the standard C <TT>printf()
+</TT>function, except that they support only fixed numbers
+of arguments. The first argument, <TT><I>pMsg</I></TT>,
+is the message string. The arguments which follow are inserted
+into <TT><I>pMsg </I></TT>in
+place of &quot;%&quot; constructions, as in <TT>printf()</TT>.
+The constructions available in <TT><I>pMsg</I></TT>are:
+
+<TABLE BORDER="2">
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=104><B>Construction</B> 
+</TH><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=400><B>Argument type</B> 
+</TH></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%s</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>C-string 
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%d</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>integer 
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%ld</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>long integer 
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%x</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>hex integer 
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%lx</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>long hex integer 
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=104>%v</TD><TD ALIGN="LEFT"  VALIGN="TOP" WIDTH=400>pointer to <TT>MoaMmValue</TT>. 
+</TD></TR>
+
+</TABLE>
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2008 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

@@ -1,0 +1,249 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaAwAssetCallback</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+<P> <A HREF="../awdg/index.htm" >AW Developer's Guide</A> | <A HREF = "index.htm">AW Interfaces </A>| <A HREF = "awmthndx.htm">AW Methods</A> | <A HREF = "awtypndx.htm">AW Types and Misc API </A>
+
+<HR width=45% align=left>
+<H2><A NAME="IMoaAwEventSender">IMoaAwEventSender</A> </H2>
+<HR width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaAwEventSender</CODE><BR>
+  Pointer type: <CODE>PIMoaAwEventSender</CODE><BR>
+  Inheritance: <A HREF="../moref/unknown.htm"><CODE>IMoaUnknown</CODE></A><BR>
+  Header file: <A HREF = "../../../includes/awiservc.h">awiservc.h</A> <BR>
+<H3>Description</H3>
+<DL>
+  <DT>
+  <DD>The <CODE>IMoaAwEventSender</CODE> interface is implemented by an Xtra to provide information about
+    the kind of events it can send to Authorware so that Authorware
+    can present this information to the user in the Event Response
+    Properties dialog. Any Xtra that uses the <CODE>SendSpriteEvent</CODE> function must implement the <CODE>IMoaAwEventSender
+    interface </CODE>in the same class that implements
+    its <CODE>IMoaMmXAsset</CODE> interface. If you want the Xtra-level sender name to appear in
+    the Event Response Properties dialog, you must add a registry
+    entry for it in the MOA cache. <BR>
+</DL>
+<P>
+<H3>Methods</H3>
+<H4>Event methods </H4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetXtraEventDescriptions">GetXtraEventDescriptions()</A> <BR>
+    <A HREF = "#GetInstanceEventDescriptions">GetInstanceEventDescriptions()</A> <BR>
+    <A HREF = "#GetSenderXtraName">GetSenderXtraName()</A> <BR>
+    <A HREF = "#HandleReply">HandleReply()</A>
+</DL>
+<HR width=45% align=left>
+<H3><A NAME="GetInstanceEventDescriptions">GetInstanceEventDescriptions()</A> </H3>
+<H4>Syntax</H4>
+<DL>
+  <DT>GetInstanceEventDescriptions(PIMoaAwEventSender <I>This</I>,
+  <DD> PMoaChar <I>pDescriptions</I>, <BR>
+    MoaLong <I>maxLen</I>)
+  <DT>
+  <DD>
+</DL>
+<H4>Parameters</H4>
+<DL>
+  <DT>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwEventSender</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDescriptions</I></CODE>
+  <DD>List of event descriptions Xtra sends for all instances<BR>
+    <BR>
+  <DT><CODE><I>maxLen</I></CODE>
+  <DD>Maximum characters copied into string<BR>
+    <BR>
+</DL>
+<H4>Returns</H4>
+<DL>
+  <DT>
+  <DD>
+</DL>
+<P>
+<TABLE BORDER="2">
+  <TR>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><CODE>kMoaErr_NoErr</CODE> </TD>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>Function call succeeded </TD>
+  </TR>
+</TABLE>
+<P>
+<H4>Description</H4>
+<DL>
+  <DT>
+  <DD>For senders which are assets, this returns the list of events
+    sent by this specific instance of the asset. The format of the
+    returned string is <CODE>&quot;eventName1 argtype1 argname1, argtype2
+    argname2... -- description
+    <CRLF>
+    eventName2...&quot;</CODE> Valid
+    argument types are int, integer, float, rect, point, symbol, string,
+    any, *. This is the same general format as for Scripting Xtra
+    message tables.
+</DL>
+<P> <BR>
+<HR width=45% align=left>
+<H3> <A NAME="GetSenderXtraName">GetSenderXtraName()</A> </H3>
+<H4> Syntax</H4>
+<DL>
+  <DT>GetSenderXtraName(PIMoaAwEventSender <I>This</I>,
+  <DD> PMoaChar <I>pName</I>, <BR>
+    MoaLong <I>maxLen</I>)
+  <DT>
+  <DD>
+</DL>
+<H4> Parameters</H4>
+<DL>
+  <DT>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwEventSender</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pName</I></CODE>
+  <DD>String containing Xtra name<BR>
+    <BR>
+  <DT><CODE><I>maxLen</I></CODE>
+  <DD>Number of characters in name<BR>
+    <BR>
+</DL>
+<H4> Returns</H4>
+<DL>
+  <DT>
+  <DD>
+</DL>
+<P>
+<TABLE BORDER="2">
+  <TR>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><CODE>kMoaErr_NoErr</TD>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355> Function call succeeded</TD>
+  </TR>
+  </CODE>
+  
+</TABLE>
+<H4> Description</H4>
+<DL>
+  <DT>
+  <DD>This method returns the name of the Xtra as shown in the list
+    of event senders in Authorware's Reponse Properties dialog for
+    the Event Response type. For Scripting Xtras, you should return
+    the same string that you used to identify your Xtra in the message
+    table of your Scripting Xtra. For Asset Xtras, you should return
+    the same string as the display name for the Asset Xtra. Return
+    an empty string if you don't want the Xtra to appear in the Response
+    Properties dialog sender list.
+</DL>
+<P> <BR>
+<HR width=45% align=left>
+<H3> <A NAME="GetXtraEventDescriptions">GetXtraEventDescriptions()</A> </H3>
+<H4> Syntax</H4>
+<DL>
+  <DT>GetXtraEventDescriptions(PIMoaAwEventSender <I>This</I>,
+  <DD> PMoaChar <I>pDescriptions</I>, <BR>
+    MoaLong <I>maxLen</I>)
+  <DT>
+  <DD>
+</DL>
+<H4> Parameters</H4>
+<DL>
+  <DT>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwEventSender</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>pDescriptions</I></CODE>
+  <DD>List of event descriptions Xtra sends for all instances<BR>
+    <BR>
+  <DT><CODE><I>maxLen</I></CODE>
+  <DD>Maximum number of characters copied into string<BR>
+    <BR>
+</DL>
+<H4> Returns</H4>
+<DL>
+  <DT>
+  <DD>
+</DL>
+<P>
+<TABLE BORDER=2>
+  <TR>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><CODE>kMoaErr_NoErr</TD>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355> Function call succeeded</TD>
+  </TR>
+  </CODE>
+</TABLE>
+<H4> Description</H4>
+<DL>
+  <DT>
+  <DD>This method returns as a string the list of event descriptions
+    that the Xtra sends for all its instances. It is the caller's
+    responsibility to allocate the string. No more than <CODE>maxLen</CODE> characters will be copied into the string. The events in this
+    list are the events that are common to all instance sof the Xtra
+    (events that can be sent by any of its instantiated icons). The
+    format of the returned string is <CODE>&quot;eventName1 argtype1
+    argname1, argtype2 argname2... -- description
+    <CRLF>
+    eventName2...&quot;</CODE> Valid argument types are int, integer, float, rect, point, symbol,
+    string, any, *. This is the same general format as for Scripting
+    Xtra message tables. If you don't want a particular event to appear
+    in the list of available events in the Authorware Response Properties
+    dialog, precede it with a '/'.
+</DL>
+<P> <BR>
+<HR width=45% align=left>
+<H3> <A NAME="HandleReply">HandleReply()</A> </H3>
+<H4> Syntax</H4>
+<DL>
+  <DT>HandleReply(PIMoaAwEventSender <I>This</I>,
+  <DD> MoaMmSymbol <I>eventName</I>, <BR>
+    PMoaMmValue <I>pReply</I>, <BR>
+    PMoaVoid <I>replyRefcon</I>)
+  <DT>
+  <DD>
+</DL>
+<H4> Parameters</H4>
+<DL>
+  <DT>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaAwEventSender</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>eventName</I></CODE>
+  <DD>Symbol naming this event<BR>
+    <BR>
+  <DT><CODE><I>pReply</I></CODE>
+  <DD>Reply value generated by Authorware<BR>
+    <BR>
+  <DT><CODE><I>replyRefcon</I></CODE>
+  <DD>Data passed back from reply<BR>
+    <BR>
+</DL>
+<H4> Returns</H4>
+<DL>
+  <DT>
+  <DD>
+</DL>
+<P>
+<TABLE BORDER = 2>
+  <TR>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=235><CODE>kMoaErr_NoErr</TD>
+    <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=355> Function call succeeded</TD>
+  </TR>
+  </CODE>
+  
+</TABLE>
+<H4> Description</H4>
+<DL>
+  <DT>
+  <DD>Processes a reply from Authorware, generated by an earlier
+    call to <CODE>SendEventWithReply</CODE>. <CODE>pEventName</CODE> and <CODE>replyRefcon </CODE>are the same values passed in to <CODE>SendEventWithReply</CODE>. <CODE>pEventName</CODE> is a string naming this event for example,
+    &quot;mouseClick&quot;). <CODE>replyRefcon </CODE>is data that is
+    passed back to the <CODE>HandleReply</CODE> method of the <CODE>pSender</CODE> when a reply is sent back. <CODE>pReply</CODE> is the value of the
+    reply generated by Authorware.
+</DL>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1996-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>

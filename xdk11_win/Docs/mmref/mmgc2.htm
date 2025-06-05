@@ -1,0 +1,157 @@
+<html><head><title>IMoaMmGC2</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<BR><BR><hr width=45% align=left>
+<h2><A name = "IMoaMmGC2">IMoaMmGC2</A></h2>
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaMmGC2</CODE><BR>
+Pointer type: <CODE>PIMoaMmGC2</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A><BR>
+
+<DL><DT><h3>Constants and Structures</h3>
+<DD>
+
+<pre>
+typedef MoaUlong	MoaMmXSpriteCapsFlags;
+
+#define kMoaMmXSpriteCapsFlags_None                0
+#define kMoaMmXSpriteCapsFlags_IsStatic            1     /* sprite doesn't want CollectChgs() calls, use InvalSpriteRect() to request update */
+#define kMoaMmXSpriteCapsFlags_AutoTabEnabled      2     /* app handles tab key */
+#define kMoaMmXSpriteCapsFlags_SupportsRotation    0x04
+#define kMoaMmXSpriteCapsFlags_SupportsSkew        0x08
+#define kMoaMmXSpriteCapsFlags_SupportsFlipH       0x10
+#define kMoaMmXSpriteCapsFlags_SupportsFlipV       0x20
+#define kMoaMmXSpriteCapsFlags_SupportsQuad        0x40
+#define kMoaMmXSpriteCapsFlags_SupportsAutoBounds  0x80
+</pre>
+
+<p>When a sprite gets rotated or skewed, its bounding rectangle normally changes to reflect the new maximum X and Y extents of the image on the stage. Setting SupportsAutoBounds tells Director that your Xtra is ready for Director to change its bounding box as the sprite is rotated or skewed. If you do not set this constant, Director will not adjust the bounding rectangle with the result that the sprite is cropped to the area of the original rectangle. 
+
+<pre>
+typedef MoaLong MoaMmBlitState;
+
+/* This is set if the author wants Director to use the quad 
+/  parameter in the MoaMmBlitParams structure to do the Blit.  If
+/  it's not set, the DstRect parameter to the function will be used.
+/  Rotation/skew/flipH/flipV are OUTPUT values only, there are 
+/  ignored for the Blit2 call. */
+
+#define kMoaMmBlit_UseQuadForBlit  1
+
+typedef struct
+{
+     MoaFloat             rotation;
+     MoaFloat             skew;
+     MoaBool              flipH;
+     MoaBool              flipV;
+     MoaFloat             quad[4][2];
+     MoaMmBlitState       flags;
+
+} MoaMmBlitParams;
+typedef MoaMmBlitParams FAR * PMoaMmBlitParams;
+typedef const MoaMmBlitParams FAR * ConstPMoaMmBlitParams;
+
+typedef struct
+{
+     MoaRect                         spriteRect;    /* rect on stage where sprite appears */
+     MoaMmXSpriteImageMode           imageMode;     /* imaged direct or to an offscreen buffer */
+     MoaMmXSpriteFlags               flags;         /* sprite FX flags (see above) */
+     MoaMmInk                        ink;           /* sprite ink mode */
+     MoaMmInkParams                  inkParams;     /* extra params for some inks */
+     MoaMmBlitParams                 blitParams;    /* extra params for Director blit functionality */
+     MoaLong                         aux;           /* reserved */
+} MoaMmXSpriteInfo;
+typedef MoaMmXSpriteInfo FAR *       PMoaMmXSpriteInfo;
+typedef const MoaMmXSpriteInfo FAR * ConstPMoaMmXSpriteInfo;
+</pre>
+</DL>
+<BR>
+
+<DL><DT><h3>Description</h3>
+<DD>
+
+The <CODE>IMoaMmGC2</CODE> interface allows access to alpha channel support and rotation/skew/quad support.
+
+</DL>
+<BR>
+
+<DL><DT><h3>Methods</h3>
+<DD><!MethodListBegin>
+<DD><A HREF = "#Blit2">Blit2()</A>
+<!MethodListEnd></DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3> <A name = "Blit2">Blit2()</A></h3>
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>Blit2(PIMoaMmGC2 <I>This</I>, <BR>
+   <DD>ConstPMoaRect <I>pDestRect</I>, <BR>
+   <DD>struct IMoaMmGC FAR * <I>pSrcGC</I>, <BR>
+   <DD>ConstPMoaRect <I>pSrcRect</I>, <BR>
+   <DD>MoaMmInk <I>ink</I>, <BR>
+   <DD>ConstPMoaMmInkParams <I>pInkParams</I>, <BR>
+   <DD>ConstPMoaMmBlitParams <I>pBlitParams</I>, <BR>
+   <DD>struct IMoaMmGC FAR * <I>pAlphaGC</I>, <BR>
+       PMoaVoid <I>nativeClipRegion</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4>
+<DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmGC2</CODE> interface<BR><BR>
+
+<DT><CODE><I>pDestRect</I></CODE><DD><CODE>ConstPMoaRect</CODE>&nbsp;&nbsp;Represents the area to which to copy<BR><BR>
+
+<DT><CODE><I>pSrcGC</I></CODE><DD><CODE>struct IMoaMmGC FAR *</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pSrcRect</I></CODE><DD><CODE>ConstPMoaRect</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>ink</I></CODE><DD><CODE>MoaMmInk</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pInkParams</I></CODE><DD><CODE>ConstPMoaMmInkParams</CODE>&nbsp;&nbsp;Optional <CODE>ConstPMoaMmInkParams</CODE> specifying ink parameters<BR><BR>
+
+<DT><CODE><I>pBlitParams</I></CODE><DD><CODE>ConstPMoaMmBlitParams</CODE>&nbsp;&nbsp;A pointer to a <CODE>MoaMmBlitParam</CODE> structure that contains relevant information on how to perform the blitting. The rotation/skew/flipH/flipV are <I>output</I> values only. Director passes these out to the Xtra during the image call so that the Xtra can use the values to image. It also passes out a quad parameter, which is the 4 point quad to use to distort the source image. This can be an input parameter for the <CODE>Blit2()</CODE> call, depending on the flags setting. If flags has the blit flag <CODE>kMoaMmBlit_UseQuadForBlit</CODE> set, the <CODE>Blit2()</CODE> call will use the quad. Otherwise, it will use the <CODE>DstRect</CODE> value.<BR><BR>
+
+<DT><CODE><I>pAlphaGC</I></CODE><DD><CODE>struct IMoaMmGC FAR *</CODE>&nbsp;&nbsp;A pointer to an <CODE>IMoaMmGc</CODE> interface. This GC should contain the alpha bitmap used for blitting. If there is no alpha bitmap, pass in NULL to the call. The alpha bitmap can be 1, 2, 4, 8, or 32 bits deep. For 8-bit, 0x00 is transparent and 0xFF is opaque with the intermediate values a linear range of transparency settings. The other low-bit bitmaps have the same behavior. The 32-bit bitmap has an alpha value for each color channel so you can perform different alpha on R, G, and B.<BR><BR>
+
+<DT><CODE><I>nativeClipRegion</I></CODE><DD><CODE>PMoaVoid</CODE>&nbsp;&nbsp;Macintosh <CODE>RgnHandle</CODE> or Windows <CODE>HRGN</CODE><BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4>
+<DD>
+
+<CODE>Blit2()</CODE> is a extension of the <CODE>Blit()</CODE> method in the <CODE>IMoaMmGC</CODE> interface.<BR><BR>
+
+If an Xtra is supposed to work in both Director 6 and later versions, it can check the <CODE>kMoaMmXSpriteFlags_ExtendedInfo</CODE> flag in the flags parameter of the <CODE>MoaMmXSpriteInfo</CODE> structure of the Image call. If this flag is set, the <CODE>MoaMmXSpriteInfo</CODE> has the <CODE>MoaMmBlitParams</CODE> parameter as part of its structure and you can reference this parameter. Also, you can use <CODE>Blit2()</CODE> safely if this flag is set. <BR><BR>
+
+The following flags control Director's behavior with imaging an Xtra. These flags should be set appropriately if the Xtra supports the advanced imaging features of Director. If the Xtra has been upgraded to use <CODE>Blit2()</CODE>, all the following flags can be set. If the Xtra supports only a subset (Flash asset, for example), set the appropriate flags and Director will not allow some features (like quadding). <CODE>AutoBounds</CODE> means that the Xtra wants its bounds to grow as it is rotated or quadded. Turning this off allows the Xtra to image into its fixed rectangle, like a portal view.
+
+<PRE>
+#define kMoaMmXSpriteCapsFlags_SupportsRotation   0x04
+#define kMoaMmXSpriteCapsFlags_SupportsSkew       0x08
+#define kMoaMmXSpriteCapsFlags_SupportsFlipH      0x10
+#define kMoaMmXSpriteCapsFlags_SupportsFlipV      0x20
+#define kMoaMmXSpriteCapsFlags_SupportsQuad       0x40
+#define kMoaMmXSpriteCapsFlags_SupportsAutoBounds 0x80
+</PRE>
+
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

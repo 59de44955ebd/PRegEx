@@ -1,0 +1,283 @@
+<html><head><title>IMoaMmFilePathServices</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<BR><BR><hr width=45% align=left>
+<h2><A name = "IMoaMmFilePathServices"></A>IMoaMmFilePathServices</h2>
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaMmFilePathServices</CODE><BR>
+Pointer type: <CODE>PIMoaMmFilePathServices</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A><BR>
+
+
+<DL><DT><h3>Methods</h3>
+<DD><!MethodListBegin>
+<DD><A HREF = "#ResolveFilePath">ResolveFilePath()</A>
+<BR><A HREF = "#SetFilePath">SetFilePath()</A>
+<BR><A HREF = "#GetFilePath">GetFilePath()</A>
+<BR><A HREF = "#GetLocalFilePath">GetLocalFilePath()</A>
+<BR><A HREF = "#SetLinked">SetLinked()</A>
+<BR><A HREF = "#IsLinked">IsLinked()</A>
+<BR><A HREF = "#BeginDownload">BeginDownload()</A>
+<BR><A HREF = "#BrowseForFile">BrowseForFile()</A>
+<!MethodListEnd></DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "BeginDownload">BeginDownload()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>BeginDownload(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaStream FAR * <I>ppStream</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>ppStream</I></CODE><DD><CODE>PIMoaStream FAR *</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+Given the URL to a linked cast member, this method starts
+downloading the file and returns a PIMoaStream. If the download
+is already in progress or completed, it returns the PIMoaStream.
+If it is a local file, it does nothing. You can immediately
+monitor the download's progress or even access its contents.
+
+</DL><BR>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "BrowseForFile">BrowseForFile()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>BrowseForFile(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaPathName <I>pPathToBeginBrowsingIn</I>, <BR>
+   <DD>ConstPMoaLong <I>pFileTypeList</I>, <BR>
+   <DD>ConstPMoaChar <I>pFileExtensions</I>, <BR>
+       PIMoaPathName <I>pSelectedFile</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>pPathToBeginBrowsingIn</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pFileTypeList</I></CODE><DD><CODE>ConstPMoaLong</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pFileExtensions</I></CODE><DD><CODE>ConstPMoaChar</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pSelectedFile</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method displays a file open dialog box that lets you specify file types and extensions to filter for.
+
+</DL><BR>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetFilePath">GetFilePath()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>GetFilePath(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaPathName <I>pPathOfMember</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>pPathOfMember</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+Given an interface for a linked cast member, this method returns the resolved file path.
+
+</DL><BR>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetLocalFilePath">GetLocalFilePath()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>GetLocalFilePath(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaPathName <I>pLocalPathOfMember</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>pLocalPathOfMember</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+If a file is specified by an URL, this method returns the
+complete path to the copy of that file in the local cache.
+If the file is not specified by an URL, it is a local file and this method
+returns its path.
+
+</DL><BR>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "IsLinked">IsLinked()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>IsLinked(PPIMoaMmFilePathServices <I>This</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaBoolParam</CODE></DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "ResolveFilePath">ResolveFilePath()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>ResolveFilePath(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaPathName <I>pPathToResolve</I>, <BR>
+   <DD>MoaBoolParam <I>bBrowseForFile</I>, <BR>
+   <DD>PIMoaPathName <I>pResolvedPath</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>pPathToResolve</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>bBrowseForFile</I></CODE><DD><CODE>MoaBoolParam</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pResolvedPath</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+Given a relative or local file path (written in the syntax of Windows, 
+Macintosh, or an URL), this method returns the absolute path in syntax 
+appropriate for the operating system.
+</DL><BR>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetFilePath">SetFilePath()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>SetFilePath(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>PIMoaPathName <I>pNewPath</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>pNewPath</I></CODE><DD><CODE>PIMoaPathName</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetLinked">SetLinked()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>SetLinked(PPIMoaMmFilePathServices <I>This</I>, <BR>
+   <DD>MoaBoolParam <I>bLinked</I>)
+</CODE>
+</DL><BR>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>PIMoaMmFilePathServices</CODE> interface<BR><BR>
+
+<DT><CODE><I>bLinked</I></CODE><DD><CODE>MoaBoolParam</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>

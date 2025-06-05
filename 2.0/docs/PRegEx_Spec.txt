@@ -1,0 +1,2652 @@
+=================================================
+PRegEx Version 2.0 Specification and Documentation 
+=================================================
+
+What's New in 2.0?
+
+    See section "What's New in 2.0", later in this file.
+
+What is PRegEx?
+
+    PRegEx is a free, cross-platform scripting Xtra for Director 11+.
+
+    (For Director 7-10, you must download and use PRegEx version 1.0)
+
+    It does searching, replacing, data extraction, and more.
+
+    It provides the search features of PCRE (the Perl-Compatible
+    Regular Expression library from http://pcre.org/), while adding
+    its own replace capabilities.
+
+    It also supplies Lingo versions of some powerful features of Perl
+    pertaining to manipulating string data, lists, and property lists,
+    and converting between all those different formats.
+
+    You don't have to know anything about Perl to use it.
+
+    You don't have to know about regular expressions to use it.  But
+    you can do some pretty cool stuff if you do know about them.
+
+    It uses the iconv library for full support of Unicode and all
+    other character (text file) encoding formats.
+
+Who should use it?
+
+    If you have ever wished you could use Lingo to:
+
+     - do any kind of text searching
+     - modify strings
+     - parse anything
+     - extract data from a file
+     - standardize data formats
+     - clean/canonicalize/validate user-provided data fields
+     - manipulate lists and property lists
+     - copy or deep-copy lists / property lists
+     - reverse lists
+     - convert a list of one kind of thing into another kind of thing
+     - use custom sort functions to sort lists
+     - sort lists without modifying the original
+     - filter lists
+     - deal with binary data buffers in Lingo
+     - do any of the above with very large string buffers
+     - call a handler, passing arguments, and get return value
+     - have a way for a callback function to signal its caller
+     - quickly read/write entire files into/from memory
+     - globally map characters in buffers
+     - convert files between different character encodings
+     - etc.
+
+   ... then PRegEx is for you.
+
+Help! What is a Regular Expression?  What's going on here?
+
+    Please see the Introduction and Examples sections near the end of
+    this doc.  There are also lots of helpful tutorials on the web.
+
+    If you have not used regular expressions before, then as you learn
+    them, you will hardly believe how powerful they are.  They are
+    like a whole new programing language unto themselves.  Enjoy.
+
+What does it cost?
+
+    Nothing.  PRegEx is a free, open-source project.
+
+    See "PRegEx Licensing", below, for full details.
+
+
+Where do I get the latest version?
+
+    PRegEx released on the Web site http://openxtras.org/.
+
+    Latest updates, notes, or issues will be posted there, too.
+
+
+Who made it?
+
+    PRegEx authors are:
+
+      Chris Thorman <chris@thorman.com>  
+         Ravi Singh <ravi@ravware.com>
+
+    Philip Hazel (see below) wrote PCRE, upon which PRegEx heavily
+    relies, but he was not directly involved in PRegEx itself.
+
+
+What other libraries is it based on?
+
+    PCRE 7.8
+
+    PCRE, the regular expression library that PRegEx uses, is included
+    with this distribution.  It was written by:
+
+    Philip Hazel
+    University of Cambridge Computing Service,
+    Copyright (c) 1997-2008 University of Cambridge
+
+    Please see http://www.pcre.org/license.txt for more info.
+
+    ICONV 1.12
+
+    The iconv library enables the file-reading and -writing features.
+    It is available from the Free Software Foundation, here:
+    http://www.gnu.org/software/libiconv/.  It is licensed under LGPL.
+
+    DIRECTOR XDK 11
+
+    Of course, PRegEx also uses MOA, the Macromedia Open Architecture,
+    and is built using the Director 11 XDK from Adobe at
+    http://www.adobe.com/.
+
+Who supports it?
+
+    Nobody supports PRegEx for free.  It's free to begin with.
+    However...
+
+
+Can I pay for support or additional features?
+
+    If you need support for PRegEx for a project-critical need, we
+    recommend that you hire someone to support that need.
+
+    Because the source is OPEN, you are completely free to approach
+    and make an offer to any anyone you like, and they are free to add
+    your custom features or create any other derivative work you may
+    require, subject only to the liberal licensing restrictions
+    outlined in this document.
+
+    You may especially wish to approach RavWare, one of the companies
+    that helped write PRegEx.  Ravware is in the business of creating
+    Xtras for others.  (See complete description up above.)
+    http://ravware.com/
+
+    Please do not be offended if the PRegEx authors or others that you
+    approach are unable to assist you.  We apologize in advance if a
+    lack of free or inexpensive or even available support means you
+    are unable to use PRegEx for your project.
+
+    On the other hand, we believe PRegEx is quite robust in its current
+    feature set and anticipate you will have few problems making use
+    of it.
+
+
+Can I see some examples?  
+
+    1) Some function descriptions include examples.
+
+    2) See "Examples" section at end.
+
+    3) See PRegExTestMovie.dir, which you should have received with
+       this package.  It has a full test suite which can be used to
+       torture-test every feature of the Xtra, including heavy leak
+       testing.  There are literally hundreds of usage examples there.
+       It also has a few fun little features that let you import the
+       spec file you are reading now and manipulate it.
+
+       
+How well tested is it?
+
+    We feel that PRegExTestMovie.dir extensively tests all PRegEx
+    features by calling it literally millions of times in 30 seconds
+    or so, and thereby demonstrates that PRegEx is free of any leaks
+    and that it performs with jaw-dropping speed.  Please try to prove
+    us wrong.  We'd be grateful for bug reports.
+
+
+Where do I send bug reports?
+
+    Please send reports of confirmed or suspected bugs to:
+
+        PRegEx Bugs <pregex-bugs@openxtras.org>
+
+    Do not send the source code for your project.  Send the simplest
+    possible 2-5-line example or set of steps, or a simple test movie
+    that demonstrates the problem (without anything else in it).  Or,
+    best yet, send a modified copy of PRegExTestMovie.dir with a new
+    test added that demonstrates the problem.
+
+    Be sure to state clearly in your report what you expected to
+    happen, what did happen instead, and why you believe it's an error
+    in the software.
+
+    Bug reports that include a Lingo example that conclusively
+    demonstrates the problem will get attention more quickly.
+
+    Please be aware that we will be grateful for the reports, but may
+    or may not have the time to reply.  
+
+
+===============================================
+PRegEx Licensing
+===============================================
+
+How did PRegEx get here?
+
+    PRegEx is an "open-source" project.  
+
+
+What do I get for free?
+
+    You are free to use the accompanying version of the PRegEx Xtra in
+    any way you see fit: in any project, for any purpose, at any time,
+    now, or in the future, or in the past, free of charge.
+
+
+Can I change the PRegEx source code?
+
+    You may create derivative versions of the Xtra, or re-use any
+    source code you find in it, but if you do so for pay or profit,
+    you must provide the recipient with both the original, full, PRegEx
+    package, including source code, along with any modifications you
+    have made, including source code.  It would also be polite but not
+    required to contribute the derived version back to the copyright
+    holder via the contact information that you will find at
+    http://openxtras.org/.
+
+
+Is PRegEx supported or guaranteed to work?
+
+    No! PRegEx is provided without support or warranty of any kind.  In
+    particular, nobody guarantees that this code is fit for any
+    purpose, or that it will not cause you and your customers great
+    physical harm when you use it.  In fact, assume it will cause harm
+    until you have tested it to your own satisfaction.  You accept all
+    risks associated with using this software, should you choose to do
+    so.
+      
+
+Can I contribute?
+    
+    The best way you can contribute is to give YOUR TIME to test,
+    review, use, verify, and debug this code, to make it better,
+    stronger, faster, and more powerful for others.
+
+
+Can I contribute financially?
+
+    If you find that this Xtra was insanely useful, which you will,
+    and then you also feel motivated to contribute $$ to help offset
+    its considerable development costs and express gratitude for the
+    hours and weeks of time it has saved you, or the impossible
+    projects it made possible, please log on to http://openxtras.org/
+    and select one of the contribution options shown there.
+    Contributions will be used to help maintain the OpenXtras web site
+    and anything left over will be used to feed and clothe the
+    authors' families.
+
+
+What about Shockwave?
+
+    PRegEx is not currently Shockwave-safe, and the authors do not
+    intend to do any work or spend any $$ to make it so.  However, you
+    have the full source here.  You're free to accept the challenge --
+    and the legal responsibility -- for making a Shockwave-safe
+    version for whatever use you desire.  Just be sure you follow the
+    guidelines laid out in this document if you distribute modified
+    versions of PRegEx to anyone.
+
+
+What about future versions?
+    
+    This liberal licensing policy may or may not apply to future
+    versions of PRegEx created by Chris Thorman, the copyright holder.
+    
+    However, this liberal licensing policy will always apply to this
+    and earlier versions and to any derivative works based on it/them.
+
+
+-------------------------------------------------------------------------
+Regular Expression Xtra Licensing Statement
+Version 2.0
+-------------------------------------------------------------------------
+
+This is a Scripting Xtra for Macromedia Director which lets you use regular
+expressions as implemented by PCRE http://pcre.org/, plus a whole lot more.
+
+Written by:
+
+      Chris Thorman <chris@thorman.com>
+         Ravi Singh <ravi@ravware.com>
+
+Copyright (c) 2001-2008 Chris Thorman
+
+-----------------------------------------------------------------------------
+Permission is granted to anyone to use this software for any purpose on any
+computer system, and to redistribute it freely, subject to the following
+restrictions:
+
+1. This software is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+2. The origin of this software must not be misrepresented, either by
+   explicit claim or by omission.
+
+3. Altered versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+
+4. If PRegEx is embedded in any software that is released under the GNU
+   General Purpose License (GPL), then the terms of that license shall
+   supersede any condition above with which it is incompatible.
+
+5. The PCRE and iconv and Director XDK components have their own
+   licensing requirements, with which you obviously should comply.
+
+(Thanks to Philip Hazel, creator of PCRE, for the above licensing statement.)
+-----------------------------------------------------------------------------
+
+=========================================
+What's New in 2.0
+=========================================
+
+Mac OS X Universal Binary
+-------------------------
+
+    PRegEx is now a Universal binary.  That means it runs natively on
+    Intel-based Macs, and also on older PowerPC (PPC) Macs, without
+    emulation.  However, it is now Mac OS X only.  (In fact, it only
+    supports v.10.4 ("Tiger") and later, the same as Director 11.)
+    
+
+Director 11+ Only
+-----------------
+
+    PRegEx 1.0 supported Director versions 7-10.  The older version
+    does NOT work on Dir. 11+ (even if it seems to work on Windows).
+        
+Unicode
+-------
+
+    In Director 11, Macromedia changed the internal string format to
+    UTF-8 (Unicode).  This is great news, but completely changes the
+    way that PRegEx needs to work.  Here is a summary of the changes:
+
+    Reading/Writing files:
+
+        Reading files into memory and writing them back out again now
+        requires careful attention to text encodings.  (In Director
+        7-10, all files were simply assumed to be MacRoman or
+        Windows1252 files, whether they were or not, and this was OK).
+        The great news is that PRegEx now supports essentially *all*
+        known text file formats (by fully incorporating the
+        open-source iconv library), plus some additional custom
+        formats that will be helpful to PRegEx users.  See
+        ReadFileToString, and WriteStringToFile for the details.
+
+	Length limit "feature" when writing files:		
+
+		Users complained that the length-limit feature of the
+		now-deprecated WriteEntireFile function was dangerous enough
+		to be more like a bug.  This feature has been dropped in the
+		successor function, WriteStringToFile, which will now always
+		write the entire string to the file.  Please be aware of this
+		when porting your projects.
+                
+    Escape Codes:           
+
+        PRegEx supports "interpolation" of special escape codes to
+        generate special characters in strings.  Interpolation is used in
+        3 places: Replace (in the replacement string), Translate (in the
+        input and output mapping strings), and Interpolate.  In Director
+        7-10, any 8-bit value was legal in strings.  In Director 11, all
+        characters in strings must be valid UTF-8, or Director could
+        crash.  So the meanings of the following escapes have changed:
+    
+            \200-\377 octal escapes - formerly inserted 8-bit char/byte, now Unicode code points 128-255
+            \x80-\xFF hex escapes - formerly inserted 8-bit char/byte, now Unicode code points 128-255
+    
+        And these new escapes have been added:
+    
+            \400-777 new octal escapes for Unicode code points 257 through 511
+            \x{0}-\x{7FFFFFFF} new hex escapes for *any* valid Unicode code points
+    
+        Please note that not all Unicode code points between 0 and
+        7FFFFFFF are valid!  You should restrict yourself to valid Unicode
+        code points as defined in the latest Unicode specifications.  
+    
+        Also note that the UTF-8 hexadecimal representations of Unicode
+        characters are NOT the same as the Unicode code point numbers.
+        For example, the correct Unicode code point specification for
+        "cents" sign is U+00A2, which can be specified as \x{A2} or
+        \x{00A2}. The 2 hex bytes C2A2 describe the UTF-8 encoding of that
+        symbol, but the escape code \x{C2A2} can NOT be used to
+        interpolate one of these values into a string.  PRegEx provides no
+        way to expressly indicate the UTF-8 representation of a character.
+        Director and PRegEx and PCRE and iconv always figure out the UTF-8
+        encodings for you.
+    
+        These escape codes are the same as PCRE's octal and hexadecimal
+        escape codes, so you can use the same encodings in both the Search
+        and Replace strings of any PRegEx function.
+
+    Translate Function:
+
+    Because of how Unicode works, the Translate function can no longer
+    work with non-ASCII characters.  Specifically:
+
+        - Any non-ASCII characters in the InputTable and OutputTable
+          will simply be ignored, as if they were not present at all.
+
+        - If used in a "range specifier", non-ASCII characters will
+          prevent the range from being recognized as a range.
+
+        - Any non-ASCII characters in the SrchStrL (string being
+          modified) will be untouched.  I.e. they will never be
+          modified by the Translate function.
+
+    Quotemeta function:
+          
+        Quotemeta formerly would put a backslash in front of non-ASCII
+        characters.  Now, it will not.  (Those characters are always
+        literal in PCRE.)
+
+    String lengths:
+
+        As in Lingo, string lengths returned by PRegEx functions and
+        accepted as arguments are always in terms of character length,
+        never byte length.  (Prior to Director 11 and Unicode/UTF-8, these
+        concepts were the same.)  For strings that are 100% ASCII, the
+        lengths are the same.  For non-ASCII strings, the length in bytes
+        is dependent on the UTF-8 representation.  
+    
+        The exception is when writing a string to a file: the return value
+        is the size of file on disk, in bytes, and is dependent upon the
+        character encoding chosen and the content of the string, possibly
+        being higher or lower than the number of characters written.
+
+
+Windows Binary
+--------------
+
+    The Release binary of PRegEx on Windows is now compiled with
+    Maximize Speed(/O2) optimization in Visual C++.
+    
+    
+Bug Fixes   
+---------
+
+Fixed in 2.0:
+
+    - Calling join() with an empty list crashed the Mac (and maybe Windows)
+
+    - ListToSPListSym()/SetAProp() crashes on Windows during leak testing
+  
+    - Could not write file names longer than 31 characters
+
+    - The "s" option did not always function correctly
+    
+    - An error message said "...with setting" rather than "...without
+      setting".
+
+
+2.0 API Updates
+---------------
+
+New functions:
+    
+    PRegEx_ReadFileToString  (FilePath, TextEncoding)  ==> StringBufferList
+    PRegEx_WriteStringToFile (FilePath, TextEncoding, StringBufferList) ==> 1/-Err
+    PRegEX_GetICONVVersion   () ==> Version string 
+    
+    
+Deprecated:
+    
+    PRegEx_ReadEntireFile  (FilePath)  ==> StringBufferList
+    PRegEx_WriteEntireFile (FilePath, StringBufferList) ==> 1/-Err
+
+
+Removed:
+
+    PRegEx_SearchBegin   (SrchStrL, RE, [Opts]) ==> 1 (success) or -Err
+    PRegEx_SearchContinue() ==> 1: Found; 0: Done; Negative: -Err   
+    
+
+    
+New build methodology (for building the Xtras from source)
+----------------------------------------------------------
+
+    - Better supports source control techniques
+    - Uses modern development tools (XCode, Visual Studio .NET 2003 as patched)
+    - No longer has to worry about Mac resource forks (new OSX binary format)
+    - Uses .zip format instead of .sit for distribution
+    - See DeveloperNotes.txt files in make_mac and make_win directories for details
+
+==========================================
+PRegEx Quick-Reference / Interface Summary
+==========================================
+
+A complete detailed description of all functions follows later in this
+document.  This is just a summary for quick reference.
+
+Housekeeping functions:
+-----------------------
+
+PRegEx_Clear            ([Complete]) ==> void; partial or complete reset
+PRegEx_GetPRegExVersion () ==> Version string of PRegEx   (e.g. "2.0")
+PRegEx_GetPCREVersion   () ==> Version string of PCRE     (e.g. "7.8p1")
+PRegEX_GetICONVVersion  () ==> Version string of LIBICONV (e.g. "1.12p1")
+
+Search/Replace low-level interface:
+-----------------------------------
+
+PRegEx_SetSearchString     (SrchStrL)   ==> True or -Err
+PRegEx_SetMatchPattern     (RE, [Opts]) ==> True or -Err
+PRegEx_GetNextMatch        ([noBlastBR])==> True or -Err
+PRegEx_ReplaceString       (ReplPat)    ==> True or -Err
+
+
+Search/Replace high-level interface:
+------------------------------------
+
+PRegEx_Search        (SrchStrL, RE, [Opts]) ==> FoundCount or -Err
+PRegEx_SearchExec    (SrchStrL, RE,  Opts, #Callback, [ArgList])
+
+PRegEx_Replace      (SrchStrL, RE, Opts, ReplPat) ==> FoundCount
+PRegEx_ReplaceExec  (SrchStrL, RE, Opts, #ReplFunction, [ArgList])
+
+
+Search/Extract utilities:
+-------------------------
+
+PRegEx_Split               (SrchStrL, RE, [Opts, InitList, Max])=>List
+PRegEx_ExtractIntoList     (SrchStrL, RE, [Opts, InitList])=>PList
+PRegEx_ExtractIntoSPList   (SrchStrL, RE, [Opts, InitList])=>PList
+PRegEx_ExtractIntoSPListSym(SrchStrL, RE, [Opts, InitList])=>PList
+
+
+Match Status functions:
+-----------------------
+
+PRegEx_FoundCount     () ==> Running or final count of match events
+
+PRegEx_GetPos         () ==> Char pos where last left off; next begins
+PRegEx_SetPos         (num) ==> Change pos (0 <= Pos <= buffer len)
+
+PRegEx_GetMatchBRCount() ==> Number of back refs in last matched RE
+
+PRegEx_GetMatchString ([num]) ==> Last matched str (entire -or- BR #)
+PRegEx_GetMatchStart  ([num]) ==> Start pos of ""  (entire -or- BR #)
+PRegEx_GetMatchLen    ([num]) ==> Length of ""     (entire -or- BR #)
+
+
+Error-handling functions:
+-------------------------
+
+PRegEx_LastErrCode        () ==> Error code for last failed call
+PRegEx_DescribeError       ([Err]) ==> Error msg (Err or LastErrCode)
+
+PRegEx_CompiledOK          () ==> True if last expression compiled
+
+PRegEx_MemError            () ==> True if last op failed due to memory
+PRegEx_MemErrorSticky      () ==> True if any op has failed due to mem
+PRegEx_MemErrorStickyReset () ==> Reset sticky err; return prev value
+
+Preference flags:
+-----------------
+
+PRegEx_ErrorsToMessageWindow    ([Bool]) ==> Echo all errors to Msg wind.
+
+
+String-manipulation utility functions: 
+--------------------------------------
+
+PRegEx_QuoteMeta  (String) ==> String with RE-special chars quoted
+PRegEx_Translate  (SrchStrL, InputTable, OutputTable) ==> ChangeCount
+PRegEx_Interpolate(String, [VarsPList]) ==> String
+
+
+List-manipulation utility functions:
+------------------------------------
+
+PRegEx_CopyList(ListOrPList, [Deep, InitList]) ==> CopiedListOrPList
+
+PRegEx_Grep   (List, RE, [Opts])         ==> NewList ("PRegEx mode")
+PRegEx_Grep   (List, #Filter, [ArgList]) ==> NewList ("Filter mode")
+
+PRegEx_Map    (List, #MapFunction, [ArgList]) ==> MappedList
+
+PRegEx_Sort   (List, DeepCopy, #SortFunction, [ArgList]) ==> NewList
+PRegEx_Reverse(List, [DeepCopy])    ==> Reversed copy
+PRegEx_Join   (List, [DelimiterString]) ==> String
+
+PRegEx_Keys    (PList, [InitList]) ==> KeyList
+PRegEx_Values  (PList, [InitList]) ==> ValueList
+
+PRegEx_GetSlice(List, Keys, [InitList]) ==> SliceList
+PRegEx_SetSlice(List, Keys, Values) ==> List
+
+PRegEx_PListToList       (PList, [InitList])  ==> List
+PRegEx_PListToListStrings(PList, [InitList])  ==> List
+
+PRegEx_ListToSPList      (List,  [InitPList]) ==> SPList
+PRegEx_ListToSPListSym   (List,  [InitPList]) ==> SPList
+
+
+General utility functions: 
+--------------------------
+
+PRegEx_ReadFileToString  (FilePath, TextEncoding)  ==> StringBufferList
+PRegEx_WriteStringToFile (FilePath, TextEncoding, StringBufferList) ==> 1/-Err
+
+Deprecated functions included for backward compatibility:
+
+PRegEx_ReadEntireFile  (FilePath)  ==> StringBufferList
+PRegEx_WriteEntireFile (FilePath, StringBufferList) ==> 1/-Err
+
+Callback-related functions:
+---------------------------
+
+PRegEx_CallHandler   (#CallbackFunction, [ArgList1, ArgList2])
+
+PRegEx_CallbackAbort([bool]) ==> Stop operation and fail with error
+PRegEx_CallbackStop ([bool]) ==> Stop before this iteration, but succeed
+PRegEx_CallbackLast ([bool]) ==> Stop after this iteration, but succeed
+PRegEx_CallbackSkip ([bool]) ==> Skip this iteration, but continue
+
+
+Error code constants:
+---------------------
+PRegEx_ErrCode_OutOfMemory()
+PRegEx_ErrCode_SearchStrLMustBeList()
+PRegEx_ErrCode_SearchStrLMustContainString()
+PRegEx_ErrCode_SearchStrLLengthArgMustBeInteger()
+PRegEx_ErrCode_REMustNotBeEmpty()
+PRegEx_ErrCode_REDidNotCompile()
+PRegEx_ErrCode_ReplPatMustBeString()
+PRegEx_ErrCode_CallbackFuncMustBeSymbol()
+PRegEx_ErrCode_CallbackFuncDidNotReturnString()
+PRegEx_ErrCode_QuoteMetaNeedsString()
+PRegEx_ErrCode_TriedToMatchWithoutSearchStrL()
+PRegEx_ErrCode_TriedToMatchWithoutSearchPattern()
+PRegEx_ErrCode_TriedToReplaceWithoutMatching()
+PRegEx_ErrCode_CallbackRequestedAbort()
+PRegEx_ErrCode_UnexpectedMOAError()
+PRegEx_ErrCode_UnexpectedInternalError()
+PRegEx_ErrCode_CallbackFunctionNotFound()
+PRegEx_ErrCode_ExpectedListArgument()
+PRegEx_ErrCode_ExpectedPListArgument()
+PRegEx_ErrCode_GrepNeedsFunctionNameOrPRegEx()
+PRegEx_ErrCode_ExpectedStringArgument()
+PRegEx_ErrCode_SortFunctionDidNotReturnInteger()
+PRegEx_ErrCode_ListIndicesMustBeIntegers()
+PRegEx_ErrCode_FileNotFound()
+PRegEx_ErrCode_ErrorOpeningFile()
+PRegEx_ErrCode_ErrorReadingFile()
+PRegEx_ErrCode_ErrorWritingFile()
+
+
+Perl-ish shorter function names:
+-------------------------------
+
+    These perl-friendlier "aliases" to certain of the PRegEx functions
+    have been provided.  Their syntax is more evocative for Perl
+    programmers, and others will appreciate their brevity.
+
+    re_m            ==> PRegEx_Search   (aka "match")
+    re_s            ==> PRegEx_Replace  (aka "substitute")
+    re_search       ==> PRegEx_Search
+    re_replace      ==> PRegEx_Replace
+
+    re_get          ==> PRegEx_GetMatchString
+    re_pos          ==> PRegEx_GetPos
+
+    re_extract      ==> PRegEx_ExtractIntoList
+    re_extractp     ==> PRegEx_ExtractIntoSPList
+    re_extractps    ==> PRegEx_ExtractIntoSPListSym
+
+    re_call         ==> PRegEx_CallHandler
+    re_abort        ==> PRegEx_CallbackAbort
+    re_stop         ==> PRegEx_CallbackStop
+    re_last         ==> PRegEx_CallbackLast
+    re_skip         ==> PRegEx_CallbackSkip
+
+    re_quotemeta    ==> PRegEx_QuoteMeta
+    re_tr           ==> PRegEx_Translate
+    re_i            ==> PRegEx_Interpolate
+
+    re_split        ==> PRegEx_Split
+    re_join         ==> PRegEx_Join
+
+    re_grep         ==> PRegEx_Grep
+    re_map          ==> PRegEx_Map
+    re_sort         ==> PRegEx_Sort
+    re_reverse      ==> PRegEx_Reverse
+    re_copy         ==> PRegEx_CopyList
+
+    re_keys         ==> PRegEx_Keys
+    re_values       ==> PRegEx_Values
+
+    re_slice        ==> PRegEx_GetSlice
+    re_slice_set    ==> PRegEx_SetSlice
+
+    re_list         ==> PRegEx_PListToList
+    re_list_strs    ==> PRegEx_PListToListStrings
+
+    re_hash         ==> PRegEx_ListToSPList
+    re_hash_syms    ==> PRegEx_ListToSPListSym
+
+    re_read2        ==> PRegEx_ReadFileToString
+    re_write2       ==> PRegEx_WriteStringToFile
+
+    re_read         ==> PRegEx_ReadEntireFile  (NOTE: deprecated)
+    re_write        ==> PRegEx_WriteEntireFile (NOTE: deprecated)
+
+    re_err          ==> PRegEx_LastErrCode
+    re_debug        ==> PRegEx_ErrorsToMessageWindow
+
+
+=========================================
+PRegEx Return Values: General Principles
+=========================================
+
+Unless otherwise noted, search/replace related functions return an
+integer saying how many matches were successfully made, even if fewer
+replacements were completed due to some being skipped by the program.
+
+For functions returning match counts, a return value of 0 means
+successful operation, but means that 0 matches were found (and of
+course 0 replacements were done).
+
+Any NEGATIVE INTEGER returned by any function is an ERROR CODE, which
+may be interpreted using the Error-related features of PRegEx,
+described Later.
+
+Some functions return a 1 meaning successful completion or a negative
+error code if an error occurred.
+
+Consequently, you should never treat the return of PRegEx functions as
+Booleans when checking whether a match was done, because Lingo
+considers all non-zero numbers, even negative numbers, to be "true".
+
+Instead, you should check integer results for being > 0 or > -1,
+depending on your interest.
+
+Wrong:   if (PRegEx_Search(str, "foo", "g")    ) then put "Found!"
+
+Right:   if (PRegEx_Search(str, "foo", "g") > 0) then put "Found!"
+
+Most functions that do not ordinarily return integers will either
+return void or empty strings or empty lists when there is an error
+encountered, and their error code is then set in the LastErrCode flag,
+which may subsequently be queried.
+
+Remember, a failure to match is never an "Error" from PRegEx's point of
+view.  An "Error" always means a parameter error, syntax error, or
+runtime error, such as memory or disk problems.  A failure to match is
+viewed as the successful completion of a match request whose answer
+happened to be "zero matches".
+
+
+=========================================
+PRegEx Parameter: General Descriptions
+=========================================
+
+In all function prototypes shown above and below, sample argument
+names are used consistently to represent arguments of a particular
+type or meeting certain criteria.  For example, "RE" always means a
+Regular Expression string, "Opts" always means a 0-7-character string
+of option flags, etc.
+
+This section is a glossary explaining each of these standard argument
+types.  Unless otherwise noted, the descriptions here apply to all
+functions in which these named parameters appear.
+
+
+RE -- Regular Expression pattern
+
+Example: "(dog)|(cat)"
+
+This is a simple Lingo string containing literal characters and/or
+special character sequences that specify what is to be searched for.
+
+See the PCRE and/or Perl documention for precise details of the
+regular expression syntax syntax.
+
+
+Opts -- Options string
+
+Example: "gisx"
+
+A string of 0-7 option flag chars in any order.  
+
+Any other type of argument is treated like an empty string ("") and
+results in all options being turned off.  Any other characters in Opts
+are silently ignored.
+
+The 7 option flags are:
+
+     Pattern matching flags:
+
+      i == case Insensitive matching 
+
+           Corresponds to PCRE option PCRE_CASELESS 
+
+      s == "Single line" mode (. and \s match newline)
+
+           Corresponds to PCRE option PCRE_DOTALL
+
+      m == "Multi line" mode (^ and $ match internal line start/end)
+
+           Corresponds to PCRE option PCRE_MULTILINE 
+
+      x == eXtended mode
+
+           Ignores whitespace in patterns; allows comments.
+
+           Corresponds to PCRE option PCRE_EXTENDED
+
+     Behavior control flags:
+
+      t == sTudy; optimize the PRegEx by "Studying" it first.
+
+      g == Global; re-do Srch or Srch/Repl till no more match
+
+      e == Exec; call a callback function on each iteration
+           (see also SearchExec and ReplaceExec.)
+
+
+SrchStrL -- String to be searched ("String Buffer List")
+
+Examples: 
+          
+    ["my data my data my data"]        -- string only
+    ["my data my data my data", 23]    -- with optional length
+    ["my data my data my data", 23, 0] -- 0 means no NUL chars
+
+You must pass search string buffers to PRegEx in a special, arguably
+unusual, way.  Instead of passing a string as you normally would when
+calling a Lingo command, you pass a LIST CONTAINING A STRING upon
+which searching/replacing commands can operate.
+
+SrchStrL is a regular Lingo list.  The operation occurs on the FIRST
+ELEMENT of the list.  If SrchStrL is not a list, it's a param error. A
+non-string first element or an empty list is considered a parameter
+error. 
+
+The second, optional, element of the list is a length value.  If
+supplied, it is taken to be the intended length (even if not the
+actual length) of the first element.  Of course, this value should be
+no greater than length(SrchStrL[1]). and no less than zero.
+
+The length value is always specified as a count of *characters*.  When
+non-ASCII characters are used (e.g. special, accented, or non-Roman
+characters), then the length of the string in *characters* may not be
+the same as the length of the string in memory, or of the length of
+the string when saved in a file.
+
+String buffer to be searched may contain any amount of binary data,
+including ASCII zero (NUL), which does NOT signify end-of-string.
+(However, you should be aware of bugs in Director's Message and Debug
+windows which incorrectly display string buffers that have NULs in
+them as if the buffers were truncated at that position.  Don't worry:
+the data is still in the buffer even if it is printed out wrong.)
+
+Supplying the length element overrides the Xtra's perceived length of
+the buffer.  This allows the search or other operation to take place
+on a reduced subset of the string. (Warning: doing a replace on this
+string will truncate it at the specified point.  Writing a file from
+this string will also truncate the resulting file.)
+
+The third, optional, element is a boolean integer (0 or 1) which says
+whether the string buffer in element 1 is known to contain NUL
+characters (this is set for you by ReadFileToString, for your
+convenience, because you may want to use the data with
+non-NUL-friendly Xtras and it will be helpful to know if it has
+"binary" data that could trump them up).  Its value is never observed
+by PRegEx and so does not alter the behavior of any PRegEx functions
+-- all PRegEx functions are NUL-safe.  They never assume that your
+data does not contain NULs.
+
+Other elements of the list, if any, are left untouched by any
+functions that modify your SrchStrL.  Normally, you would not use this
+list for storage of other data.
+
+WHY THE LIST/STRING APPROACH?  Storing the string in a list is how we
+do pass-by-value to minimize copying of the string, and also allow you
+to hold the string in a single, named Lingo variable, while calling
+multiple Search and/or Replace commands that will modify the string
+buffer in place for you without replacing or renaming your variable.
+This also allows you to pass your string buffer around from one Lingo
+function to another and to PRegEx functions without copies of the
+string data getting made each time you make a function call.
+
+This sample would read a tab-delimited file of settings and values:
+
+set File = PRegEx_ReadEntireFile("@:SettingsFile.txt") -- is a SrchStrL
+PRegEx_Replace(File, "(\x0D\x0A)|[\x0D\x0A]", "g", "\n") -- line ends
+PRegEx_Replace(File, "\n+", "g", "\n") -- remove blank lines
+PRegEx_Replace(File, "\t+", "g", "\t") -- multiple tabs --> single tab
+set SettingProps = PRegEx_ExtractIntoSPList(File, "(.*?)[\t\n]", "g")
+
+
+ReplPat -- Replacement string or pattern
+
+Example: "Date: \1 Time: \3 Place: \2\n"
+    
+This is the replacement string for any PRegEx functions that do
+replacing. It can be a simple string, OR it may also contain special
+escape sequences to specify backreferences \1, \2, etc. or other
+special characters.
+
+Here is a complete list of special "escape codes" recognized within
+ReplPat string:
+
+\\            a single backslash character
+\t            a single tab character (same as numtochar(9))
+\n            a single newline character (aka Lingo "return" constant; aka numtochar(13); aka Macintosh newline; aka Carriage Return; aka CR)
+\x##          a single UTF-8 character with 2-digit hex value, range 00 - FF (Unicode Code point number)
+\x{#.......}  a single UTF-8 character with 1-8-digit hex value, range 0 - 7FFFFFFF (Unicode Code point number)
+\0            a single UTF-8 NUL character (aka ASCII zero byte)
+\# or \##     insert backreference by number (only recognized in replacement strings or after a match) (backslash followed by 1 or 2 digits), range 1-99
+\###          a single UTF-8 character with three-digit octal value, range 000-777 (Unicode Code point number)
+\(other char) insert the character itself. (e.g. \b = literal "b")
+${stringkey}  string key lookup in optional caller-supplied property list (value must be a string)
+${#symbolkey} symbol key lookup in optional caller-supplied property list (value must be a string)
+
+The process of interpreting these escape sequences and converting them
+into the actual output string is called "interpolation".  It is done
+automatically on replacement strings, and may also be done explicitly
+by calling the PRegEx function PRegEx_Interpolate().  (It is also done
+in the Table arguments to Translate.)
+
+Don't get confused: these sequences are not generally recognized by
+Lingo; they are only interpreted within PRegEx search patterns (REs)
+and replacement patterns (ReplPats), and by PRegEx_Interpolate().
+
+
+InitList
+
+For most PRegEx functions whose purpose is to create a list, an
+optional InitList parameter may be specified.  If specified, then the
+function will begin with that list and modify it, rather than creating
+a new list for you.  Otherwise, all list-generating functions
+automatically begin with a new, empty, list.
+
+This allows you to progressively build up a list through several
+invocations of PRegEx_ routines, or to use any PRegEx_ routines to
+append items to an existing list.
+
+
+ArgList
+
+For any functions that take Callback functions, they also take an
+optional ArgList argument (which defaults to [], the empty list).  The
+values inside the ArgList will be passed to the callback function,
+AFTER any other task-centric values that must be passed.
+
+So, for example, a #FilterFunction that must take a single argument
+and return a boolean saying whether that argument should be "in" or
+"out", gets passed item to be filtered as its first argument, PLUS
+additional arguments, if any, are taken from the supplied ArgList.
+
+Additional arguments could include data to be compared against, or
+perhaps other lists or property lists or instance objects that can be
+used to access a database or other external resources, or to serve as
+persistent state between multiple calls to the callback function.
+
+Using ArgList is a good practice because it lets you call callback
+functions by name without relying on global variables to communicate
+with those functions -- pass any parameters the function needs in
+order to operate in ArgList rather than using globals.
+
+
+#ReplFunction -- Callback function for replacement
+
+The SYMBOL name of a Lingo handler to be called during one of the
+_Replace* commands.
+
+The function is called EVERY time the command makes a successful match
+(0 or 1 time if "global" option is off; 0 or more times if "global" is
+on).
+
+The return value, which MUST be a string, is inserted as the
+replacement text.
+
+The replacement command itself does not pass any arguments to the
+function, but you may specify an optional ArgList parameter, whose
+elements, if any, will be passed, each time, as arguments to
+#ReplFunction.
+
+#ReplFunction may request backrefs or the entire match string by
+calling PRegEx_GetMatchString(N), and may discover which of multiple
+iterations it is on by calling PRegEx_FoundCount().
+
+Note that there is no way for the #ReplFunction to know whether it is
+being called for the last time during a global replace (there is no
+final "cleanup" call).
+
+As with all callback functions in PRegEx, #ReplFunction may signal to
+the function that is calling it that the function should abort, stop,
+skip, or "last" -- see PRegEx_CallbackAbort, etc.
+
+Example of typical uses:  
+
+    - selectively replace based on calculated criteria
+
+    - terminate a replacement early based on calculated criteria
+
+    - look up or translate symbols from a property list or database at
+      runtime and insert them into the correct locations in a buffer.
+
+    - extract some data before/while it is being replaced
+
+
+#Callback -- General-purpose callback function
+
+This is the symbol name of a Lingo handler in the Movie scope that
+will be called, generally with arguments optionally supplied by the
+calling routine, and may do anything it wishes, but should avoid
+actions that would stop playback or otherwise terminate the caller's
+context.
+
+
+=========================================
+PRegEx: Detailed Function Descriptions
+=========================================
+
+Note: common parameters are described in detail in the section above.
+That information is not generally reiterated in the descriptions
+below.
+
+Housekeeping functions:
+----------------------
+
+PRegEx_Clear           ([Complete]) ==> void; partial or complete reset
+
+    Clears internal state, search strings, back references, buffers,
+    error codes, etc, except for MemErrorSticky.
+
+    "Complete" option also clears call stack, if any, callback flags,
+    and other info.  DO NOT USE "Complete" option except when first
+    starting up.
+
+    Clear is automatically called by all high-level search/replace
+    functions, so you should never need to use it.
+
+PRegEx_GetPRegExVersion () ==> Version string of PRegEx (e.g. "1.0")
+PRegEx_GetPCREVersion  () ==> Version string of PCRE  (e.g. "3.4")
+
+    As described.
+
+
+Search/Replace low-level interface:
+-----------------------------------
+
+    Note: For best results, avoid using these "low-level" routines
+    directly.  They are really intended only for someone who needs to
+    directly control the individual steps of setting up a search
+    and/or replace, or who, for efficiency reasons, would like to keep
+    a single SrchStrL variable and repeatedly apply multiple REs to
+    it.  The low-level routines ignore the "global" option.  They
+    assume the caller wants to control multiple matches.
+
+PRegEx_SetSearchString     (SrchStrL)   ==> True or -Err
+
+    Sets a new string to be operated on.  Resets all counters and
+    buffers and flags, except the match pattern.  Resets Pos to zero.
+                          
+
+PRegEx_SetMatchPattern     (RE, [Opts]) ==> True or -Err
+
+    Initializes engine and then compiles new RE.  Sets Opts for
+    subsequent operations.  Resets all counters and buffers and flags,
+    except the search string.  Resets Pos to zero.
+
+
+PRegEx_GetNextMatch        ([noBlastBR])==> True or -Err
+
+    Performs one single search event in the current string, using the
+    current pattern and options, beginning at the current Pos, either
+    the Pos left from the immediate previous search (of any kind), or
+    from a Pos you determine by first using SetPos().
+                          
+    When GetNextMatch succeeeds, any previous global back-reference
+    data is replaced by the new back-reference data (see "Match Status
+    Functions" below).
+
+    When it fails, all back-reference buffers are cleared out and
+    MatchStatus functions will all return zero/empty/void.
+
+    The optional noBlastBR argument tells GetNextMatch to not blow
+    away the back-reference buffers when it FAILS, but instead, to
+    keep the information there from the previous successful match.
+
+    Important special case: If Entire Match is zero-length (i.e. a
+    match succeeded but matched string had no length), then Pos will
+    be increased before next the iteration; this guarantees that a
+    global match will terminate by stepping through the string
+    character-by-character rather than spinning endlessly at the
+    starting position.  This behavior applies to all matching
+    functions in PRegEx.
+
+
+PRegEx_ReplaceString       (ReplPat)    ==> True or -Err
+
+    ONLY AFTER a successful match, replaces the entire matched segment
+    with ReplPat, after "interpolations" have been performed
+    (i.e. inserting back references or other special escape sequences
+    into a copy of ReplPat before then inserting the resulting string
+    into the search buffer). 
+
+    Note that all Replace functions in PRegEx MODIFY the original
+    buffer.  They never return a copy.
+
+
+Search/Replace high-level interface:
+------------------------------------
+
+    You should almost always choose to use these "high-level"
+    functions and avoid the "low-level" interface whenever possible.
+
+    Only the high-level functions are aware of the "g" (global) flag.
+
+    These "high-level" search/replace functions, and any other
+    functions that use SrchStrL, RE, or Opts arguments, always
+    interally call the low-level functions listed above, or their
+    equivalents, as needed to perform their documented tasks.
+
+    Their function is abstractly described here partially in terms of
+    the low-level functions above; and these routines have the same
+    effect as if they were implemented by actually calling the
+    low-level routines.
+
+    However, in actual fact, they may or may not be implemented
+    exactly that way; for example, doing a global replace is
+    implemented more efficiently by doing all the searching in one
+    shot and then all of the replacing, rather than by repeatedly
+    calling GetNextMatch and ReplaceString.
+
+    Consequently, do not rely on any particular assumptions about the
+    contents of a string buffer DURING the course of operation of a
+    single high-level Replace (say, for example, inside a callback
+    function being called in the middle of a global Replace).
+
+
+PRegEx_Search        (SrchStrL, RE, [Opts]) ==> FoundCount or -Err
+
+    Sets up and does a search, comparing SrchStrL to RE.
+
+    If Global, the search is repeated continuously until it cannot
+    match anymore.
+
+    Afterwards, the Match Status functions only return information
+    pertaining to the LAST successful search done.  If there were zero
+    matches, then the Match Status information will all be empty/void.
+
+    Returns the FoundCount or Err code.  In non-global mode, this will
+    be 0 or 1, but should not be.  In global mode it will be 0 or
+    higher and can be treated as a count of the number of entire
+    matches.
+
+    If "e" (exec) option is supplied, then Search behaves exactly like
+    SearchExec, documented below.
+
+    Equivalent to:
+
+    - Call PRegEx_SetMatchPattern; or fail if error
+
+    - Call PRegEx_SetSearchString; or fail if error
+
+    - Call PRegEx_GetMatch 1 time or until search fails if global;
+      return Err if error; Retain back refs from ultimate successful
+      search when in global mode).
+
+    - return PRegEx_FoundCount()
+
+PRegEx_SearchExec    (SrchStrL, RE,  Opts, #Callback, [ArgList])
+
+    Like PRegEx_Search, but takes a #Callback function, which is
+    called, with arguments from optional ArgList, after each
+    SUCCESSFUL match that takes place.  Callback may use any of the
+    Match Status functions to inquire about the current match.
+
+
+PRegEx_Replace      (SrchStrL, RE, Opts, ReplPat) ==> FoundCount
+
+    Sets up and performs a single or global search and replace in
+    SrchStrL using RE and Opts.  ReplPat is interpolated and inserted
+    on each successful match.
+
+    If "e" (exec) option is supplied, then Replace behaves exactly
+    like ReplaceExec, documented below (ReplPat is replaced by an
+    executable #ReplFunction, with optional argument list).
+
+PRegEx_ReplaceExec  (SrchStrL, RE, Opts, #ReplFunction, [ArgList])
+
+    Like Replace, but instead of using a fixed ReplPat string, calls
+    #ReplFunction, optionally suplying any arguments from ArgList.
+    (Note: Replace does NOT supply any information about the match
+    directly to #ReplFunction.  #ReplFunction should use any of the
+    MatchStatus routines for that information, if needed.
+
+    #ReplFunction is REQUIRED to return a string each time it is
+    called.  Failure to do so causes immediate termination of
+    ReplaceExec, with an error code being returned.
+
+    The string returned by #ReplFunction is used as the replacement
+    for the entire matched string.  Returning the empty string, then,
+    causes the matched string to be deleted from the string buffer.
+    Returing PRegEx_GetMatchString(0), causes the original string to
+    replace itself, essentially skipping this replacement.
+
+    The string returned by #ReplFunction is not subject to
+    interpolation, but rather inserted literally into the buffer. So
+    don't try to return "Joe \1 Blow" and expect \1 to convert into
+    back-reference.  But you could call "Interpolate" specifically:
+    return(PRegEx_Interpolate("Joe \1 Blow")).
+
+    The #ReplFunction may and should use the Callback-related
+    Abort/Stop/Skip/Last flags, described later, in order to signal
+    ReplaceExec to alter its default looping behavior.
+
+
+Search/Extract utilities:
+-------------------------
+
+    Searching with parentheses and then checking back-references is
+    the standard way to retrieve searched/matched data from a string
+    buffer.  The Search and Replace functions, combined with the Match
+    Status functions, make it easy to extract values one at a time or
+    in small clusters.
+
+    The Search/Extract utilities, on the other hand, provide
+    convenient ways to extract an arbitrary number of data values from
+    a string buffer in one or a few quick operations.  Please study
+    the purpose of these functions since they're almost always more
+    convenient than the simple search functions:
+
+
+PRegEx_Split        (SrchStrL, RE, [Opts, InitList, Max])=>List
+
+    "Splits" a string buffer, using the pattern specified in RE as a
+    delimiter.  The matched portions of the string are REMOVED, and
+    the intervening segements are extracted into a list.  
+    
+    However, if the RE contains backreferences, then ALL of the
+    backreferences generated by the RE, in numeric order, will be
+    inserted, each as a separate element, into the resulting list at
+    the appropriate point in the list.  This allows retention of all
+    the matched portions of the original string, as well.
+
+    Here's another way to think about Split: it's the same as
+    PRegEx_ExtractIntoList, but in addition to extracting the
+    backreferences from each match, also adds all of the strings
+    BETWEEN each matched segment, effectively "split"ting the string
+    into multiple strings.
+
+    Optional MaxItems argument, which must be 2 or greater to be
+    meaningful, limits the maximum number of items that the list will
+    be split into.  (i.e. limits the max number of successful matches
+    to (MaxItems - 1)).  Omitting the optional Opts argument or
+    omitting the "g" flag from Opts has the same effect as setting Max
+    = 2 because only one match will be performed and the string will
+    be split into two parts.
+
+    If MaxItems is zero or unspecified, Split will remove any empty
+    trailing items that would result if the delimiter RE is found to
+    match at the very end of the search string.  In other words,
+    splitting "1,2," on comma would yield ["1", "2"].  However, if
+    MaxItems is ANY NEGATIVE NUMBER, then empty trailing items will
+    not be removed and the result would be ["1", "2", ""].  Note: in
+    order to be able to pass MaxItems, you'll be forced to also pass
+    values for Opts and InitialList.  These can be defaulted to "" and
+    [], respectively.
+
+    Examples:
+
+    put PRegEx_Split(["1 2 3"], "\s+", "g") -- splitting whitespace
+    - ["1", "2", "3"]
+
+    put PRegEx_Split(["1 2 3"], "\s+", "g", [], 2) -- max 2 items
+    - ["1", "2 3"]
+
+    put PRegEx_Split(["1 2 3"], "(\s+)", "g") -- keeping whitespace
+    - ["1", " ", "2", " ", "3"]
+
+    put PRegEx_Split(["1 2 3"], "(\w+)", "g", [],  0) -- delim @ start,end
+    - ["", "1", " ", "2", " ", "3"] -- note "" at start, but not end
+
+    put PRegEx_Split(["1 2 3"], "(\w+)", "g", [], -1) -- note Max = -1
+    - ["", "1", " ", "2", " ", "3", ""] -- note "" at start, AND at end
+
+
+PRegEx_ExtractIntoList     (SrchStrL, RE, [Opts, InitList])=>PList
+
+    Does a global or non-global search, putting ALL MATCHED BACK
+    REFERENCES (omitting non-matched ones, but keeping empty matches)
+    from each iteration into a lingo list; if global, repeats until
+    matching fails, gathering up all the back references from all
+    iterations along the way.
+
+
+PRegEx_ExtractIntoSPList   (SrchStrL, RE, [Opts, InitList])=>PList
+PRegEx_ExtractIntoSPListSym(SrchStrL, RE, [Opts, InitList])=>PList
+
+    These Extract routines are the same as PRegEx_ExtractIntoList, but
+    using a sorted property list; strings extracted using the current
+    set of matched backreferences are inserted pairwise into the list.
+
+    Here is how it works... as each complete pair is retrieved:
+
+    - Use first item in pair as the key, second item as the value.
+
+    - Add/Replace an entry into the SPList
+
+    - If odd number of items, then use <void> as final value.
+
+    The properties generated by ExtractIntoSPList are "String"
+    properties, which IS allowed in Lingo, and can be absolutely any
+    string.
+
+    ExtractIntoSPListSym is identical except that it converts all
+    property strings to symbols before inserting them into the list.
+    Consequently, it is imperative to ensure that all strings destined
+    to become properties can actually be converted into legal Lingo
+    symbols.  
+
+    (Lingo places many restrictions on what characters may legally
+    appear in property names (aka symbols).  It is your repsonsibility
+    to ensure the input is going to be clean, or some funky, broken,
+    or illegal symbols could result.)
+
+    Examples:
+
+    put PRegEx_ExtractIntoSPList   (["c d b a", (\w+), "g"])
+    -- ["a":"b", "c":"d"]
+
+    put PRegEx_ExtractIntoSPListSym(["c d b a", (\w+), "g"])
+    -- [ #a:"b",  #c:"d"]
+
+
+Match Status functions:
+-----------------------
+
+    These functions return information about the last successful match
+    AND any backreference substrings that are available due to the use
+    of parentheses inside the RE.
+
+
+PRegEx_FoundCount     () ==> Running or final count of match events
+
+    This returns the number of matches completed by a previous search
+    event, or done up to this point in an ongoing search.
+
+    Always re-set to 0 at the start of any match-related function
+    except GetNextMatch itself.  Incremented by 1 each time a match
+    happens, and always before any callback routines, so callback
+    routines may call this to find out the iteration count of a global
+    search IN PROGRESS.
+    
+    Note: this function does not count backreference matches.  It
+    counts each entire successful match as one event, regardless of
+    the number of successful backreference matches each might have had
+    within it.
+
+
+PRegEx_GetPos         () ==> Char pos where last left off; next begins
+PRegEx_SetPos         (num) ==> Change pos (0 <= Pos <= buffer len)
+
+    "Pos" is the character offset within the currently-active SrchStrL
+    of where the current or most recent successful match STOPPed
+    (which is also the beginning point for the next attempted match,
+    unless the string buffer or PRegEx are replaced.
+
+    GetPos returns this value.
+
+    SetPos lets you set the Pos for the following GetNextMatch either
+    ahead or backward.  SetPos(0) would always restart from the
+    beginning.  The legal bounds of Pos are 0 <= Pos <=
+    length(SrchStrL[1])).
+
+    Generally, it is recommended that you avoid calling SetPos during
+    the midle of any of the high-level Search/Replace routines,
+    especially the Replace routines, or unpredictable results could
+    occur.  Instead, call SetPos() only when working with the
+    low-level interface routines.
+
+    High-level routines always re-set Pos to zero before they start,
+    because they internally call the low-level routines
+    SetMatchPattern and SetSearchString, which have this effect as
+    well.
+
+    Recommendation: instead of ever using GetPos or SetPos, use the
+    power of REs to extract the data you need based on its pattern and
+    nearby context, rather than trying to search at specific character
+    positions within a buffer.
+
+
+PRegEx_GetMatchBRCount() ==> Number of back refs in last matched RE
+
+    Returns the number of backreference-generating parenthesis pairs
+    that were in the currently-successfully-matched RE.
+
+    This number serves as the upper bound of the "num" argument to the
+    following routines -- i.e. it gives the number of the
+    highest-available numbered back reference from the current match.
+
+
+PRegEx_GetMatchString ([num]) ==> Last matched str (entire -or- BR #)
+PRegEx_GetMatchStart  ([num]) ==> Start pos of ""  (entire -or- BR #)
+PRegEx_GetMatchLen    ([num]) ==> Length of ""     (entire -or- BR #)
+
+    These return the entire string, its start position within the
+    original buffer, and its length, for the Entire Match, or, if num
+    is supplied and > 0, for any numbered backreference string.
+
+    If GetMatchString and GetMatchLen return "" and 0, respectively,
+    it means the corresponding match string was a successful match,
+    but empty, and GetMatchStart will still give the correct offset of
+    that matched position.
+
+    If they return void, it means that there is no corresponding
+    successful match, and GetMatchStart will also return void.
+
+    For example:
+
+    put PRegEx_Search(["Ravi is a nice guy"], "((Chris)|(Ravi))")
+    -- 1
+
+    put PRegEx_GetMatchString(0)
+    -- "Ravi"
+
+    put PRegEx_GetMatchString(1)
+    -- "Ravi"
+
+    put PRegEx_GetMatchString(2)
+    -- <Void>           -- 2nd set of parens did not kick in
+
+    put PRegEx_GetMatchString(3)
+    -- "Ravi"
+
+    You can use this to check which of several alternate cases in
+    a match pattern was the successful one:
+            
+    if PRegEx_GetMatchString(2) = void then put "Ravi matched."
+    if PRegEx_GetMatchString(3) = void then put "Chris matched."
+    -- "Ravi matched."
+
+
+Error-handling functions:
+-------------------------
+
+PRegEx_LastErrCode        () ==> Error code for last failed call
+
+    Yields the numeric error code generated by the immediate previous
+    PRegEx function call.
+
+    0 means success.  All other codes are negative values.
+
+    Some functions return their error codes, and LastErrCode() will
+    agree with those; others do not return integers, and so checking
+    LastErrCode() is the only way to check the exact error in case
+    they return an unexpected result.
+
+PRegEx_DescribeError       ([Err]) ==> Error msg (Err or LastErrCode)
+
+    Given an Error code, returns a string message explaining it.
+    
+    If no Err is supplied, then describes PRegEx_LastErrorCode()
+
+    Returns empty string if the Error code is zero (success).
+
+    Example:
+
+    put PRegEx_DescribeError(PRegEx_ErrCode_SearchStrLMustBeList())
+    -- "PRegEx: SearchStrL argument must be a Lingo list."
+
+
+PRegEx_CompiledOK          () ==> True if last expression compiled
+
+   Returns true if and only if the last attempted compilation of a
+   regular expression succeeded, even if there have been other
+   intervening errors since then.
+
+
+PRegEx_MemError            () ==> True if last op failed due to memory
+
+   Returns true if the last PRegEx function generated a memory error.
+   
+   Each new PRegEx function call resets this value.
+
+
+PRegEx_MemErrorSticky      () ==> True if any op has failed due to mem
+PRegEx_MemErrorStickyReset () ==> Reset sticky err; return prev valuex
+
+   MemErrorSticky() returns true if ANY PRegEx function has generated a
+   memory error at any point since the last call to PRegEx_Clear(1)
+   ("Complete" reset), or since the last call to
+   PRegEx_MemErrorStickyReset(), which turns off this flag until the
+   next memory error occurs.
+   
+   This flag could be checked after a long sequence of PRegEx calls to
+   see if there was a problem encountered.  Or, it could be checked
+   every time through an idle loop, perhaps.
+
+
+Preference flags:
+
+    Functions listed in this section act as both the Get() and
+    Set(1/0) functions for the correspondingly-named preferences.
+    (Call with no arguments to Get() the value, and call with 1
+    argument to Set the value, which is also returned to you.)
+
+
+PRegEx_ErrorsToMessageWindow ([Bool]) ==> Echo all errors to Msg wind.
+
+    Tells PRegEx to echo the string description of any error codes
+    generated by any PRegEx routine directly to the message window
+    immediately as they occur.  This can be left on all the time, if
+    desired, because it will have no effect during projector playback,
+    since projectors lack a message window.
+
+
+String-manipulation utility functions: 
+--------------------------------------
+
+PRegEx_QuoteMeta (String) ==> String with RE-special chars quoted
+
+    Takes a Lingo string and returns a copy of the string with any
+    potentially special "meta" characters "quoted" ("escaped") by
+    having a backslash inserted in front of them.  This makes the
+    string "safe" to use in an RE, even when its contents or origin
+    cannot be known or trusted in advance (e.g. searching for
+    user-supplied data with a potentially untrusted user, or any time
+    when you know you want to search literally for a string that might
+    have special characters in it and you may or may not know that in
+    advance.  Maybe you want to search for "?" or backslash, for
+    example).
+
+    The characters that get escaped are EVERY CHARACTER EXCEPT a-z,
+    A-Z, 0-9, and underscore, and non-ASCII characters.
+
+    As a special case, NUL characters in the input are escaped as
+    "\0", so the output of QuoteMeta is 100% compatible with the
+    ReplPat argument to the Replace functions.
+
+    In other words, the QuoteMeta function is equivalent to this Lingo
+    example (except it does NOT have the side effect of modifying the
+    current search string, pattern, or Match Strings etc. as calling
+    PRegEx_Replace would do):
+
+    on QuoteMeta String
+      set myStr = [String]
+      PRegEx_Replace(myStr, "([^A-Z_0-9\x{7F}-\x{7FFFFFFF}])", "gi", "\\\1")
+      PRegEx_Replace(myStr, "\0",           "g",  "\\0" )
+      return myStr[1]
+    end QuoteMeta
+
+    Note: PRegEx_Interpolate can be used to reverse the processing done
+    by QuoteMeta.
+
+
+PRegEx_Translate(SrchStrL, InputTable, OutputTable)
+
+    Converts chars in SrchStrL using the mapping specified.
+
+    InputTable and OutputTable are a pair of strings specifying
+    input-chars and corresponding output-chars; any input-char
+    mentioned in SrchStrL will be mapped to the corresponding
+    output-char.  Others will be untouched.
+
+    Dashes can be used in InputTable and OutputTable to signify a
+    range of characters.
+
+    Example: 
+
+    PRegEx_Translate(SrchStrL, "a-z", "n-za-m") -- Rot13 encode/decode
+
+    Supports interpolation of \t, \n, \0, \\, \xDD for hex, \123 for
+    octal in the InputTable and the OutputTable.  But, does NOT
+    support back-reference interpolation as that would almost never be
+    helpful.  \# and \## are ignored, consequently, except for \0.
+    Does NOT support variable and symbol interpolation syntax.
+    "Translate" has its own, different, syntax.  Non-ASCII characters
+    will be interpolated but then ignored (see note below).
+
+    InputTable and OutputTable may contain ascii-zero (NUL)
+    characters.
+
+    If you want to mention a literal dash in either the InputTable or
+    OutputTable, that character must either be the first or last
+    character in the table, where it couldn't possibly be interpreted
+    as a range specifier.
+
+    If for any reason there are fewer characters in the Output table
+    than in the Input table, then the last character is understood to
+    be replicated as necessary.
+
+    Examples: 
+
+    PRegEx_Translate(SrchStrL, "-.", "M") -- dash or dot become M
+
+    PRegEx_Translate(SrchStrL, "\000-\177", "\177-\000") -- invert all ASCII chars
+
+    PRegEx_Translate(SrchStrL, "a-zA-Z", "_") -- all alpha chars become underscores
+    
+    Returns number of characters that changed; 0 if none did; or a
+    negative error code if there is an error in the parameters.
+
+    Translate ONLY works with ASCII characters (also known as Unicode
+    code points zero through 127 also known as "7-bit" characters).
+    This means: Only ASCII characters are recognized in Input and
+    Output tables -- non-ASCII characters are ignored, but will
+    disrupt interpretation of "range" specifiers.  Non-ASCII
+    characters in SrchStrL (the string being altered) will always be
+    completely ignored.  (Yes, this is a step *backward* from PRegEx
+    1.0 functionality, but it is an unavoidable consequence of using
+    Unicode rather than a fixed 8-bit character set.)  If you want to
+    do substitutions on non-ASCII characters, please use the regular
+    search/replace features.
+    
+PRegEx_Interpolate(String, [VarsPList]) ==> String
+
+    Does the pre-processing step that PRegEx_ReplaceString would do
+    before it does a replace, and returns the interpolated string.
+
+    Note: Since interpolation is usually done on short-ish
+    programmer-supplied strings rather than large buffers, the
+    incoming argument is a simple string, not a String Buffer (list).
+
+    Supports all of the escape codes mentioned in the "ReplPat",
+    including insertion of back-references, if any (see "escape codes"
+    above for details).
+
+    IN ADDITION to the normal interpolation, and IF the optional
+    argument of VarsPList is supplied, then the sequence ${Foobar}
+    inside the String will be replaced with the value of the property
+    (string) "Foobar" from VarsPList, and ${#Foobar} will be replaced
+    with value of the property (symbol) #Foobar.
+
+    Properties whose values are absent or not of type "string" will
+    result in an empty string being inserted.
+
+    Example:
+
+    set Props     = [#FirstName: "Joe"]
+    set Location  = "Town: Davis County: Sacramento"
+
+    PRegEx_Search([Location], "Town: (.*?) County:") -- sets \1 
+    put re_i("\1 says \x22Welcome, ${#FirstName}!\x22", Props)
+     -- "Davis says "Welcome, Joe!""
+
+    Note: Although not documented to behave this way, in the current
+    MOA implementation, searching a property list for the property "a"
+    is considered equivalent to searching for the property #a, and
+    vice versa.  Consequently, Interpolate also has this behavior --
+    i.e. it does not distinguish between the string and symbol forms
+    of the property name.  However, if MOA ever "corrects" this
+    behavior, then Interpolate will behave with the more strict
+    interpretation documented above.  Just be sure to use or omit the
+    "#" as documented here, and your code will be upwardly-compatible
+    with future versions of MOA.  Then, if you never intermix symbol
+    properties and string properties in the same property list, you
+    probably will not have to worry about this subtlety.
+
+    Note, however, that strings can contain any character(s) in any
+    length, while symbols have a more limited range of legal
+    characters.  However, symbols are much faster to look up in a
+    large property list.
+
+List-manipulation utility functions:
+------------------------------------
+
+    These are PRegEx-supplied variants of favorite built-in Perl
+    functions.  In Perl, regular expressions and list manipulation are
+    tightly coupled, so it's only natural that PRegEx should strive for
+    the same.
+
+    You'll notice that many of these functions are generally useful
+    for list-manipulation, even if you don't need to do any searching,
+    replacing, and extracting.
+
+
+PRegEx_CopyList(ListOrPList, [Deep, InitList]) ==> CopiedListOrPList
+
+    Returns a copy (shallow by default, deep if Deep is true) of the
+    given List or Property List.
+
+    If a memory error occurs, returns an error code instead of a list.
+
+    Warning: Deep copying does not check for recursive list inclusion.
+    If you try to Deep copy a recursive data structure, the routine
+    will run for a VERY LONG TIME till memory is filled up and then
+    fail with a memory error.  
+
+    If InitList is passed, it must be the same type of list as
+    ListOrPList.  If present, the items copied from ListOrPList will
+    be copied into InitList.  This is a way to use CopyList to deeply
+    or shallowly APPEND items from a list onto another list (or in the
+    case of PLists, ADD those key/value pairs).
+
+    Note: Assumes that all new PLists should be marked as "sorted" (so
+    it does).
+
+    Note: Deep copying only makes deep copies of elements that
+    themselves are Lists or PLists.  Otherwise, any other type of
+    object is shallowly copied.  (Possible future improvement: if a
+    child object has a "clone" method, Deep mode could check for that
+    method and try to call it to allow the object to clone itself.)
+
+PRegEx_Grep   (List, RE, [Opts]) ==> NewList ("Regexp mode")
+
+    Grep produces a new list derived by filtering an existing one.
+
+    Grep has two modes.  This is the first one.  It is triggered by
+    suppling a STRING (RE) as the second argument and optional Opts as
+    3rd.
+
+    Returns a new list whose contents are the elements of List for
+    which, when matched against RE/Opts, produce at least 1 match.
+
+    Elements of the incoming List must be plain strings, or SrchStrL
+    string buffers (i.e. lists containing a string and optional length
+    integer).
+
+    Elements that do not meet these requirements will simply be
+    skipped.  Errors encountered in matching (e.g. failure of RE to
+    compile correctly, memory errors), will cause Grep to finish
+    prematurely, returning only the items that have been matched up to
+    that point.  Checking LastErrCode() after calling Grep will
+    indicate the error code, if any.
+
+    Example: 
+
+    put PRegEx_Grep([1,"abc","","fo","",["w"],"b",#symb], "\w+", "g")   
+    -- ["abc", "fo", ["w"], "b"]
+
+    Notice how 3 strings and 1 String Buffer object within the list
+    were successfully matched by Grep.  Some integers, non-matching
+    empty strings, and a symbol, did not match and so did not appear
+    in the returned list.
+
+PRegEx_Grep   (List, #Filter, [ArgList]) ==> NewList ("Filter mode")
+                    
+    Grep produces a new list derived by filtering an existing one.
+
+    Grep has two modes.  This is the second one.  It is triggered by
+    supplying a symbol (#Filter) as the second argument.
+
+    Filters list according to the boolean results returned by the
+    "#Filter" function, which can be your own custom handler or any
+    Lingo built-in function whose results can be interpreted as
+    Boolean (e.g. #symbolP, #stringP, #integerP, #length).
+
+    Returns a new list whose contents are the elements of List for
+    which, when passed to #Filter with optional additional arguments
+    from ArgList as described above, #Filter returns true.  
+
+    In this "Filter" mode, Grep is similar to Map or ReplaceExec in
+    its recognition of any CallbackAbort/Stop/etc. flags set by the
+    #Filter callback function.
+
+    Example:
+
+    put PRegEx_Grep([1,"abc","","fo","",["w"],"b",#symb], #length)  
+    -- ["abc", "fo", "b"]
+
+    Notice how only items for which the Lingo built-in "length"
+    function returned a non-zero number, were selected, so any empty
+    strings also any non-string objects were removed.
+
+
+PRegEx_Map    (List, #MapFunction, [ArgList]) ==> MappedList
+
+    Map takes one list and makes another list where (generally) each
+    item in the new list corresponds to an item in the original list.
+
+    It uses a #MapFunction to convert an original item into its
+    counterpart in the new list.
+
+    Calls #MapFunction on each element in List.  On each call, first
+    argument to #MapFunction is the element being processed.
+
+    Subsequent arguments to #MapFunction are derived from the optional
+    ArgList parameter in the manner described earlier.
+
+    #MapFunction should be prepared to convert its first argument into
+    the desired output value (of any type), using its additional
+    arguments in whatever way needed.
+
+    MapFunction may use PRegEx_CallbackAbort, Stop, etc. to affect the
+    behavior of PRegEx_Map.  
+
+    Abort: stop and discard any work done so far; delete
+    partially-built result list and return empty list instead.  Set
+    LastErrorCode to indicate that an Abort was requested.
+
+    Stop: stop and return only elements successfully mapped prior to
+    this point; ignore current return value of #MapFunction.
+
+    Last: keeps this current return value but then stops and
+    successfully returns the list created up to that point.
+
+    Skip: skips adding a value for the current invocation, but
+    continues to process others.  Clever use of "Skip" allows Map to
+    do conversion and filtering (similar to Grep's filtering) at the
+    same time -- it can "Skip" items that should not make their way
+    into the new list, while mapping the items that should.
+
+
+PRegEx_Sort   (List, DeepCopy, #SortFunction, [ArgList]) ==> NewList
+
+    Returns a new list consisting of a shallow OR Deep copy of the old
+    list, sorted according to the ordering implied by #SortFunction,
+    which takes as arguments two values (of any type), here dubbed A
+    and B, from the list to be compared, plus optional additional
+    arguments if required.  
+
+    For any pair of items, #SortFunction must return -1 if A is less
+    than B, 0 if A == B, and 1 if A > B.
+
+    Sort does NOT modify the original list in any way, as Lingo's
+    "sort" function does.  Rather, it makes a sorted copy which you
+    may, at your option, choose to use in place of the original.
+
+
+PRegEx_Reverse (List, [DeepCopy, InitList]) ==> Reversed copy
+                
+    Returns a copy (shallow or deep -- default is shallow) of List
+    whose elements are in the reverse order of what they were in List.
+
+    If InitList is supplied, then reversed list is appended onto it.
+
+
+PRegEx_Join   (List, [DelimiterString]) ==> String
+
+    Returns a string which is a concatenation of all strings in List,
+    with the optional DelimiterString between each pair (it's the
+    opposite of PRegEx_Split -- it rejoins a list of strings into a
+    single string).
+    
+    Delimiter string may be empty, which is the default.
+
+    Example:
+
+    put PRegEx_Join(PRegEx_Split(["a,b,c,d,e"], ",", "g"), ":")
+    -- "a:b:c:d:e"
+
+
+PRegEx_Keys    (PList, [InitList]) ==> KeyList
+PRegEx_Values  (PList, [InitList]) ==> ValueList
+
+    Create a list of the keys (properties) or values in PList and
+    either returns them in a new list or appends them to the optional
+    InitList (a regular list), if provided.  
+
+    These functions do NOT attempt to change the sorting behavior of
+    the incoming PList; each returns keys or values in the order that
+    MOA yields them, and, if Keys and Values are called without the
+    list being altered, then the items yielded by each should
+    correspond.  If the PList is modified between calls to Keys and
+    Values, then no correspondence is guaranteed, or even likely.
+
+    To get all the keys and values intermixed together pairwise in a
+    single list, use PRegEx_PListToList, described below.
+
+    Examples:
+
+    put PRegEx_Keys  ([#a:10,#b:11,#c:12], ["dog", "cow"])
+    -- ["dog", "cow", #a, #b, #c]
+
+    put PRegEx_Values([#a:10,#b:11,#c:12], ["dog", "cow"])
+    -- ["dog", "cow", 10, 11, 12]
+
+
+PRegEx_GetSlice(List, Keys, [InitList]) ==> SliceList
+
+    Given a List (regular OR PList) and a list of (item numbers /
+    keys), which are said to define a "slice" of the first list,
+    creates a new regular list of values corresponding to those
+    specified by the "slice", and either appends the resulting list of
+    values to optional InitList or returns it as a new List.
+
+    Examples:
+
+    put PRegEx_GetSlice([#a   ,#b   ,#c   ], [3,  2])
+     -- [#c,#b]
+    put PRegEx_GetSlice([#a:10,#b:11,#c:12], [#b,#a])
+     -- [11,10]
+
+
+PRegEx_SetSlice(List, Keys, Values) ==> List
+
+    Given a List (regular or PList) and a list of (item numbers or
+    keys), which are said to define a "slice" of the list, plus a
+    third list of values corresponding to the keys, sets the
+    keys/values accordingly in the incoming List, MODIFYING THE LIST.
+
+    For convenience, also returns the same List/PList that was
+    modified, allowing you to start with a list specified directly in
+    Lingo, including an empty one, if you need.
+    
+    If the incoming List was a PList, SetSlice will mark it "Sorted".
+
+    Calling SetSlice with an empty PList [:] is a way to convert a
+    list a keys and a corresponding list of values into a an SPList.
+
+    Calling SetSlice with an existing PList is a way to add all the
+    keys and values from one property list into another.
+
+    Note that any list positions that are modified by SetSlice will
+    have their existing values REPLACED (like SetAt and SetAProp would
+    do).
+
+    Examples:
+
+    put PRegEx_SetSlice([#a:1], [#d, #c, #b], [2, 3, 4])
+    -- [#a:1, #b:4, #c:3, #d:2]
+
+    put PRegEx_SetSlice([#a, #b], [2, 4, 3], ["dog", "cat", "cow"])
+    -- [#a, "dog", "cow", "cat"]
+
+
+PRegEx_PListToList       (PList, [InitList])     ==> List
+PRegEx_PListToListStrings(PList, [InitList])     ==> List
+
+    "Flattens" PList into a regular list: [key, value, key, value....]
+
+    PRegEx_PListToListStrings does the same, but converts any keys of
+    type "symbol" into strings before adding them to the new List.
+
+    Either a new list is created, or items are appended to optional
+    InitList, if provided.  
+
+    Examples:
+
+    put PRegEx_PListToList([#a: 2, #b: 4])
+    -- [#a, 2, #b, 4]
+
+    put PRegEx_PListToList([#a: 2, #b: 4], ["dog", "cat"])
+    -- ["dog", "cat", #a, 2, #b, 4]
+
+    put PRegEx_PListToListStrings([#a: 2, #b: 4, 1: 3])
+    -- ["a", 2, "b", 4, 1, 3]
+
+
+PRegEx_ListToSPList      (List,  [InitPList]) ==> SPList
+PRegEx_ListToSPListSym   (List,  [InitPList]) ==> SPList
+
+    "Unflattens" List into a sorted PList, taking elements pairwise
+    from List. Any odd key left over at the end gets a void value.
+
+    PRegEx_ListToSPListSym does the same, but converts any string keys
+    to symbols before adding to the PList.  Other types of keys are
+    left unaltered.
+
+    As with other PRegEx functions that create symbols, the symbol
+    created is subject to Lingo's rules governing symbols.  Attempt to
+    create invalid symbols at your own risk: MOA's default behavior
+    will govern.
+
+    Either a new SP list is created, or items are appended to optional
+    InitPList, if provided.  In either case, the resulting list will
+    be marked as "sort"ed.
+
+    Examples:
+
+    put PRegEx_ListToPList([#a, 2, #b, 4])
+    -- [#a: 2, #b: 4])
+
+    put PRegEx_ListToPListSym(["a", "dog", "b", "box", #c, 2])
+    -- [#a: "dog", #b: "box", #c: 2])
+
+
+General utility functions: 
+--------------------------
+
+PRegEx_ReadFileToString  (FilePath, TextEncoding)  ==> StringBufferList
+PRegEx_WriteStringToFile (FilePath, StringBufferList, TextEncoding) ==> 1/-Err
+
+    ReadFileToString and WriteStringToFile create and accept
+    StringBufferList (SrchStrL) objects -- that is, a list containing
+    a string buffer in item 1.
+
+    Reading:
+
+    ReadFileToString reads an entire file whose path is specified as a
+    MOA-style FilePath and resolved according to Director's documented
+    pathname-resolution algorithm (including obeying the canonical
+    "@:" syntax), and returns a StringBufferList.
+
+    Conveniently, the StringBufferList may be used as a
+    PRegEx-compatible SrchStrL argument, allowing the file buffer to
+    be immediately searched and/or manipulated by PRegEx's
+    search/replace routines.
+
+    Writing: 
+
+    WriteStringToFile takes a StringBufferList and saves to a file.
+
+    The FilePath may be relative or absolute, and may use any of the
+    standard Director path name conventions, but it MUST contain at
+    least one directory component.  If it does not, a "directory not
+    found" error will occur.  WriteEntireFile does NOT attempt to
+    create directories; only files.
+
+    All the characters in the StringBufferList will always be
+    written. (NOTE AND WARNING: this is a change from the
+    WriteEntireFile function in PregEx 1.0, in which an optional
+    second integer element in the StringBufferList would be
+    interpreted as a character length limit.  This was found to be a
+    real pitfall by many programmers.)
+
+    On success, returns # of bytes actually written (i.e. the actual
+    size of the file), possibly zero.  Note: because of file encoding
+    issues, this number is *not* necessarily the same as the number of
+    characters written... it could be more or less than that number.
+
+    On failure, tries to delete any created or partially-(over)written
+    file, if any, and returns a negative error code.
+
+    So: any negative return value should be interpreted as an error
+    code.
+
+    Text Encodings:
+
+    Director 11+ uses Unicode UTF-8 encoding for all strings.
+    Therefore, it is necessary to convert any data read from a file
+    into UTF-8 before it can be stored in a Director String, and
+    optionally to convert it back again when writing to a file.
+
+    Your data files might or might not be stored in UTF-8 format, so
+    PRegEx_ReadFileToString and PRegEx_WriteStringToFile take a second
+    TextEncoding argument, which is a string giving the name of an
+    encoding that should be used to read or write the file.  (When
+    reading, PRegEx will convert *from* the format you specify, into
+    UTF-8.  When writing, it will convert from UTF-8 *to* the format
+    you specify.)
+    
+    PRegEx permits all of the encodings defined by the iconv library
+    (listed in detail below), plus 2 additional fully bi-directional
+    8-bit text encodings that were created for this project:
+
+    MACROMANFULL (also known as:) MACFULL MACINTOSHFULL 
+    CP1252FULL   (also known as:) MS-ANSI-FULL  WINDOWS-1252-FULL
+
+    For details of the encodings, see these source files, included
+    with the PRegEx distribution:
+
+        pregex/project/sources/iconv_custom/MACROMANFULL.TXT
+        pregex/project/sources/iconv_custom/CP1252FULL.TXT
+
+    These encodings are called "full" and "bi-directional" because
+    they can be used to read *ANY* binary file into memory, and
+    although they will have a different format in memory (UTF-8), if
+    written back out again with the same encoding, the identical
+    binary bytes will be retained.  This should permit you to
+    manipulate binary files with PRegEx if you are careful (that is,
+    if, having read the binary files into strings, you never alter
+    those strings to contain any characters that are not part of the
+    encoding you used when reading them in).  Again, see the files
+    above for details on each character in the encodings.
+
+    KEEP IN MIND: not all encodings are 8-bit, and not all 8-bit ones
+    are bi-directional.  Therefore, if you are reading binary files,
+    or Mac Roman, or Windows 1252 (Windows Latin) files, we suggest
+    you use one of the 8-bit bi-directional encodings listed above.
+
+    Here is the full list of supported text encodings.  For details on
+    each encoding, please visit the iconv web page, mentioned earlier:
+
+    ANSI_X3.4-1968 ANSI_X3.4-1986 ASCII CP367 IBM367 ISO-IR-6 ISO646-US ISO_646.IRV:1991 US US-ASCII CSASCII
+    UTF-8
+    ISO-10646-UCS-2 UCS-2 CSUNICODE
+    UCS-2BE UNICODE-1-1 UNICODEBIG CSUNICODE11
+    UCS-2LE UNICODELITTLE
+    ISO-10646-UCS-4 UCS-4 CSUCS4
+    UCS-4BE
+    UCS-4LE
+    UTF-16
+    UTF-16BE
+    UTF-16LE
+    UTF-32
+    UTF-32BE
+    UTF-32LE
+    UNICODE-1-1-UTF-7 UTF-7 CSUNICODE11UTF7
+    UCS-2-INTERNAL
+    UCS-2-SWAPPED
+    UCS-4-INTERNAL
+    UCS-4-SWAPPED
+    C99
+    JAVA
+    CP819 IBM819 ISO-8859-1 ISO-IR-100 ISO8859-1 ISO_8859-1 ISO_8859-1:1987 L1 LATIN1 CSISOLATIN1
+    ISO-8859-2 ISO-IR-101 ISO8859-2 ISO_8859-2 ISO_8859-2:1987 L2 LATIN2 CSISOLATIN2
+    ISO-8859-3 ISO-IR-109 ISO8859-3 ISO_8859-3 ISO_8859-3:1988 L3 LATIN3 CSISOLATIN3
+    ISO-8859-4 ISO-IR-110 ISO8859-4 ISO_8859-4 ISO_8859-4:1988 L4 LATIN4 CSISOLATIN4
+    CYRILLIC ISO-8859-5 ISO-IR-144 ISO8859-5 ISO_8859-5 ISO_8859-5:1988 CSISOLATINCYRILLIC
+    ARABIC ASMO-708 ECMA-114 ISO-8859-6 ISO-IR-127 ISO8859-6 ISO_8859-6 ISO_8859-6:1987 CSISOLATINARABIC
+    ECMA-118 ELOT_928 GREEK GREEK8 ISO-8859-7 ISO-IR-126 ISO8859-7 ISO_8859-7 ISO_8859-7:1987 ISO_8859-7:2003 CSISOLATINGREEK
+    HEBREW ISO-8859-8 ISO-IR-138 ISO8859-8 ISO_8859-8 ISO_8859-8:1988 CSISOLATINHEBREW
+    ISO-8859-9 ISO-IR-148 ISO8859-9 ISO_8859-9 ISO_8859-9:1989 L5 LATIN5 CSISOLATIN5
+    ISO-8859-10 ISO-IR-157 ISO8859-10 ISO_8859-10 ISO_8859-10:1992 L6 LATIN6 CSISOLATIN6
+    ISO-8859-11 ISO8859-11 ISO_8859-11
+    ISO-8859-13 ISO-IR-179 ISO8859-13 ISO_8859-13 L7 LATIN7
+    ISO-8859-14 ISO-CELTIC ISO-IR-199 ISO8859-14 ISO_8859-14 ISO_8859-14:1998 L8 LATIN8
+    ISO-8859-15 ISO-IR-203 ISO8859-15 ISO_8859-15 ISO_8859-15:1998 LATIN-9
+    ISO-8859-16 ISO-IR-226 ISO8859-16 ISO_8859-16 ISO_8859-16:2001 L10 LATIN10
+    KOI8-R CSKOI8R
+    KOI8-U
+    KOI8-RU
+    CP1250 MS-EE WINDOWS-1250
+    CP1251 MS-CYRL WINDOWS-1251
+    CP1252 MS-ANSI WINDOWS-1252
+    CP1253 MS-GREEK WINDOWS-1253
+    CP1254 MS-TURK WINDOWS-1254
+    CP1255 MS-HEBR WINDOWS-1255
+    CP1256 MS-ARAB WINDOWS-1256
+    CP1257 WINBALTRIM WINDOWS-1257
+    CP1258 WINDOWS-1258
+    850 CP850 IBM850 CSPC850MULTILINGUAL
+    862 CP862 IBM862 CSPC862LATINHEBREW
+    866 CP866 IBM866 CSIBM866
+    MAC MACINTOSH MACROMAN CSMACINTOSH
+    MACCENTRALEUROPE
+    MACICELAND
+    MACCROATIAN
+    MACROMANIA
+    MACCYRILLIC
+    MACUKRAINE
+    MACGREEK
+    MACTURKISH
+    MACHEBREW
+    MACARABIC
+    MACTHAI
+    HP-ROMAN8 R8 ROMAN8 CSHPROMAN8
+    NEXTSTEP
+    ARMSCII-8
+    GEORGIAN-ACADEMY
+    GEORGIAN-PS
+    KOI8-T
+    CP154 CYRILLIC-ASIAN PT154 PTCP154 CSPTCP154
+    KZ-1048 RK1048 STRK1048-2002 CSKZ1048
+    MULELAO-1
+    CP1133 IBM-CP1133
+    ISO-IR-166 TIS-620 TIS620 TIS620-0 TIS620.2529-1 TIS620.2533-0 TIS620.2533-1
+    CP874 WINDOWS-874
+    VISCII VISCII1.1-1 CSVISCII
+    TCVN TCVN-5712 TCVN5712-1 TCVN5712-1:1993
+    ISO-IR-14 ISO646-JP JIS_C6220-1969-RO JP CSISO14JISC6220RO
+    JISX0201-1976 JIS_X0201 X0201 CSHALFWIDTHKATAKANA
+    ISO-IR-87 JIS0208 JIS_C6226-1983 JIS_X0208 JIS_X0208-1983 JIS_X0208-1990 X0208 CSISO87JISX0208
+    ISO-IR-159 JIS_X0212 JIS_X0212-1990 JIS_X0212.1990-0 X0212 CSISO159JISX02121990
+    CN GB_1988-80 ISO-IR-57 ISO646-CN CSISO57GB1988
+    CHINESE GB_2312-80 ISO-IR-58 CSISO58GB231280
+    CN-GB-ISOIR165 ISO-IR-165
+    ISO-IR-149 KOREAN KSC_5601 KS_C_5601-1987 KS_C_5601-1989 CSKSC56011987
+    EUC-JP EUCJP EXTENDED_UNIX_CODE_PACKED_FORMAT_FOR_JAPANESE CSEUCPKDFMTJAPANESE
+    MS_KANJI SHIFT-JIS SHIFT_JIS SJIS CSSHIFTJIS
+    CP932
+    ISO-2022-JP CSISO2022JP
+    ISO-2022-JP-1
+    ISO-2022-JP-2 CSISO2022JP2
+    CN-GB EUC-CN EUCCN GB2312 CSGB2312
+    GBK
+    CP936 MS936 WINDOWS-936
+    GB18030
+    ISO-2022-CN CSISO2022CN
+    ISO-2022-CN-EXT
+    HZ HZ-GB-2312
+    EUC-TW EUCTW CSEUCTW
+    BIG-5 BIG-FIVE BIG5 BIGFIVE CN-BIG5 CSBIG5
+    CP950
+    BIG5-HKSCS:1999
+    BIG5-HKSCS:2001
+    BIG5-HKSCS BIG5-HKSCS:2004 BIG5HKSCS
+    EUC-KR EUCKR CSEUCKR
+    CP949 UHC
+    CP1361 JOHAB
+    ISO-2022-KR CSISO2022KR
+    CP856
+    CP922
+    CP943
+    CP1046
+    CP1124
+    CP1129
+    CP1161 IBM-1161 IBM1161 CSIBM1161
+    CP1162 IBM-1162 IBM1162 CSIBM1162
+    CP1163 IBM-1163 IBM1163 CSIBM1163
+    DEC-KANJI
+    DEC-HANYU
+    437 CP437 IBM437 CSPC8CODEPAGE437
+    CP737
+    CP775 IBM775 CSPC775BALTIC
+    852 CP852 IBM852 CSPCP852
+    CP853
+    855 CP855 IBM855 CSIBM855
+    857 CP857 IBM857 CSIBM857
+    CP858
+    860 CP860 IBM860 CSIBM860
+    861 CP-IS CP861 IBM861 CSIBM861
+    863 CP863 IBM863 CSIBM863
+    CP864 IBM864 CSIBM864
+    865 CP865 IBM865 CSIBM865
+    869 CP-GR CP869 IBM869 CSIBM869
+    CP1125
+    EUC-JISX0213
+    SHIFT_JISX0213
+    ISO-2022-JP-3
+    BIG5-2003
+    ISO-IR-230 TDS565
+    ATARI ATARIST
+    RISCOS-LATIN1
+
+    Warnings about text encodings:
+
+    In general, you should be certain that your files are in the
+    correct encoding.  Invalid character codes will be ignored/omitted
+    when your file is read in, and/or file conversion will stop at the
+    first invalid code encountered.  (As an example, please note that
+    ISO-8859 has several unmapped code points -- you may wish to use
+    CP1252FULL instead -- see above.)
+
+    "UTF-8" encoding:
+
+    Note that if you use the "UTF-8" encoding, the file reading will
+    STOP at the first invalid character found, and the string will
+    appear to be truncated.
+
+    "raw" enccoding:
+    
+    PRegEx also defines a "raw" encoding that permits a binary file to
+    be read directly into a Director string.  The data *really should*
+    be in UTF-8 format, but the format will *not* be verified upon
+    reading.  So, any attempt to use that string (print it, modify it,
+    search or replace within it, view it in the debugger window, put
+    it to the message window, etc.), could result in Director crashing
+    or other unpredictable behavior, because all of the code paths
+    mentioned above (and maybe others) will be assuming that the
+    string contains valid UTF-8 characters.  Therefore, this mode
+    should not be used, or at the least, should be used only by
+    advanced users who are willing to accept the inherent risks.  If
+    you read a string with "raw" mode, you should only use "raw" mode
+    when writing it back out again, since the same issue will occur
+    there -- only "raw" mode will write a string to a file without
+    first examining its characters for UTF-8 conformance.
+
+
+PRegEx_ReadEntireFile  (FilePath)  ==> StringBufferList
+PRegEx_WriteEntireFile (FilePath, StringBufferList) ==> 1/-Err
+
+    These functions are *deprecated*.  Please do not use
+    them in new code, and please take them out of any existing projects
+    (including their aliases, re_read and re_write).  Please see the
+    documentation for ReadFileToString and WriteStringToFile, above,
+    for an explanation of why they are deprecated.
+
+    For backward compatibility with the prior version of PRegEx, these
+    have been redefined to do roughly the same as calling
+    ReadFileToString and WriteStringToFile, described immediately
+    above, but with with "MACROMANFULL" or "CP1252FULL" filled in for
+    you as the TextEncoding, depending on which platform you are
+    using:
+
+    Mac:
+
+    PRegEx_ReadFileToString (FilePath, "MACROMANFULL")
+    PRegEx_WriteStringToFile(FilePath, StringBufferList, "MACROMANFULL")
+
+    Windows:
+
+    PRegEx_ReadFileToString (FilePath, "CP1252FULL")
+    PRegEx_WriteStringToFile(FilePath, StringBufferList, "CP1252FULL")
+
+    "MACROMANFULL" and "CP1252FULL" were chosen as the default
+    encodings because they are (as described earlier):
+
+     - full 8-bit (support all 256 possible binary bytes and no more)
+
+     - bi-directional (data read in then written back out using same
+       encoding will be unaltered on disk, as long as no characters
+       not present in the encoding are added in the meanwhile)
+
+     - compatible with Director 7-10 behavior, where 8-bit characters
+       read into strings were simply interpreted as being MacRoman on
+       the Mac, and Windows Latin 1 (aka Windows 1252 aka CP 1252) on
+       Windows.
+
+    If the files you are reading and writing will only ever contain
+    7-bit ASCII characters, then there is no harm in continuing to use
+    these functions, however you should still switch to the newer
+    versions of these functions so that if your future needs change.
+    Your Lingo code will reflect the need to expressly choose a text
+    encoding when reading and writing files.
+
+    Similarly, if the strings your old projects are reading and
+    writing from/to files do not rely on specific encodings of
+    non-ASCII characters, there should be no harm in using these
+    deprecated functions since the non-ASCII characters should still
+	work as they did.
+
+	NOTE: To maintain compatibility with PregEx 1.0, an optional
+    second element in the StringBufferList will be interpreted as a
+    character length limit by WriteEntireFile.  This was found to be a
+    real pitfall by many programmers, especially since this value is
+    set by ReadEntireFile, but is NOT kept in sync as the string is
+    altered by PRegEx functions (or other lingo code).  The
+    length-limit behavior was discontinued in the replacement
+    function, WriteStringToFile.
+
+
+Callback-related functions:
+---------------------------
+
+    PRegEx's internal callback mechanism is so flexible that we decided
+    to expose it in this API so Lingo functions can be created that
+    can elegantly make callbacks to other Lingo functions, something
+    that is essentially impossible to do using regular Lingo.
+
+
+PRegEx_CallHandler   (#CallbackFunction, [ArgList1, ArgList2])
+
+    Calls any function by symbol name.  ArgList1 and ArgList2 are both
+    optional.  Together they are flattened to produce a single
+    argument list for the callback function.  
+
+    In other words, each ArgList is separately treated this way:
+
+    If not a list (i.e. any other kind of value, even "void"), the
+    value itself becomes an argument to the #CallbackFunction. If a
+    list, it is shallowly flattened and its elements become arguments
+    to the #CallbackFunction, in the order they appear in the list.
+
+    Note: if what you really want is to pass the actual list object
+    itself and be sure it does not get flattened, just be sure to put
+    the list you want to pass inside another temporary list, like
+    this:
+
+    PRegEx_Callback(#MyFunction, [myList1 ,  myList2]) or this:
+    PRegEx_Callback(#MyFunction, [myList1], [myList2]) -- equivalent
+
+    ... where [] is the Lingo list-construction operator, of course.
+
+    Why have two optional arg lists?  Because you may wish to use this
+    function when implementing a callback feature in a Lingo handler
+    that you're designing.
+
+    Just as some of the PRegEx callback-oriented functions do, you
+    might use ArgList1 for the arguments YOU are supplying to the
+    callback function, if any, and pass through ArgList2 for the
+    arguments YOUR CALLER is supplying to the callback function, if
+    any.
+
+    This is how all the other PRegEx_ functions that take callbacks
+    also behave (they all use CallHandler internally, in fact).  You
+    don't have to do it this way, but this is a logical and clean way
+    to implement any routine that offers to make calls to a callback
+    function.
+
+    Note: You may wish to allow the CallbackFunction to call
+    PRegEx_CallbackAbort etc. to set those flags while running.  If you
+    do allow this, then it is your responsibility to check those flags
+    and then to reset them to zero each time after calling
+    PRegEx_CallHandler.  Otherwise, those flags may persist and
+    incorrectly affect another routine in your call stack.  If there
+    is any chance at all that the callback function will set these,
+    then be sure to re-set them to zero after it returns.
+    
+    PRegEx transparently takes care of saving and restoring settings of
+    the callback control flags in stack frames below yours, so you
+    never have to worry that setting these flags might inadvertently
+    interrupt their use in a lower stack frame, if any.
+
+
+PRegEx_CallbackAbort([bool]) ==> Stop operation and fail with error
+PRegEx_CallbackStop ([bool]) ==> Stop before this iteration, but succeed
+PRegEx_CallbackLast ([bool]) ==> Stop after this iteration, but succeed
+PRegEx_CallbackSkip ([bool]) ==> Skip this iteration, but continue
+
+    These flags may be set by any callback function that wishes to
+    send a signal to its caller.  The caller may either be a built-in
+    PRegEx routine OR, a Lingo-authored routine that called the
+    function using the PRegEx_CallHandler utility routine.
+
+    These flags should NOT be set by any function that doesn't believe
+    it is currently being called as a callback by some PRegEx function.
+
+    As an extended example, consider how these may be called from
+    within a ReplFunction to set a flag that tells the ReplaceExec
+    function to end its loop after the next time the ReplFunction
+    returns.  
+
+    Each one would cause ReplaceExec to terminate slightly
+    differently.
+
+    CallbackLast says that the current replacement should be done, but
+    then it will be the last one (do not keep searching), terminating
+    the replacement successfully (including keeping any replacements
+    up to this point).
+
+    CallbackStop says to NOT do the current replacement (ignoring the
+    return value of the ReplFunction), and terminate the replacement
+    successfully (including keeping any replacements up to this
+    point).
+
+    CallbackAbort is the same as ReplaceStop, but "aborts", causing
+    CallbackExec to leave the search string untouched, not set any back
+    refs, and set FoundCount to zero, much as if the very first search
+    had simply not succeeded in the first place.
+
+    Stopping using CallbackLast or CallbackStop could be useful if
+    replacement should stop once a certain token is reached in the
+    input.
+
+    Aborting could be useful if there is a memory failure or other
+    serious failure encountered by the callback function and it needs
+    to gracefully abort any further potentially memory-consuming
+    activity.
+    
+    CallbackSkip could be useful if a particular item should be
+    ignored/untouched/omitted/left unchanged, but you want your
+    calling function to continue with whatever loop it is currently
+    processing.
+
+
+Error code constants:
+---------------------
+    Each of these "constant" functions returns the corresponding
+    numeric PRegEx error code.  This can be helpful if you want to
+    write code that checks for these specific error cases, either with
+    functions that return error codes directly, or for those that
+    merely set PRegEx_LastErrCode.
+
+PRegEx_ErrCode_OutOfMemory()
+PRegEx_ErrCode_SearchStrLMustBeList()
+PRegEx_ErrCode_SearchStrLMustContainString()
+PRegEx_ErrCode_SearchStrLLengthArgMustBeInteger()
+PRegEx_ErrCode_REMustNotBeEmpty()
+PRegEx_ErrCode_REDidNotCompile()
+PRegEx_ErrCode_ReplPatMustBeString()
+PRegEx_ErrCode_CallbackFuncMustBeSymbol()
+PRegEx_ErrCode_CallbackFuncDidNotReturnString()
+PRegEx_ErrCode_QuoteMetaNeedsString()
+PRegEx_ErrCode_TriedToMatchWithoutSearchStrL()
+PRegEx_ErrCode_TriedToMatchWithoutSearchPattern()
+PRegEx_ErrCode_TriedToReplaceWithoutMatching()
+PRegEx_ErrCode_CallbackRequestedAbort()
+PRegEx_ErrCode_UnexpectedMOAError()
+PRegEx_ErrCode_UnexpectedInternalError()
+PRegEx_ErrCode_CallbackFunctionNotFound()
+PRegEx_ErrCode_ExpectedListArgument()
+PRegEx_ErrCode_ExpectedPListArgument()
+PRegEx_ErrCode_GrepNeedsFunctionNameOrPRegEx()
+PRegEx_ErrCode_ExpectedStringArgument()
+PRegEx_ErrCode_SortFunctionDidNotReturnInteger()
+PRegEx_ErrCode_FileNotFound()
+PRegEx_ErrCode_ErrorOpeningFile()
+PRegEx_ErrCode_ErrorReadingFile()
+PRegEx_ErrCode_ErrorWritingFile()
+
+    Example:
+
+    put PRegEx_DescribeError(PRegEx_ErrCode_SearchStrLMustBeList())
+    -- "PRegEx: SearchStrL argument must be a Lingo list."
+
+
+==================================================================
+Help! What is a Regular Expression?  What's going on here?
+==================================================================
+
+[ASIDE TO NEWBIES: If you don't already know what regular expressions
+are and are now burning with desire to use them, then you are facing a
+pretty steep, but immensely gratifying, learning curve. Hang in there!
+It's worth the effort to learn!]
+
+This is a very brief intro.  Don't expect much.  Try Google.
+
+Regular Expression = Search String or Pattern
+
+That's all there is to it.
+
+Longer explanation: A Regular Expression (or RE or regex or regexp) is
+a search specification that can contain special syntax (think:
+wildcard characters on steroids) that allows you to perform extremely
+complex search, search/replace, or extraction operations on text
+buffers of any size.
+
+Examples: 
+
+dog                  -- matches just these letters
+(dog)|(cat)          -- matches the letters "dog" or "cat"
+organi[sz]e          -- matches US or British spelling of "organize"
+^\w{1,8}.\w{1,3}$    -- matches any DOS 8.3-style file name
+
+In addition to many dozens of special syntax characters like the ones
+hinted at above, some special "escape" sequences, triggered by a
+backslash, are also recognized within the RE pattern.  
+
+    \n matches a return char (same as Lingo "return" or char(13))
+    \t matches a tab char
+
+(There are many others -- see definition of all "escape codes" earlier
+in this file.  See also the documentation for the PCRE project.)
+
+Backreferences, written as \#, such as \1, \2 ... \99, mean "match (or
+insert when replacing) the parenthesized expression number N in this
+spot".
+
+Backreference example A:
+
+"((Chris)|(Ravi)).*?\1" 
+
+... finds the name "Chris" or "Ravi" in a string, provided it is also
+followed again some distance later by the same name again.
+
+Backreference example B:
+
+"(<(\w+)(.*?)>)(.*?)(</\2.*?>)" 
+
+... Matches most pairs of balanced HTML/XML tags, such as: <P>....</P>
+or <B>...</B> or <A HREF=foo.html>Home</A>.
+
+In this last example, the backreference substrings would be assigned
+(and individually retrievable!) as follows:
+
+Backreference 1: "<A HREF=foo.html>"
+Backreference 2: "A"
+Backreference 3: " HREF=foo.html"
+Backreference 4: "Home"
+Backreference 5: "</A>"
+
+Backreferences can be used to extract pieces of data from a string
+when searching, and, equally importantly, can be used in a Replacement
+pattern when doing a search/replace, so you can insert part or parts
+of the matched expression directly into the replaced string.
+
+HOW TO LEARN REGULAR EXPRESSION SYNTAX: 
+
+1) There are whole BOOKS written about regular expression syntax and
+   its subtleties.  We are not going to try to teach you anything more
+   about them in this document.  Buy one of those books now, if you
+   are interested.  http://amazon.com/.
+
+2) Another good way to get started: ask a friend for help and
+   pointers.  (Preferably you'll be asking someone other than Chris or
+   Ravi :-)).
+
+3) The PCRE documentation, included with this Xtra and on the Web,
+   gives a thorough, possibly overly-technical, overview of the
+   precise features of the regular expression language supported by
+   it, and consequently supported by PRegEx.  (To get the most out of
+   it: ignore all the deeper technical stuff; just read about the
+   syntax.)  http://pcre.org/man.html   
+
+4) Also, if you have access to perl, be sure to read the "perlre"
+   manual page that comes with every perl distribution.  99% of the
+   syntax documented there applies here.
+
+5) Practice, practice, practice.  Have a copy of Director open while
+   learning.  Try every example in the message window.  Try to make a
+   test case for every different feature or behavior your learn about,
+   and test it right then and there.  Read and understand the test
+   cases in the test movie that accompanies the Xtra.
+
+
+TWO NOTES FOR PERL USERS ONLY
+
+Note 1: Surrounding the RE with forward slashes is NOT NECESSARY.  In
+Perl, the slashes are string delimiters, much like quote marks, and
+are not part of the search pattern itself.
+
+Note 2: $-sign and @-sign interpolation are not normally performed by
+any of the functions that process the other backslashed escape codes,
+as those are features of Perl's built-in string interpolation, not
+features of regular expressions per se.  If you need to build up a
+replacement pattern string out of pieces, just use normal Lingo & and
+&& or other means of concatenation, such as PRegEx_Join. OR, read above
+about PRegEx_Interpolate, which does all the usual interpolation
+functions, plus can optionally look up values from a property list and
+interpolate them into a string, similar to Perl's $-sign interpolation
+feature.  Note that if you plan to search using a RE that has had
+user-supplied data interpolated into it, you almost certainly need to
+call QuoteMeta either on the user-supplied parts before they are
+interpolated, or on the interpolated whole, depending on what you can
+assume about the data.
+    
+
+=========================================
+Additional Examples
+=========================================
+
+Searching and/or Extracting
+---------------------------
+
+==> Search for a string
+
+set FoundCount = max(PRegEx_Search(foo, "(abc+)", ""), 0)
+
+==> Search a string and then extract backrefs by number
+
+if (PRegEx_Search(foo, "(abc+)([,;])", "") > 0) then 
+  set ABC =   PRegEx_GetMatchString(1)
+  set Punct = PRegEx_GetMatchString(2)
+end if
+set FoundCount    = PRegEx_FoundCount()
+
+==> Search a string, extracting matching subexpressions into a list or
+sorted property list
+
+set NRs = PRegEx_ExtractIntoList   (foo, "Name: (.*?) Rank: (.*?)", "")
+set NRs = PRegEx_ExtractIntoSPList (foo, "Name: (.*?) Rank: (.*?)", "")
+set FoundCount    = PRegEx_FoundCount()
+
+==> Same, but "globally" -- repeating the search till the end of the
+string, extracting _all_ backreferences along the way into a Lingo
+list or sorted property list
+
+set NRs = PRegEx_ExtractIntoList   (foo, "Name: (.*?) Rank: (.*?)", "g")
+set NRs = PRegEx_ExtractIntoSPList (foo, "Name: (.*?) Rank: (.*?)", "g")
+set FoundCount    = PRegEx_FoundCount()
+
+
+
+Searching and Replacing
+-----------------------
+
+==> Search and replace with a simple string
+
+set FoundCount = max(PRegEx_Replace(foo, "(abc+)", "i", "ABC"), 0)
+
+==> Search and replace with a string with escape codes for back references
+
+set FoundCount = max(PRegEx_Replace(foo, "(abc+)", "i", "### \1 ###"), 0)
+
+==> "Global" flag -- i.e. replace one vs. replace all.
+
+set FoundCount = max(PRegEx_Replace(foo, "(abc+)", "ig", "ABC"), 0)
+
+==> Search functions also extract backrefs, like matching functions.
+So you can retrieve an item at the same time you delete or modify it:
+
+if (PRegEx_Replace(foo, "(abc+)", "", "") > 0) then 
+  set ABC = PRegEx_GetMatchString(1)
+end if
+set ItemsReplaced  = PRegEx_FoundCount()
+
+==> Search and replace, but a function gets called to perform each
+replacement
+
+on NameCnv nameLookup
+  return("Name:" && nameLookup[PRegEx_GetMatchString(1)]
+end NameCnv
+
+PRegEx_ReplaceExec(foo, "Name: (\S+)", "ig", #NameCnv, [nameLookup])
+set ChangeCount = PRegEx_FoundCount();

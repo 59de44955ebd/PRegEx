@@ -1,0 +1,124 @@
+<html>
+<head><title>IMoaDrCursor</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A>
+<BR>
+<A HREF = "index.htm"> DR Interfaces</A> | 
+<A HREF = "drmthndx.htm">DR Methods</A> | 
+<A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+
+<h2><A NAME="IMoaDrCursor">IMoaDrCursor</A></h2>
+
+<hr width=45% align=left>
+
+<P>
+Interface ID: <CODE>IID_IMoaDrCursor</CODE><BR>
+Pointer type: <CODE>PIMoaDrCursor</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+  Header file: <a href="../../Include/driservc.h">driservc.h<BR>
+  </a><br>
+
+<DL>
+  <DT>
+    <h3>Description</h3>
+  <DD> The <CODE>IMoaDrCursor</CODE> interface consists of a single method, which 
+    lets Xtras set animated cursors or static cursors on Sprites or the Stage. 
+    The syntax in this file is C++ style.
+</DL>
+
+<DL><DT><h3>Methods</h3>
+<DD><!MethodListBegin>
+<DD><A HREF = "#SetSpriteCursor">SetSpriteCursor()</A>
+<!MethodListEnd></DL>
+
+
+<!------------------------------------------------>
+<hr width=45% align=left><h3><A name = "SetSpriteCursor">SetSpriteCursor()</A></h3>
+<DL><DT><h4>Syntax</h4>
+<DD><DL>
+<CODE>
+<DT>SetSpriteCursor(MoaDrSpriteChanIndex <I>spriteNum</I>,<BR>
+<DD>MoaDrCursorID <I>cursorID</I>,<BR>
+<DD>PMoaDrCMRef <I>pCursorBitmap</I>,<BR>
+<DD>PMoaDrCMRef <I>pCursorMask</I>)
+</CODE>
+</DL>
+</DL>
+
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL>
+
+<DT><CODE><I>spriteNum</I></CODE><DD><CODE>MoaDrSpriteChanIndex</CODE>&nbsp;&nbsp;The sprite channel number of the sprite whose cursor you wish to set. A value of 0 indicates setting the stage cursor<BR><BR>
+
+<DT><CODE><I>cursorID</I></CODE><DD><CODE>MoaDrCursorID</CODE>&nbsp;&nbsp;One of the built in types or a resource ID. The built in cursors are as follows:<BR><BR>
+
+<PRE>
+#define kMoaDrCursor_Arrow      -1
+#define kMoaDrCursor_Default     0
+#define kMoaDrCursor_IBeam       1
+#define kMoaDrCursor_Crosshair   2
+#define kMoaDrCursor_Crossbar    3
+#define kMoaDrCursor_Watch       4
+#define kMoaDrCursor_Finger    280
+typedef MoaLong MoaDrCursorID;
+</PRE>
+
+<DT><CODE><I>pCursorBitmap</I></CODE><DD><CODE>PMoaDrCMRef</CODE>&nbsp;&nbsp;The CMRef of a cast member (either a 1-bit bitmap or a Cursor Xtra asset) to be used as the sprite cursor<BR><BR>
+
+<DT><CODE><I>pCursorMask</I></CODE><DD><CODE>PMoaDrCMRef</CODE>&nbsp;&nbsp;An optional 1-bit mask bitmap (used only with a 1-bit bitmap cursor)<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4>
+<DD><CODE>MoaError</CODE></DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method sets the cursor from within an Xtra.
+
+</DL><BR>
+
+<DL><DT><h4>Examples</h4><DD>
+
+The following example sets the cursor of the Xtra's sprite to either the arrow or the I-Beam.
+
+<PRE>
+PIMoaDrSpriteCallback    pDrSpriteCallback = NULL;
+PIMoaDrCursor            pDrCursor = NULL;
+MoaDrCursorID            cursorID = kMoaDrCursor_Arrow;
+MoaDrSpriteChanIndex     spriteChanIndex = 0;    /* our own sprite channel index */
+
+/* fpSpriteCallback was saved earlier as an instance variable.
+/  First get the DrSpriteCallback and find out what your sprite channel index is. */
+pObj->fpSpriteCallback->QueryInterface(&IID_IMoaDrSpriteCallback, (PPMoaVoid)&pDrSpriteCallback);
+if(pDrSpriteCallback)
+    pDrSpriteCallback->GetSpriteChanIndex(&spriteChanIndex);
+
+pObj->pCallback->QueryInterface(&IID(IMoaDrCursor), (PPMoaVoid)&pDrCursor);
+
+if ( foo == 1 ) /* whatever :) */
+    // Set the Arrow cursor
+    cursorID = kMoaDrCursor_Arrow;
+else
+    // Set the I-Beam cursor
+    cursorID = kMoaDrCursor_IBeam;
+
+/* Set the sprite cursor of your own sprite to the appropriate type, determined above.
+/  Don't do this if no sprite was returned because we don't want to set the stage cursor
+/  ( 0 as the sprite channel means set the stage cursor) */
+if(pDrCursor & spriteChanIndex)
+    pDrCursor->SetSpriteCursor(spriteChanIndex, cursorID, NULL, NULL);
+</PRE>
+
+</DL>
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+
+</body></html>

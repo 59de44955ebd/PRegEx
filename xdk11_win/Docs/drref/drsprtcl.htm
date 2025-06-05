@@ -1,0 +1,186 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaDrSpriteCallback</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaDrSpriteCallback</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrSpriteCallback<BR>
+  </CODE>Pointer type: <CODE>PIMoaDrSpriteCallback<BR>
+  </CODE>Inheritance: <A HREF = "../moref/unknown.htm"><CODE>IMoaUnknown</CODE></A> <BR>
+  Header file: <A HREF = "../../include/driservc.h">driservc.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    The <TT>IMoaDrSpriteCallback</TT> interface is provided in Director by the class that implements <TT>IMoaMmSpriteCallback</TT>,
+    which is provided through the sprite actor initialization method <TT>IMoaMmXSpriteActor::SetCallback()</TT>.
+    To acquire <TT>IMoaDrSpriteCallback</TT>,
+    the asset can call <TT>QueryInterface()</TT> on <TT>IMoaMmSpriteCallback</TT>. <BR>
+    <BR>
+    This interface provides additional, Director-specific callback
+    services to a media asset. <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Acquiring IMoaDrMovie </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetMovie">GetMovie()</A>
+</DL>
+<h4>Sprite access </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetSpriteChanIndex">GetSpriteChanIndex()</A>
+</DL>
+<h4>Scripting support </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#SendSpriteMessage">SendSpriteMessage()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetMovie">GetMovie()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetMovie(PIMoaDrSpriteCallback<I>This</I>,
+  <DD>PIMoaDrMovie FAR *<I>ppIMoaDrMovie</I>) 
+  </CODE>
+</DL>
+<h3>Parameters</h3>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrSpriteCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>ppIMoaDrMovie</I></CODE>
+  <DD>PIMoaDrMovie FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the movie interface for the movie in which the sprite
+    is appearing. You are responsible for releasing this interface
+    when you're done with it. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="GetSpriteChanIndex">GetSpriteChanIndex()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>GetSpriteChanIndex(PIMoaDrSpriteCallback<I>This</I>,
+  <DD>PMoaDrSpriteChanIndex<I>pChanIndex</I>) 
+  </CODE>
+</DL>
+<h3>Parameters</h3>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrSpriteCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pChanIndex</I></CODE>
+  <DD>PMoaDrSpriteChanIndex<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Gets the sprite channel number for the Director sprite associated
+    with this sprite instance. Channel numbers are 1-based. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="SendSpriteMessage">SendSpriteMessage()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <CODE>
+  <DT>SendSpriteMessage(PIMoaDrSpriteCallback<I>This</I>,
+  <DD>MoaMmSymbol<I>handlerName</I>, <BR>
+    MoaLong<I>nArgs</I>, <BR>
+    PMoaMmValue<I>pArgs</I>, <BR>
+    PMoaMmValue<I>pResult</I>, <BR>
+    MoaBool FAR *<I>pHandled</I>) 
+  </CODE>
+</DL>
+<h3>Parameters</h3>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaDrSpriteCallback</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>handlerName</I></CODE>
+  <DD>MoaMmSymbol<BR>
+    <BR>
+  <DT><CODE><I>nArgs</I></CODE>
+  <DD>MoaLong<BR>
+    <BR>
+  <DT><CODE><I>pArgs</I></CODE>
+  <DD>PMoaMmValue<BR>
+    <BR>
+  <DT><CODE><I>pResult</I></CODE>
+  <DD>PMoaMmValue<BR>
+    <BR>
+  <DT><CODE><I>pHandled</I></CODE>
+  <DD>MoaBool FAR *<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD><BR>
+    Sends a message along the standard message hierarchy starting
+    with the sprite. The message proceeds along the path:<BR>
+    <BR>
+    sprite --&gt; cast member --&gt; frame --&gt; movie <BR>
+    <BR>
+    until it is consumed by a script at some level. (If no such handler
+    exists at a given level, the message proceeds to the next level.
+    Alternatively, a Lingo script can intentionally pass a message
+    to the next level using the <TT>pass</TT> Lingo command.<BR>
+    <BR>
+    The caller supplies symbol for handler to call (<TT><I>name</I></TT>),
+    the arguments (<TT><I>nArgs</I></TT>, <TT><I>pArgs</I></TT>), and
+    a pointer to a <TT>MoaMmValue </TT>to
+    receive a result, if any, from the handler call.<BR>
+    <BR>
+    Upon return, <TT><I>pHandled </I></TT>is
+    set to <TT>TRUE </TT>if the
+    call was handled. If the message is not handled, it silently disappears
+    and <TT>FALSE </TT>is returned. <BR>
+    <BR>
+    This method is ideal for implementing widget-type sprite Xtras.
+    For example, if you're implementing a button Xtra, you could send
+    a <TT>buttonClicked</TT> message
+    whenever the button was clicked. Developers could then handle
+    this message by putting an <TT>on
+    buttonClicked</TT> handler in the sprite script for any
+    object in the hierarchy: sprite, cast member, frame, movie.).
+    The Xtra could, of course, emit multiple messages, which would
+    be needed to implement a multi-part widget such as a scrollbar.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

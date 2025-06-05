@@ -1,0 +1,96 @@
+<HTML xmlns="undefined">
+<HEAD>
+<TITLE>IMoaMmChangeCollector</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<P> <A HREF="../mmdg/index.htm">MM Developer's Guide</A> <BR>
+  <A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A> | <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaMmChangeCollector</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaMmChangeCollector<BR>
+  </CODE>Pointer type: <CODE>PIMoaMmChangeCollector<BR>
+  </CODE>Inheritance: <A HREF = "../moref/unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/mmiservc.h">mmiservc.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    This interface is supplied by the host application as a parameter
+    to the <TT>IMoaMmXSpriteActor::CollectChanges()</TT> method. The Xtra uses methods in this interface to inform the
+    host application of areas in the playback window that need updating
+    when moving to the next frame of animation.<BR>
+    <BR>
+    <BR>
+</DL>
+<h3>Methods</h3>
+<DL>
+  <DT>
+  <DD><A HREF = "#AddChangeRect">AddChangeRect()</A> <BR>
+    <A HREF = "#AddChangeRectAbove">AddChangeRectAbove()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="AddChangeRect">AddChangeRect()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DT><CODE>AddChangeRect(PIMoaMmChangeCollector<I>This</I>,</CODE>
+  <DD> <CODE>ConstPMoaRect<I>pChangeRect</I>)</CODE>
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmChangeCollector</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pChangeRect</I></CODE>
+  <DD><CODE>ConstPMoaRect</CODE>Pointer to a <TT>ConstPMoaRect </TT>representing the area of change <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Adds the change rectangle <TT><I>pChangeRect</I></TT> to the list of changed rectangles for the next frame of animation.
+    The rectangle may include a transparent border around an irregularly
+    shaped image. <BR>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="AddChangeRectAbove">AddChangeRectAbove()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DT><CODE>AddChangeRectAbove(PIMoaMmChangeCollector<I>This</I>,</CODE>
+  <DD> <CODE>ConstPMoaRect<I>pChangeRect</I>)</CODE>
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaMmChangeCollector</CODE> interface <BR>
+    <BR>
+  <DT><CODE><I>pChangeRect</I></CODE>
+  <DD><CODE>ConstPMoaRect</CODE>Pointer to a <TT>ConstPMoaRect </TT>representing the area of change <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><CODE>MoaError</CODE>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method instead of <TT>AddChangeRect()</TT> to inform the host application that the <TT><I>pChangeRect</I></TT> rectangle is completely opaque in the sprite's image. Based on
+    this information, the host application may be able to optimize
+    the composition of the affected area by only drawing the sprite
+    calling this method and any sprites above it in the area of <TT><I>pChangeRect</I></TT>.
+    If you aren't sure the change rectangle is fully opaque, use <TT>AddChangeRect()</TT>.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

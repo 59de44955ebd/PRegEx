@@ -1,0 +1,669 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaDrCastMem</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body bgcolor="#FFFFFF" link="#ff3300" alink="#ff3300" vlink="#333399">
+<A HREF = "../drdg/index.htm">DR Developer's Guide</A> <BR>
+<A HREF = "index.htm"> DR Interfaces</A> | <A HREF = "drmthndx.htm">DR Methods</A> | <A HREF = "drtypndx.htm">DR Types and 
+Misc API</A> 
+<hr width=45% align=left>
+<h2>IMoaDrCastMem</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaDrCastMem<BR>
+  </CODE> Pointer type: <CODE>PIMoaDrCastMem<BR>
+  </CODE> Inheritance: <A HREF = "drmdownr.htm">IMoaDrMediaOwner</A><BR>
+  Header file: <a href="../../Include/driservc.h">driservc.h</a> <BR>
+<h3>Description</h3>
+<DL>
+  <DD> The <TT>IMoaDrCastMem</TT> interface provides access to specific cast members within a cast.
+</DL>
+<h3> <A NAME="RTFToC2"> Cast member properties</A> </h3>
+<DL>
+  <DD> <TT> IMoaDrCastMem </TT> inherits from the <TT> IMoaMmPropOwner </TT> interface, providing for access to data through 
+    the properties mechanism described in the &quot;Multimedia Services&quot; chapter in the <I> Development Guide </I> document. 
+    See the &quot;Properties&quot; section for information on the properties defined for objects providing the <TT> IMoaDrCastMem 
+    </TT> interface.
+</DL>
+<h3> <A NAME="RTFToC3"> Cast member media types</A> </h3>
+<DL>
+  <DD> Because this interface inherits from <TT> IMoaDrMediaOwner </TT> , you can use it to access the properties and media 
+    data associated with a cast member. <BR>
+    Methods of the <TT> IMoaDrMediaOwner </TT> interface include pointers to a <TT> MoaDrMediaInfo </TT> structure as parameters. 
+    Before a <TT> GetMedia() </TT> , <TT> SetMedia() </TT> , or <TT> AttachMedia() </TT> call, use <TT> IMoaDrUtils::NewMediaInfo() 
+    </TT> to fill out the structure, specifying NULL for the <TT> aux </TT> field and <TT> kMoaDrMediaOpts_None </TT> for 
+    the <TT> options </TT> field. Using this call forces you to fill out all the needed parameters. The <TT> aux </TT> information 
+    currently applies only when setting image media. <BR>
+    The <TT> formatSymbol </TT> and <TT> labelSymbol </TT> members of this structure are <TT> MoaMmSymbols </TT> . These symbols 
+    are obtained from strings using the host app symbol dictionary, accessed through the <TT> StringToSymbol() </TT> method 
+    of the <TT> IMoaMmUtils </TT> interface For more on how this mechanism is implemented, see the <TT> IMoaDrMediaOwner </TT> 
+    . <BR>
+    Here's a brief summary of the media labels supported for Director cast members: <BR>
+    <TABLE border="2">
+      <TR> 
+        <TH align="left" valign="middle" width="105"> <B> Media </B> </TH>
+        <TH width="547" align="left" valign="middle"> <B> Label Description </B> </TH>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Composite </TT> </TD>
+        <TD align="left" valign="top"> Cast member media data in a portable (byte-swapped) opaque handle. </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Image </TT> </TD>
+        <TD align="left" valign="top"> Primary image data (for a bitmap, PICT, and so on). </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Text </TT> </TD>
+        <TD align="left" valign="top"> Text character string </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> TextStyles </TT> </TD>
+        <TD align="left" valign="top"> Text style run data </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Sound </TT> </TD>
+        <TD align="left" valign="top"> Sound samples </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Palette </TT> </TD>
+        <TD align="left" valign="top"> Palette entries </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top"> <TT> Score </TT> </TD>
+        <TD align="left" valign="top"> Score data for a movie or film loop </TD>
+      </TR>
+    </TABLE>
+    <P> The following table provides a brief summary of the media formats supported for Director cast members. 
+    <P> 
+    <TABLE border="2">
+      <TR> 
+        <TH align="left" valign="middle" width="119"> <B> Media Format </B> </TH>
+        <TH align="left" valign="middle" width="532"> <B> Description </B> </TH>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> moaHandle </TT> </TD>
+        <TD align="left" valign="top" width="532"> Generic <TT> MoaHandle </TT> of data </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> moaTEStyles </TT> </TD>
+        <TD align="left" valign="top" width="532"> <TT> textStyles </TT> stored in a <TT> MoaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> macTEStyles </TT> </TD>
+        <TD align="left" valign="top" width="532"> <TT> textStyles </TT> in TextEdit <TT> StScrpHandle </TT> format stored 
+          in a Macintosh handle </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> macPICT </TT> </TD>
+        <TD align="left" valign="top" width="532"> Macintosh <TT> PicHandle. </TT> Note that 32bit images have alpha channel 
+          data.</TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> macSnd </TT> </TD>
+        <TD align="left" valign="top" width="532"> Macintosh <TT> sndHdl. </TT> Handle in Macintosh sound resource format. 
+        </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> macColorTable </TT> </TD>
+        <TD align="left" valign="top" width="532"> Macintosh <TT> CTabHandle </TT> . Handle to a <TT> ColorTable </TT> record 
+        </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> winDIB </TT> </TD>
+        <TD align="left" valign="top" width="532"> Windows packed DIB <TT> GlobalHandle </TT> with bitmap information, color 
+          table, and bits. Note that 32bit images have alpha channel data.</TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> winWAVE </TT> </TD>
+        <TD align="left" valign="top" width="532"> Windows RIFF WAVE <TT> GlobalHandle </TT> . RIFF sound format. </TD>
+      </TR>
+      <TR> 
+        <TD align="left" valign="top" width="119"> <TT> winPALETTE </TT> </TD>
+        <TD align="left" valign="top" width="532"> Windows HPALETTE <TT> GlobalHandle </TT> . RIFF palette format </TD>
+      </TR>
+    </TABLE>
+    <h5> <A NAME="RTFToC4">Composite media</A> label </h5>
+    <P> All media types support the composite label; that is, you can get the media data for any cast member as a single, 
+      opaque portable <TT> MoaHandle </TT> . Because Director handles the byteswapping of these, they're safe to write out 
+      to disk and read back in on another platform. The format for composite media is always <TT> MoaHandle </TT> . 
+    <h5>  <A NAME="RTFToC5">Other media</A> labels 
+       </h5>
+    <P> In addition to composite, each built-in cast member type supports one or more other labels or formats. For example, 
+      bitmaps, PICTs, Rich Text, and OLE support the image label (RichText and OLE are Get-only for this); the bitmap format 
+      supported depends on the platform (macPICT on mac, winDIB on Windows). In the future, we may add additional formats, 
+      such as a portable pixel map format which is identical on both platforms. 
+    <P> Text supports multiple labels: <TT> text </TT> to get or set the ASCII text, <TT> textStyles </TT> (Macintosh-only) 
+      to get or set the style data independently from the ASCII. 
+    <P> Both movies and cast members support the <TT> score </TT> media label, with the format <TT> MoaHandle </TT> . This 
+      lets you get and set the score data itself. You can attach a <TT> ScoreAccess </TT> interface to one of these data handles 
+      using <TT> IMoaDrUtils::NewScoreAccess() </TT> . However, if you want to edit the score of an existing movie or cast 
+      member, it's easier just to obtain the <TT> ScoreAccess </TT> interface directly from the object itself using <TT> IMoaDrCastMem::GetScoreAccess() 
+      </TT> , 
+    <P> Here's a complete list of the media labels and formats supported by the Director cast member types: 
+    <P> 
+    <TABLE BORDER="2">
+      <TR> 
+        <TH ALIGN="LEFT" WIDTH=129> <B> Cast member type </B> </TH>
+        <TH ALIGN="LEFT" WIDTH=141> <B> Media label </B> </TH>
+        <TH ALIGN="LEFT" WIDTH=454> <B> Media format </B> </TH>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> BITMAP </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Image </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          mac: macPICT <BR>
+          win: winDIB </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> FILMLOOP </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Score </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          moaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> TEXTFIELD </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Text <BR>
+          <BR>
+          TextStyles </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          moaHandle (null-terminated string) <BR>
+          mac: macTEStyles <BR>
+          mac &amp; win: moaTEStyles </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> PALETTE </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Palette</TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          mac: macColorTable <BR>
+          win: winPALETTE </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> PICT </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Image </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          mac: macPICT <BR>
+          win: winDIB </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> SOUND </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Sound </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          mac: macSnd <BR>
+          win: winWAVE </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> BUTTON </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Text <BR>
+          <BR>
+          TextStyles </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          moaHandle (null-terminated string handle) <BR>
+          mac: macTEStyles <BR>
+          mac &amp; win: moaTEStyles </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> SHAPE </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> MOVIE </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> DIGITAL VIDEO </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> SCRIPT </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          NOTE: Script text can be accessed using GetProp() and SetProp() </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> RICH TEXT </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Text <BR>
+          <BR>
+          Image (Get Only) </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          moaHandle (null-terminated string handle). Set allowed only in authoring applications <BR>
+          mac: macPICT <BR>
+          win: winDIB </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> OLE </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite <BR>
+          Image (Get Only) </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle <BR>
+          mac: macPICT <BR>
+          win: winDIB </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> XTRA </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle </TT> </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=129> <TT> TRANS </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=141> <TT> Composite </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=454> <TT> moaHandle </TT> </TD>
+      </TR>
+    </TABLE>
+    <h5> <A NAME="RTFToC6">Media access in sprite Xtras</A> </h5>
+    <P> Sprite Xtras, which provide cast members through extensions to Director, only support the <TT> composite </TT> media 
+      label, which is a combination of the Xtra's media, properties, and built-in properties combined in an opaque format. 
+      You can get or set the media data of any Xtra-based cast member type as a composite <TT> MoaHandle</TT>. 
+</DL>
+<P> 
+<h3>Methods</h3>
+<h4>  Property owner methods  </h4>
+<DL>
+  <DD> <A HREF = "#GetProp">GetProp()</A> <BR>
+    <A HREF = "#SetProp">SetProp()</A> 
+</DL>
+<h4>  Media owner methods  </h4>
+<DL>
+  <DD> <A HREF = "#GetMedia">GetMedia()</A> <BR>
+    <A HREF = "#SetMedia">SetMedia()</A> <BR>
+    <A HREF = "#AttachMedia">AttachMedia()</A> 
+</DL>
+<h4>  Scripting Support  </h4>
+<DL>
+  <DD> <A HREF = "#CallFunction">CallFunction()</A> <BR>
+    <A HREF = "#CallHandler">CallHandler()</A> 
+</DL>
+<h4>  Member information  </h4>
+<DL>
+  <DD> <A HREF = "#GetMemberIndex">GetMemberIndex()</A> 
+</DL>
+<h4>  Acquiring <TT> IMoaMmScoreAccess </TT>  </h4>
+<DL>
+  <DD> <A HREF = "#GetScoreAccess">GetScoreAccess()</A> 
+</DL>
+<hr width=45% align=left>
+<h3>  <A NAME="AttachMedia">AttachMedia()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> 
+  <DT> AttachMedia(PMoaDrMediaInfo <I> pMediaInfo</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> pMediaInfo </I> </CODE> 
+  <DD> <CODE> PMoaDrMediaInfo </CODE> Pointer to a caller- owned media information structure
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD>
+    Attaches media to a cast member, releasing it from the caller. This is the same as the <TT> SetMedia() </TT> method except 
+    instead of copying the data, it is moved to the cast member. (In effect this method is a <TT> SetMedia() </TT> call followed 
+    by a <TT> ReleaseMedia() </TT> call.) <BR>
+    <BR>
+    Before making this call, use <TT> IMoaDrUtils::NewMediaInfo() </TT> to fill out the media information structure, specifying 
+    NULL for the <TT> aux </TT> field and <TT> kMoaDrMediaOpts_None </TT> for the <TT> options </TT> field. <BR>
+    <BR>
+    On enter, the <TT> labelSymbol </TT> and <TT> formatSymbol </TT> fields should be populated with symbols indicating which 
+    chunk of media is to be attach ( <TT> labelSymbol </TT> ), and what format the media is supplied in ( <TT> formatSymbol 
+    </TT> ). The <TT> mediaData </TT> field should hold the data itself (typically a <TT> MoaHandle </TT> , Macintosh Handle, 
+    or Windows global handle) <BR>
+    <BR>
+    Upon return, if there is no error, the media has changed ownership and belongs to the host application, and should no 
+    longer be referenced by the caller. This method is provided to allow the host application to optimize media-transfer if 
+    possible; it may prevent an extra copy of the media data, which may occur with separate <TT> SetMedia() </TT> and <TT> 
+    ReleaseMedia() </TT> calls).
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="CallFunction">CallFunction()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE>CallFunction(MoaMmSymbol <I>methodName</I>, MoaLong <I>nArgs</I>, ConstPMoaMmValue <I>pArgs</I>, PMoaMmValue <I>pResult</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> methodName </I> </CODE> 
+  <DD> <CODE> MoaMmSymbol </CODE> Symbol of the method (function) to call <BR>
+    <BR>
+  <DT> <CODE> <I> nArgs </I> </CODE> 
+  <DD> <CODE> MoaLong </CODE> Number of arguments, excluding the Xtra instance in <TT> <I> pArgs </I> [0] </TT> <BR>
+    <BR>
+  <DT> <CODE> <I> pArgs </I> </CODE> 
+  <DD> <CODE> ConstPMoaMmValue </CODE> Array of arguments, with the first valid argument at <TT> <I> pArgs </I> [1] </TT> 
+    <BR>
+    <BR>
+  <DT> <CODE> <I> pResult </I> </CODE> 
+  <DD> <CODE> PMoaMmValue </CODE> Pointer to a <TT> MoaMmValue </TT> to receive a result value, if any.
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> 
+    <TABLE BORDER="2">
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=252> <TT> kMoaErr_NoErr </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=291> Successful </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=252> <TT> kMoaMmErr_FunctionNotFound </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=291> <TT> F</TT>unction not supported </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=252> <TT> kMoaMmErr_WrongNumberOfArgs </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=291> <TT> A</TT>rgument count wrong, </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=252> Other Property/CallHandler errors </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=291> Also acceptable here </TD>
+      </TR>
+    </TABLE>
+</DL>
+<P> 
+<h4>  Description  </h4>
+<DL>
+  <DD>
+    Calls a cast member Lingo function. Pass the symbol of the function to call in the <TT> <I> methodName </I> </TT> parameter, 
+    along with the argument count ( <TT> <I> nArgs </I> </TT> ), the argument array ( <TT> <I> pArgs </I> </TT> ), and optionally, 
+    a pointer to a <TT> MoaMmValue </TT> to receive any result value. The argument array, <TT> <I> pArgs </I> </TT> , contains 
+    an array of <TT> MoaMmValues </TT> corresponding to the function arguments. <TT> <I> pArgs </I> [0] </TT> is a reserved 
+    value and should not be referenced. The function parameters are supplied in <TT> <I> pArgs </I> [1] </TT> through <TT> 
+    <I> pArgs </I> [ <I> nArgs </I> ] </TT> . If the method has a return value, it should populate <TT> <I> pResult </I> </TT> 
+    with a new <TT> MoaMmValue </TT> containing the result. If the cast member does not support the function specified by 
+    <TT> <I> methodName </I> </TT> , it returns the error code <TT> kMoaMmErr_FunctionNotFound </TT> . If the number or types 
+    of arguments are incorrect, the function returns one of the appropriate <TT> MoaMmErrors </TT> (see mmtypes.h).
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="CallHandler">CallHandler()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> CallHandler(MoaMmSymbol <I> handlerName</I>,
+    MoaLong <I>nArgs</I>,
+    PMoaMmValue <I>pArgs</I>,
+    PMoaMmValue <I>pResult</I>,
+    MoaBool FAR * <I>pHandled</I>) </CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> handlerName </I> </CODE> 
+  <DD> <CODE> MoaMmSymbol </CODE> Symbol for handler (message) name <BR>
+    <BR>
+  <DT> <CODE> <I> nArgs </I> </CODE> 
+  <DD> <CODE> MoaLong </CODE> Number of arguments you're passing <BR>
+    <BR>
+  <DT> <CODE> <I> pArgs </I> </CODE> 
+  <DD> <CODE> PMoaMmValue </CODE> Pointer to an array of <TT> MoaMmValues </TT> containing arguments <BR>
+    <BR>
+  <DT> <CODE> <I> pResult </I> </CODE> 
+  <DD> <CODE> PMoaMmValue </CODE> Pointer to a caller-owned <TT>MoaMmValue</TT> to receive the return value<BR>
+    <BR>
+  <DT> <CODE> <I> pHandled </I> </CODE> 
+  <DD> <CODE> MoaBool FAR * </CODE> Pointer to a <TT> MoaBool </TT> to receive TRUE if the handler exists in the script (message 
+    handled), or FALSE if it does not
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD> Calls a handler <TT> <I> handlerName </I> </TT> defined in the script associated with this cast member. The <TT><I>nArgs</I></TT> 
+    argument is the number of arguments to the handler, the <I>pArgs</I> argument is a reference to the start of the array 
+    of arguments as <TT>MoaMmValues</TT>. You must pass in NULL to <TT> <I> pResult </I> </TT> if you do not expect a result. 
+    You must pass in a valid pointer if you do expect a result. The handler call will be passed up the standard Lingo messaging 
+    hierarchy. The argument <I> pHandled </I> reports whether the handler was handled by any object in the hierarchy. 
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="GetMedia">GetMedia()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> GetMedia(PMoaDrMediaInfo <I>pMediaInfo</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> pMediaInfo </I> </CODE> 
+  <DD> <CODE> PMoaDrMediaInfo </CODE> Pointer to a caller-owned media information structure
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD> Gets cast member media data. This method obtains a copy of the media associated with a cast member. Before making this 
+    call, use <TT> IMoaDrUtils::NewMediaInfo() </TT> to fill out the media information structure, specifying NULL for the 
+    <TT> aux </TT> field and <TT> kMoaDrMediaOpts_None </TT> for the <TT> options </TT> field. The caller partially populates 
+    a <TT> MoaDrMediaInfo </TT> struct with symbols indicating the requested chunk of media ( <TT> labelSymbol </TT> ) and 
+    the requested format ( <TT> formatSymbol </TT> ). After the call, the <TT> mediaData </TT> field is populated with the 
+    requested data; the type of this field depends on the format requested. The caller then owns the data and is responsible 
+    for disposing it, if applicable. Typically this data is either a <TT> MoaHandle</TT>, a Macintosh Handle or Pointer, or 
+    a Windows global handle. <BR>
+  <DD><br>
+    You can use a Castmember <code>GetMedia </code>call to get either a PICT (on Mac) or a DIB (on Win). If you're querying 
+    a 32-bit member, you'll get back the alpha channel in the data. You can manipulate the image, and then set it back using 
+    <code>SetMedia</code>.
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="GetMemberIndex">GetMemberIndex()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> GetMemberIndex(MoaDrMemberIndex FAR * <I>pMemberIndex</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> pMemberIndex </I> </CODE> 
+  <DD> <CODE> MoaDrMemberIndex FAR * </CODE> Pointer to position of cast member in cast
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD>
+    Returns the position of the cast member <TT> <I> This </I> </TT> in its cast.
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="GetProp">GetProp()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> GetProp(MoaMmSymbol <I>symbol</I>, PMoaMmValue <I>pPropValue</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> symbol </I> </CODE> 
+  <DD> <CODE> MoaMmSymbol </CODE> The <TT> MoaMmSymbol </TT> for the property of interest <BR>
+    <BR>
+  <DT> <CODE> <I> pPropValue </I> </CODE> 
+  <DD> <CODE> PMoaMmValue </CODE> Pointer to a caller-owned <TT> MoaMmValue </TT> structure to receive the value of the property 
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> 
+    <TABLE BORDER="2">
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaErr_NoErr </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Property exists and value was returned </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaErr_BadParam </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Invalid <TT> <I> pPropValue </I> </TT> passed in </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaMmErr_PropertyNotFound </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Property isn't supported by this class </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaMmErr_InternalError </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Property exists but couldn't get due to internal err </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaMmErr_NoMemForString </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Couldn't allocate memory for string value data </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=216> <TT> kMoaErr_OutOfMem </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=322> Couldn't allocate memory for other value data </TD>
+      </TR>
+    </TABLE>
+</DL>
+<P> 
+<h4>  Description  </h4>
+<DL>
+  <DD> Obtains the value of the specified cast member property. To get the symbol from a string, use the <TT> IMoaMmUtils::StringToSymbol() 
+    </TT> . The caller is responsible for releasing the value with <TT> IMoaMmUtils::ValueRelease() </TT> when it is no longer 
+    needed.
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="GetScoreAccess">GetScoreAccess()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> GetScoreAccess(struct IMoaDrScoreAccess FAR * FAR * <I>ppScore</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> ppScore </I> </CODE> 
+  <DD> struct IMoaDrScoreAccess FAR * FAR *
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD> Obtains a <TT> IMoaDrScoreAccess </TT> interface for accessing or editing the score associated with a film loop cast 
+    member. This method is only valid for film loop cast members
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="SetMedia">SetMedia()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> SetMedia(PMoaDrMediaInfo <I>pMediaInfo</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> pMediaInfo </I> </CODE> 
+  <DD> <CODE> PMoaDrMediaInfo </CODE> Pointer to a caller-owned media information structure
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> <CODE> MoaError </CODE> 
+</DL>
+<h4>  Description  </h4>
+<DL>
+  <DD> Sets cast member media data. This method copies caller-supplied media data and associates it with a cast member. Before 
+    making this call, use <TT> IMoaDrUtils::NewMediaInfo() </TT> to fill out the media information structure, specifying NULL 
+    for the <TT> aux </TT> field and <TT> kMoaDrMediaOpts_None </TT> for the <TT> options </TT> field. The caller populates 
+    a <TT> MoaDrMediaInfo </TT> structure with symbols indicating the supplied chunk of media ( <TT> labelSymbol </TT> ), 
+    the supplied format ( <TT> formatSymbol </TT> ), and the media data itself ( <TT> mediaData </TT> ). If the label and 
+    format are supported by the cast member, a call to this method copies the caller's data and replaces any existing media 
+    data for the supplied label for the cast member. Since the data is copied, the caller retains ownership of the media data 
+    passed in. Typically, this data is either a <TT> MoaHandle </TT> , a Macintosh Handle or pointer, or a Windows global 
+    handle.
+</DL>
+<P> 
+<hr width=45% align=left>
+<h3>  <A NAME="SetProp">SetProp()</A>  </h3>
+<h4>  Syntax  </h4>
+<DL>
+  <CODE> SetProp(MoaMmSymbol <I>symbol</I>, ConstPMoaMmValue <I>pPropValue</I>)</CODE> 
+</DL>
+<h4>  Parameters  </h4>
+<DL>
+  <DT> <CODE> <I> symbol </I> </CODE> 
+  <DD> <CODE> MoaMmSymbol </CODE> The <TT> MoaMmSymbol </TT> for the property of interest <BR>
+    <BR>
+  <DT> <CODE> <I> pPropValue </I> </CODE> 
+  <DD> <CODE> ConstPMoaMmValue </CODE> Pointer to a caller-owned <TT> MoaMmValue </TT> structure to copy the new value for 
+    the property from
+</DL>
+<h4>  Returns  </h4>
+<DL>
+  <DD> 
+    <TABLE BORDER="2">
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaErr_NoErr </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Property exists and value was set </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaErr_BadParam </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Invalid <TT> <I> pPropValue </I> </TT> passed in </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_PropertyNotFound </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Property isn't supported by this class </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_InternalError </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Property exists, value ok, couldn't set--internal error </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_NoMemForString </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Couldn't allocate memory for setting string value data </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaErr_OutOfMem </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Couldn't allocate memory for setting other value data </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_IntegerExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: integer value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_SymbolExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: symbol value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_FloatExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: float value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_StringExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: string value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_PointExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: point value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_RectExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: rect value expected </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaMmErr_ValueTypeMismatch </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: other value expected (non-specific) </TD>
+      </TR>
+      <TR> 
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=232> <TT> kMoaDrErr_CastMemberExpected </TT> </TD>
+        <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=403> Type mismatch: <TT> CMRef </TT> value expected </TD>
+      </TR>
+    </TABLE>
+</DL>
+<P> 
+<h4>  Description  </h4>
+<DL>
+  <DD> Sets a cast member property to a new value. To get the symbol from a string, use the <TT> IMoaMmUtils::StringToSymbol() 
+    </TT> ., The caller continues to maintain ownership of the value passed in at <TT> <I> pPropValue</I></TT>, and should 
+    release it using <TT> IMoaMmUtils::ValueRelease() </TT> when it is no longer needed.
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

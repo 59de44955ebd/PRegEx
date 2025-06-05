@@ -1,0 +1,321 @@
+<HTML>
+<HEAD>
+<TITLE>IMoaHandle</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body>
+<A HREF="../moadg/index.htm">MOA Developer's Guide</A> <BR>
+<A HREF="index.htm">MOA Interfaces</A> | <A HREF="momthndx.htm">MOA Methods</A> | <A HREF="motypndx.htm">MOA Types and Misc API</A>
+<hr width=45% align=left>
+<h2>IMoaHandle</h2>
+<hr width=45% align=left>
+<P> Interface ID: <CODE>IID_IMoaHandle<BR>
+  </CODE>Pointer type: <CODE>PIMoaHandle<BR>
+  </CODE>Inheritance: <A HREF = "unknown.htm">IMoaUnknown</A> <BR>
+  Header file: <A HREF = "../../include/moastdif.h">moastdif.h</A> <BR>
+<h3>Description</h3>
+<DL>
+  <DT>
+  <DD><BR>
+    This standard MOA interface is implemented by every application's
+    callback object for the use of Xtras. It provides methods for
+    use in allocating handle-based, relocatable memory. <BR>
+    <BR>
+    This interface is preferable to the <TT>IMoaCalloc</TT> interface for use in allocating larger chunks of memory, such
+    as those required for sound buffers and bitmap data. <BR>
+    <BR>
+    You can access this interface by calling the <TT>QueryInterface()</TT> method of <TT>IMoaCallback</TT> interface, provided by the <TT>pCallback</TT> instance variable of all MOA objects. <BR>
+    <BR>
+</DL>
+<P>
+<h3>Methods</h3>
+<DL>
+  <DD>
+</DL>
+<h4>Allocating </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Alloc">Alloc()</A> <BR>
+    <A HREF = "#ZeroAlloc">ZeroAlloc()</A>
+</DL>
+<h4>Freeing </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Free">Free()</A>
+</DL>
+<h4>Sizing </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#GetSize">GetSize()</A> <BR>
+    <A HREF = "#Resize">Resize()</A> <BR>
+    <A HREF = "#GetLargestFreeBlock">GetLargestFreeBlock()</A>
+</DL>
+<h4>Accessing </h4>
+<DL>
+  <DT>
+  <DD><A HREF = "#Lock">Lock()</A> <BR>
+    <A HREF = "#Unlock">Unlock()</A>
+</DL>
+<hr width=45% align=left>
+<h3><A NAME="Alloc">Alloc()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Alloc(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaLong<I>cb</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>cb</I></CODE>
+  <DD><CODE>MoaLong</CODE>Integer representing size of memory block
+    to allocate <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD><TT>MoaHandle</TT>
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Allocates and returns a relocatable memory block of at least
+    cb bytes in size. The memory isn't necessarily zeroed out. If
+    the request cannot be satisfied,NULL is returned. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Free">Free()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Free(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaHandle<I>h</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>h</I></CODE>
+  <DD><CODE>MoaHandle</CODE>Previously allocated handle to be freed <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>void
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Frees a handle passed in. It is OK to pass NULL, or a locked
+    handle, to this method. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetLargestFreeBlock">GetLargestFreeBlock()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetLargestFreeBlock(PIMoaHandle<I>This</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Size of largest free block
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>The method <TT>GetLargestFreeBlock()</TT> returns the amount of free space that could be quickly allocated
+    via the <TT>Alloc</TT> method
+    (i.e., how large a handle could be allocated without purging,
+    compacting, etc.). A return value of -1 means that this function
+    isn't implemented. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="GetSize">GetSize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>GetSize(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaHandle<I>h</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>h</I></CODE>
+  <DD><CODE>MoaHandle</CODE>Previously allocated handle <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Size of handle h
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Returns the logical size of the handle h. The value returned
+    will always be the exact value passed when the handle was allocated
+    or resized using the <TT>Alloc()</TT>, <TT>ZeroAlloc()</TT>, or <TT>Resize()</TT> methods. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Lock">Lock()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Lock(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaHandle<I>h</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>h</I></CODE>
+  <DD><CODE>MoaHandle</CODE>Previously allocated handle to lock <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Pointer to start of handle's storage area
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Call this method to lock the handle h in memory. This routine
+    never returns NULL; it always return a valid pointer (unless the
+    handle passed in was invalid). The pointer will be aligned to
+    at least a two-byte boundary (but not necessarily to a four-byte
+    boundary). Note that this method doesn't provide lock counting,
+    so nested calls to <TT>Lock()</TT> have no cumulative effect: the first call of <TT>Unlock()</TT> will unlock the handle. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Resize">Resize()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Resize(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaHandle<I>h</I>, <BR>
+    MoaLong<I>newSize</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>h</I></CODE>
+  <DD><CODE>MoaHandle</CODE>Previously allocated handle <BR>
+    <BR>
+  <DT><CODE><I>newSize</I></CODE>
+  <DD><CODE>MoaLong</CODE>New size to allocated for handle <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>TRUE if resized, FALSE if not
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Attempts to resize the handle h to be at least newSize bytes
+    long. If the request can be satisfied, this method resizes the
+    handle and returns TRUE. Returns FALSE if the handle h can't be
+    resized or is locked. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="Unlock">Unlock()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>Unlock(PIMoaHandle<I>This</I>,
+  <DD><BR>
+    MoaHandle<I>h</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>h</I></CODE>
+  <DD><CODE>MoaHandle</CODE>Previously allocated handle <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>void
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Unlocks the given handle and invalidates any pointers to it. <BR>
+</DL>
+<P>
+<hr width=45% align=left>
+<h3><A NAME="ZeroAlloc">ZeroAlloc()</A></h3>
+<h4>Syntax</h4>
+<DL>
+  <DD>
+  <DT>ZeroAlloc(PIMoaHandle <I>This</I>,
+  <DD><BR>
+    MoaLong <I>cb</I>)
+  </DL>
+<h4>Parameters</h4>
+<DL>
+  <DD>
+  <DT><CODE><I>This</I></CODE>
+  <DD>Pointer to the <CODE>IMoaHandle</CODE> interface<BR>
+    <BR>
+  <DT><CODE><I>cb</I></CODE>
+  <DD><CODE>MoaLong</CODE>Integer representing size of memory block
+    to allocate <BR>
+    <BR>
+</DL>
+<h4>Returns</h4>
+<DL>
+  <DT>
+  <DD>Handle to newly allocated memory
+</DL>
+<h4>Description</h4>
+<DL>
+  <DT>
+  <DD>Allocates and returns a relocatable memory block of at least
+    cb bytes in size. The memory is zeroed out. If the request cannot
+    be satisfied, NULL is returned. <BR>
+</DL>
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</html>

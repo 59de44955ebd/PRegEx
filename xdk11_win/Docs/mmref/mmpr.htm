@@ -1,0 +1,618 @@
+<html><head><title>IMoaMmPropertyReference</title>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<A HREF="../mmdg/index.htm">MM Developer's Guide</A>
+<BR>
+<A HREF="index.htm" >MM Interfaces</A> | <A HREF="mmmthndx.htm" >MM Methods</A>
+| <A HREF="mmtypndx.htm">MM Types and Misc API</A>
+<BR><BR><hr width=45% align=left>
+<h2><A name = "IMoaMmPropertyReference"></A>IMoaMmPropertyReference</h2>
+<hr width=45% align=left><BR>
+
+Interface ID: <CODE>IID_IMoaMmPropertyReference</CODE><BR>
+Pointer type: <CODE>PIMoaMmPropertyReference</CODE><BR>
+Inheritance: <CODE>IMoaUnknown</CODE><BR>
+Header file: <A HREF = "../../include/mmipref.h">mmipref.h</A><BR>
+
+<DL><DT><h3>Description</h3><DD>
+
+The <CODE>ImoaMmPropertyReference</CODE> methods provide a way for a Director Object inspector to get
+information on the actual properties (not just their values) that
+your Xtra implements. For your Xtra to be compatible with the Object
+inspector, your Xtra needs to provide these interfaces.
+</DL>
+
+<DL><DT><h3>Methods</h3><DD>
+
+<h4>Inspection Methods</h4>
+
+The following methods provide information on the actual properties, as opposed to the values of the properties, implemented by the interface. The idea is to support an Object inspector that can query the object for the property supported.
+
+<p><B>Note:</B> Director does not call these methods. They are reserved for future use.
+
+<DL><DT>
+<DD><!MethodListBegin>
+<DD><A HREF = "#GetPropCount">GetPropCount()</A>
+<BR><A HREF = "#GetPropNameByIndex">GetPropNameByIndex()</A>
+<BR><A HREF = "#GetPropTypeByIndex">GetPropTypeByIndex()</A>
+<!MethodListEnd></DL>
+
+<h4>Basic Property Access Methods</h4>
+
+The following methods provide basic property access: getting and setting properties and index properties.
+
+<DL><DT>
+<DD><!MethodListBegin>
+<DD><A HREF = "#GetCount">GetCount()</A>
+<BR><A HREF = "#GetProp">GetProp()</A>
+<BR><A HREF = "#SetProp">SetProp()</A>
+<!MethodListEnd></DL>
+
+<h4>Extended Property Access Methods</h4>
+
+The following methods allow for cascaded property references and put-into/before/after
+functionality. Return <CODE>kMoaMmErr_AccessNotSupported</CODE> if you do not want
+to support these capabilities.
+
+<DL><DT>
+<DD><!MethodListBegin>
+<DD><A HREF = "#AccessPropRef">AccessPropRef()</A>
+<BR><A HREF = "#GetContents">GetContents()</A>
+<BR><A HREF = "#SetContents">SetContents()</A>
+<BR><A HREF = "#SetContentsBefore">SetContentsBefore()</A>
+<BR><A HREF = "#SetContentsAfter">SetContentsAfter()</A>
+<BR><A HREF = "#CallHandler">CallHandler()</A>
+<!MethodListEnd></DL>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "AccessPropRef">AccessPropRef()</A></h3>
+
+<DL><DT><h4>Syntax</h4>
+<DL><CODE>
+<DT>AccessPropRef(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>ConstPMoaMmValue <I>selfRef</I>, <BR>
+   <DD>MoaMmSymbol <I>propName</I>, <BR>
+   <DD>MoaLong <I>indexCount</I>, <BR>
+   <DD>ConstPMoaMmValue <I>pIndexValues</I>, <BR>
+   <DD>PMoaMmValue <I>pResult</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>selfRef</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;The property reference object, as a Lingo value. Assign to <CODE><I>pResult</I></CODE> and AddRef to return self.<BR><BR>
+
+<DT><CODE><I>propName</I></CODE><DD><CODE>MoaMmSymbol</CODE>&nbsp;&nbsp;The property name to look up<BR><BR>
+
+<DT><CODE><I>indexCount</I></CODE><DD><CODE>MoaLong</CODE>&nbsp;&nbsp;The number of indices. Specify 0, 1, or 2.<BR><BR>
+
+<DT><CODE><I>pIndexValues</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;An array of indices<BR><BR>
+
+<DT><CODE><I>pResult</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;Optional return value. To return a new property reference Lingo object, use IMoaMmPropReferenceValue::PropReferenceToValue.<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+
+<DL><DT><CODE>MoaError:</CODE><P>
+<DD>
+<TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>The property is not found.
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_AccessNotSupported</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>If your Xtra does not support cascaded property access, return this.
+</TD></TR>
+
+</TABLE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method sets up a reference to a set of hierarchical properties. A property name and (optionally) index values may be specified. A cascaded index property reference series will begin and continue with <CODE>AccessPropRef</CODE> calls, up to the last access which will be any of <CODE>GetProp</CODE>, <CODE>SetProp</CODE>, <CODE>SetContents</CODE>, <CODE>SetBefore</CODE>, or <CODE>SetAfter</CODE>.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+
+<pre>put x.sel[33].foo
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.GetProp( propName=foo, indexCount=0 )
+put x.sel[33].foo[10]
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.GetProp( propName=#foo, indexCount=1, pIndexValues={10} )
+set x.sel[33].foo[9..11] = "Done!"
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.SetProp( propName=#foo, indexCount=2, pIndexValues={9,11}, pNewValue="Done!" )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "CallHandler">CallHandler()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>CallHandler(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>PMoaMmCallInfo <I>callPtr</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>callPtr</I></CODE><DD><CODE>PMoaMmCallInfo</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT><CODE>MoaError:</CODE><P>
+<DD>
+<TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_FunctionNotFound</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>If you do not support the handler call.
+</TD></TR>
+
+</TABLE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method lets you implement what your Xtra does when it is used as a Lingo handler.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>x.sel[1].goDown(99)
+--> AccesProp( propName=#sel, indexCount=1, pIndexValues={1})
+--> CallHandlers( callPtr->nargs=2, args={instance, 99} )
+</pre>
+</DL>
+
+
+<!------------------------------------------------>
+<hr width=45% align=left><h3>
+<A name = "GetContents">GetContents()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetContents(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>ConstPMoaMmValue <I>selfRef</I>, <BR>
+   <DD>PMoaMmValue <I>pResult</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>selfRef</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;The property reference object, as a Lingo value. Assign to <CODE><I>pResult</I></CODE> and AddRef to return self.<BR><BR>
+
+<DT><CODE><I>pResult</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;The return value<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method returns the contents of a property reference. It is issued when index property reference is used with the <CODE>put</CODE> command.
+
+<p><B>Note:</B> This method is not used by Director 7 or eariler. It is reserved for future versions.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>put "Banana" into x.sel[33].foo
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetCount">GetCount()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetCount(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>MoaMmSymbol <I>propName</I>, <BR>
+   <DD>MoaLong * <I>pCount</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>propName</I></CODE><DD><CODE>MoaMmSymbol</CODE>&nbsp;&nbsp;The name of the property to look up<BR><BR>
+
+<DT><CODE><I>pCount</I></CODE><DD><CODE>MoaLong *</CODE>&nbsp;&nbsp;The return count<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT><CODE>MoaError:</CODE><P>
+<DD>
+<TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>The property is not found.
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_AccessNotSupported</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>The property is not countable.
+</TD></TR>
+
+</TABLE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method returns the number of "chunks" for the given <CODE><I>propName</CODE></I>.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>put x.word.count
+--> i.GetCount(propName=#word).
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetProp">GetProp()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetProp(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>ConstPMoaMmValue <I>selfRef</I>, <BR>
+   <DD>MoaMmSymbol <I>propName</I>, <BR>
+   <DD>MoaLong <I>indexCount</I>, <BR>
+   <DD>ConstPMoaMmValue <I>pIndexValues</I>, <BR>
+   <DD>PMoaMmValue <I>pResult</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>selfRef</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;The property reference object, as a Lingo value. Assign this to <CODE><I>pResult</I></CODE> and AddRef to return the same property reference. Use this parameter to support properties that are further references as opposed to final values.<BR><BR>
+
+<DT><CODE><I>propName</I></CODE><DD><CODE>MoaMmSymbol</CODE>&nbsp;&nbsp;The property name to look up<BR><BR>
+
+<DT><CODE><I>indexCount</I></CODE><DD><CODE>MoaLong</CODE>&nbsp;&nbsp;The number of indices. Specify 0, 1, or 2.<BR><BR>
+
+<DT><CODE><I>pIndexValues</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;An array of indices<BR><BR>
+
+<DT><CODE><I>pResult</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;The return value<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT><CODE>MoaError:</CODE><P>
+<DD>
+<TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>The property is not found.
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_AccessNotSupported</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>If your Xtra does not support property access, then return this. (If you do not support <CODE><I>indexCount</CODE></I> values greater than 0, for example.)</TD></TR>
+
+</TABLE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method retrieves the value of a property. A property name and (optionally) index values may be specified.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+
+<pre>put x.foo
+--> i.GetProp( propName=foo, indexCount=0 )
+put x.foo[10]
+--> i.GetProp( propName=#foo, indexCount=1, pIndexValues={10} )
+put x.foo[9..11]
+--> i.GetProp( propName=#foo, indexCount=2, pIndexValues={9,11} )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetPropCount">GetPropCount()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetPropCount(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>MoaLong * <I>pCount</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>pCount</I></CODE><DD><CODE>MoaLong *</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetPropNameByIndex">GetPropNameByIndex()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetPropNameByIndex(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>MoaLong <I>index</I>, <BR>
+   <DD>PMoaMmSymbol <I>pSymbol</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>index</I></CODE><DD><CODE>MoaLong</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pSymbol</I></CODE><DD><CODE>PMoaMmSymbol</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "GetPropTypeByIndex">GetPropTypeByIndex()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>GetPropTypeByIndex(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>MoaLong <I>index</I>, <BR>
+   <DD>PMoaMmValue <I>pType</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>index</I></CODE><DD><CODE>MoaLong</CODE>&nbsp;&nbsp;<BR><BR>
+
+<DT><CODE><I>pType</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetContents">SetContents()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>SetContents(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>ConstPMoaMmValue <I>selfRef</I>, <BR>
+   <DD>PMoaMmValue <I>pResult</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>selfRef</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;The new value to stuff into the target<BR><BR>
+
+<DT><CODE><I>pResult</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method is issued when index property reference is used with the <CODE>put-into</CODE> command.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>put "Banana" into x.sel[33].foo
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.SetContents( pNewValue="Banana" )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetContentsAfter">SetContentsAfter()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>SetContentsAfter(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>PMoaMmValue <I>pNewValue</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>pNewValue</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;The new value to stuff into the target<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method is issued when index property reference is used with the <CODE>put-after</CODE> command.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>put "Banana" before x.sel[33].foo
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.SetContents( pNewValue="Banana" )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetContentsBefore">SetContentsBefore()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>SetContentsBefore(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>PMoaMmValue <I>pNewValue</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>pNewValue</I></CODE><DD><CODE>PMoaMmValue</CODE>&nbsp;&nbsp;The new value to stuff into the target<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT>
+<CODE>MoaError</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method is issued when index property reference is used with the put-before command.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>put "Banana" before x.sel[33].foo
+--> i.AccessProp(propName=#sel, indexCount=1, pIndexValues={33} )
+--> i.SetContents( pNewValue="Banana" )
+</pre>
+</DL>
+
+
+<!------------------------------------------------> 
+<hr width=45% align=left><h3>
+<A name = "SetProp">SetProp()</A></h3>
+
+<DL><DT><h4>Syntax</h4><DD>
+<DL>
+<CODE>
+<DT>SetProp(PIMoaMmPropertyReference <I>This</I>, <BR>
+   <DD>MoaMmSymbol <I>propName</I>, <BR>
+   <DD>MoaLong <I>indexCount</I>, <BR>
+   <DD>ConstPMoaMmValue <I>pIndexValues</I>, <BR>
+   <DD>ConstPMoaMmValue <I>pNewValue</I>)
+</CODE>
+</DL>
+</DL>
+
+<DL><DT><h4>Parameters</h4><DD>
+<DL><DT><CODE><I>This</I></CODE><DD>Pointer to the <CODE>IMoaMmPropertyReference</CODE> interface<BR><BR>
+
+<DT><CODE><I>propName</I></CODE><DD><CODE>MoaMmSymbol</CODE>&nbsp;&nbsp;The property name to look up<BR><BR>
+
+<DT><CODE><I>indexCount</I></CODE><DD><CODE>MoaLong</CODE>&nbsp;&nbsp;The number of indices. Specify 0, 1, or 2.<BR><BR>
+
+<DT><CODE><I>pIndexValues</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;An array of indices<BR><BR>
+
+<DT><CODE><I>pNewValue</I></CODE><DD><CODE>ConstPMoaMmValue</CODE>&nbsp;&nbsp;The new value to assign<BR><BR>
+</DL>
+</DL>
+
+<DL><DT><h4>Returns</h4><DD>
+<DL><DT><CODE>MoaError:</CODE><P>
+<DD>
+<TABLE BORDER="2">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_PropertyNotFound</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>The property is not found.
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_AccessNotSupported</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>If your Xtra does not support property access, then return this. (If you do not  support <CODE><I>indexCount</I></CODE> values greater than 0, for example.)
+</TD></TR>
+
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=201><TT>kMoaMmErr_CannotSetProperty</TT>
+</TD><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=303>Set not allowed on specified property.
+</TD></TR>
+
+</TABLE>
+</DL>
+</DL>
+
+<DL><DT><h4>Description</h4><DD>
+
+This method assigns a value to a property or range within a property. A property name and (optionally) index values may be specified.
+</DL>
+
+<DL><DT><h4>Examples</h4><DD>
+<pre>set x.foo = 99
+--> i.SetProp( propName=foo, indexCount=0, pNewValue=99 )
+set x.foo[10] = 99
+--> i.GetProp( propName=#foo, indexCount=1, pIndexValues={10}, pNewValue=99 )
+set x.foo[9..11] = 123
+--> i.GetProp( propName=#foo, indexCount=2, pIndexValues={9,11}, pNewValue=123 )
+</pre>
+</DL>
+
+
+<hr width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</body></html>
+

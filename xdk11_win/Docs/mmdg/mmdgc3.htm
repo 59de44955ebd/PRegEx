@@ -1,0 +1,386 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Scripting Xtras</TITLE>
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+
+<P>
+<A HREF="index.htm">MM Developer's Guide</A><BR>
+<A HREF="../mmref/index.htm">MM Interfaces</A> | <A HREF="../mmref/mmmthndx.htm">MM Methods</A>
+| <A HREF="../mmref/mmtypndx.htm">MM Types and Misc API</A> <BR>
+<A HREF="../drref/index.htm">DR Interfaces</A> | <A HREF="../drref/drmthndx.htm">DR Methods</A>
+| <A HREF="../drref/drtypndx.htm">DR Types and Misc API</A>
+<HR width=45% align=left>
+<H3>Director Xtra Development Kit: Multimedia Developer's Guide</H3>
+<H2>Scripting Xtras</H2>
+<HR width=45% align=left>
+<H3>Introduction </H3>
+
+<P>
+Scripting Xtras provide new functions to call through the scripting
+interface of an application. In Director, Scripting Xtras extend
+the Lingo language.
+
+<H3>Scripting Xtra concepts </H3>
+
+<H4>Application scripting models</H4>
+
+<P>
+In Director, the developer attaches scripts to various objects
+in a movie: sprites, frames, cast members, and the movie itself.
+An object's scripts provide behavior specific to that object.
+The Lingo language abstracts some general behaviors useful throughout
+the playback of a movie. For example, a Lingo script can access
+the properties of objects such as sprites and cast members, and
+use calculations in logical structures to control a movie based
+on user input. 
+
+<H4>Global, parent, and child functions</H4>
+
+<P>
+Scripting Xtras can add three types of functions: global, parent,
+and child. <BR>
+<BR>
+In Director, a global Xtra function is like other Lingo global
+functions and commands. When a Scripting Xtra is available in
+Director, any script can call its global functions. Parent and
+child functions, like Director's parent scripts and child objects,
+let your Xtra define a type of object with specific properties
+and functions or handlers. A Lingo scripter can create instances
+of those objects in any script, with each instance containing
+its own version of its properties. Parent functions are like globals
+in that any script in a movie can call a Parent. To call a Child
+function, the scripter creates a new instance and assigns it to
+a variable. The script then invokes the child functions through
+the variable. The child is local to the script where it is created,
+and can be passed between scripts through handler calls.
+
+<H4>Calling a Scripting Xtra</H4>
+
+<P>
+The way you call a scripting Xtra depend on the application you're
+scripting from. The following table shows the ways to invoke a
+Scripting Xtra.
+
+<TABLE BORDER="2" width="615">
+  <TR> 
+    <TD WIDTH=136><B>Operation</B></TD>
+    <TD WIDTH=461><B>Director</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=136>Call global function</TD>
+    <TD WIDTH=461>Call the function in any Lingo script, fill in arguments</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=136>Call parent function</TD>
+    <TD WIDTH=461>functionName(xtra &quot;<CODE><I>xtraName</I>&quot; 
+      <I>&lt;, args*&gt;</I>)</CODE> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=136>Create child instance</TD>
+    <TD WIDTH=461>set myChild = New(xtra &quot;<CODE><I>xtraName</I>&quot; 
+      <I>&lt;, args*&gt;</I>)</CODE> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=136>Call child function</TD>
+    <TD WIDTH=461>functionName(myChild <CODE><I>&lt;, 
+      args*&gt;</I>)</CODE> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=136>Remove child</TD>
+    <TD WIDTH=461>set myChild = 0 </TD>
+  </TR>
+</TABLE>
+<H3>Implementing a Scripting Xtra</H3>
+<P> A Scripting Xtra is defined by two classes: a registration class and a scripting 
+  class. <BR><BR>
+  The registration class implements the <CODE>IMoaRegister</CODE> interface to 
+  inform an application of its capabilities. The <CODE>IMoaRegister::Register()</CODE> 
+  method describes an Xtra's capabilities through a <I>message table</I>, listing 
+  the name of the Xtra, and the names, types, and parameters of all the functions 
+  it provides. <BR>
+  <BR>
+  The scripting class implements the <CODE>IMoaMmXScripting</CODE> interface to 
+  provide specific functions. This interface consists of a single method, <CODE>Call()</CODE>. 
+  When called, this method is passed a structure containing information from the 
+  function call, including the identity of the function called, the arguments 
+  to the function, and a slot for any return value or values. Your implementation 
+  of <CODE>Call()</CODE> should evaluate this structure and provide a way to handle 
+  each function you specify in your message table, along with a default return 
+  value for any calls you don't handle. <BR>
+  <BR>
+  In addition to implementing <CODE>IMoaMmXScripting</CODE>, the Xtra class defines 
+  any instance variables required by global, parent, or child functions.<BR>
+  <BR>
+  An application always creates an instance of the Scripting Xtra to support global 
+  and parent functions. This instance may not be created until the user first 
+  invokes a function. It's safe to assume this instance won't be created when 
+  the application fist starts. (If you need to initialize libraries or perform 
+  other startup actions, implement the <CODE>IMoaInterrogator</CODE> interface 
+  in your Xtra class.) Each time a script creates a new child instance, the application 
+  creates an additional instance of the Xtra class. In each case, your Xtra's 
+  <CODE>MoaCreate...</CODE> and <CODE>MoaDestroy...</CODE> functions are called, 
+  which means you may need to implement these functions carefully to perform the 
+  proper initialization for the global instance or child instances of your Xtra. 
+<H4>The registration class</H4>
+<P> To implement the registration class for a Scripting Xtra, you define a message 
+  table describing the Xtra and its functions. You also implement <CODE>IMoaRegister</CODE> 
+  to register the message table with the application.
+<H5><A NAME="RTFToC12">The message 
+  table </A>
+</H5>
+ The Scripting Xtra message table is an array of strings that describe the 
+  Xtra and its functions. The following example illustrates all of the conventions 
+  used in defining the message table: 
+<PRE>
+static char msgTable[] = { \
+        &quot;xtra nameOfXtra \n&quot; \
+        &quot;new object me <I>&lt;, args&gt;*</I> \n&quot; \
+        &quot;forget object me <I>&lt;, args&gt;*</I> -- entirely optional-see text\n&quot; \
+        &quot;-- Lingo style comment \n&quot; \
+        &quot;* globalFunction <I>&lt;, args&gt;*</I> -- globalFunction description\n&quot; \
+        &quot;+ parentFunction object xt <I>&lt;, args&gt;*</I> -- parentFunction description \n&quot; \
+        &quot;childFunction object me <I>&lt;, args&gt;*</I> -- childFunction description\n&quot; \
+};</PRE>
+<P> The first entry in the message table is the name of the Scripting Xtra. This 
+  name is used to invoke the Xtra's functions. 
+<P> The remaining entries can be function definitions, comments (indicated by 
+  a Lingo-style &quot;--&quot; prefix), or a definition followed by a comment. 
+  Function definitions include the name and scope of the function, and the name 
+  and type of each argument. 
+<P> Comments in the message table provide useful documentation, since the user 
+  can view the message list in the scripting interface -- through the <CODE>mMessageList()</CODE> 
+  command in Lingo.
+<H5><A NAME="RTFToC13">Function definitions </A></H5>
+<P> A function definition follows a standard form:<BR>
+  <BR>
+  <CODE><I>&lt;scope prefix&gt; functionName &lt;object 
+  objectName&gt; &lt;, argType argName&gt;*<BR>
+  <BR>
+  </I></CODE>The <CODE><I>&lt;scope prefix&gt; 
+  </I></CODE>indicates the scope of a function. Global functions are indicated 
+  by an asterisk (&quot;*&quot;) character, parent functions by a plus (&quot;+&quot;) 
+  character, and child functions by no prefix. The <CODE><I>functionName</I></CODE> 
+  entry represents the name used to invoke the function. 
+<P> The function name can be followed by a list of argument descriptions. Each 
+  argument description includes the type of the argument followed by an optional 
+  name. The <CODE><I>&lt;object objectName&gt;</I></CODE> 
+  argument description is used for parent and child functions. For child functions, 
+  <CODE><I>objectName</I></CODE> is the child 
+  whose function is being invoked. For parent functions, <CODE><I>objectName</I></CODE> 
+  is a reference to the Xtra itself. The type of these arguments is always <CODE>object</CODE>. 
+  The <CODE><I>argType</I></CODE> of other 
+  arguments can be of several types: 
+<PRE>
+integer
+float
+string
+symbol
+object
+any
+*</PRE>
+ For <CODE>integer</CODE>, <CODE>float</CODE>, <CODE>string</CODE>, <CODE>symbol</CODE>, 
+  and <CODE>object</CODE> arguments, the type of the argument supplied must always 
+  match that specified in the message table. The type any means the user can provide 
+  an argument of any type in the specified position. The asterisk (*) means the 
+  user can provide any number and any type of arguments. <BR>
+<H5><A NAME="RTFToC14">Optional </A><CODE>new</CODE> 
+  and <CODE>forget</CODE> functions</H5>
+<P> Every Scripting Xtra may implement the optional child functions <CODE>new</CODE> and <CODE>forget</CODE>. These functions 
+  are pre-defined for specific purposes. <BR>
+  <BR>
+  The <CODE>new</CODE> function is called when a child object is created. The first argument of the <CODE>new</CODE> function 
+  is the child object. Your Xtra may define additional arguments to enable the author to customize the child from Lingo. Your 
+  implementation of <CODE>new</CODE> should perform custom initialization for the child and respond to any arguments passed 
+  in by the author. <BR>
+  <BR>
+  The <CODE>forget</CODE> function is called when a child object is about to be removed from memory. You should release any 
+  memory allocated in your <CODE>new</CODE> function. <BR>
+  <BR>
+  Note that <CODE>forget</CODE> is a &quot;hidden&quot; function, never called directly from a script. Instead, Scripting 
+  Xtras are disposed of by reassigning a child's variable to 0 in Lingo. The <CODE>forget</CODE> function is called automatically 
+  when all references to the child are dropped. [This behavior has changed with Director MX 2004, see the following paragraph 
+  for details.]
+<H5><A NAME="GlobalRefs">Global References to Xtras</A></H5>
+  With the new JavaScript support in Director MX 2004, an xtra that is referenced by a global variable will NOT be disposed 
+of by simply assigning the global object to 0. This is because global variables have an associated wrapper object so they 
+can be accessed by JavaScript routines. Objects in JavaScript are cleaned up using a garbage collection approach rather than 
+the reference counting approach used by lingo. It is important to note that this new behavior applies whether your movie is 
+making use of JavaScript or not. You can use _system.gc() on JavaScript side to force objects stored in globals to really 
+go away. A better way of dealing with this situation is to provide a separate, explicit close method with the xtra, so it 
+does not depend on been freed to close down any system resources or connections that the xtra has made.Also, see <a href="mmdgtg.htm#JSMemory">Javascript 
+and Memory Issues</a>. 
+<H5><A NAME="RTFToC15">Implementing IMoaRegister</A></H5>
+<P> <A HREF="../MOREF/REGISTER.HTM">IMoaRegister</A> is the standard MOA interface 
+  provided for registering Xtras with an application. In the case of Scripting 
+  Xtras, you implement this interface to pass your Xtra's message table to the 
+  application. Here's a typical implementation of <A HREF="../MOREF/REGISTER.HTM#Register">IMoaRegister::Register()</A>: 
+<PRE>
+STDMETHODIMP_(MoaError) XXPalette_IMoaRegister_Register(PIMoaCache pCache, PIMoaDict pXtraDict)
+{
+        X_ENTER
+        MoaError err = kMoaErr_NoErr;
+        PIMoaDict pRegDict;
+        /* Register that we are a Scripting Xtra */
+        err = pCache-&gt;AddRegistryEntry(pXtraDict, &amp;CLSID_XXScripting, &amp;IID_IMoaMmXScripting, &amp;pRegDict);
+        if ( err == kMoaErr_NoErr)
+        {
+                /* Register the message table */
+                err = pRegDict-&gt;Put(kMoaMmDictType_MessageTable, msgTable, 0, kMoaMmDictKey_MessageTable);
+        }
+        X_STD_RETURN(err);
+        X_EXIT
+}</PRE>
+<H5><A NAME="RTFToC16">Knowing when to register </A></H5>
+ Scripting Xtras are designed to work across Macromedia applications, but a 
+  given Scripting Xtra need not be application-independent. To prevent compatibility 
+  problems, it's important to be sure your Xtra works with the application that's 
+  attempting to register it. 
+<P> The <A HREF="../MOREF/APPINFO.HTM">IMoaAppInfo</A> callback 
+  interface provides a way to check out the application registering your Xtra. 
+  Within the <CODE>Register()</CODE> method, use this interface to determine various 
+  attributes of the application to be sure. 
+<P> Your Xtra's <CODE>Register()</CODE> method should also check for any callback 
+  interfaces or supporting Xtras it needs. Director defines application-specific 
+  service interfaces to access objects in their presentation models. Call <CODE>QueryInterface()</CODE> 
+  on the application object within your Xtra's <CODE>Register()</CODE> method 
+  to be sure callback interfaces are available.
+<H5>Note for Windows Scripting Xtra developers</H5>
+ Microsoft Visual C has a limit of 2048 characters for a static string. If 
+  you reach this limit, you must store your msgTable in a resource. Your registration 
+  code must then load the resource, put its content into the registry, then release 
+  the resource. (Remember to use <CODE>IMoaCallback::Begin/EndUsingResources()</CODE> 
+  when accessing resources from your Xtra.) </p>
+<H4>The scripting class</H4>
+
+The Scripting class provides the <CODE>IMoaMmXScripting</CODE>
+interface that implements the Xtra's functions. It provides instance
+variables for the properties of child objects; it can also provide
+specific instance variables for access through global and parent
+functions. It may provide the <A HREF="../MMREF/MMINTRRG.HTM">IMoaMmInterrogator</A>
+and <A HREF="../MMREF/MMTRMNTR.HTM">IMoaMmTerminator</A> interfaces
+to perform initialization and cleanup for your Xtra.
+
+<H5><A NAME="RTFToC18">Defining method symbols </A></H5>
+
+Every implementaion of <CODE>IMoaMmXScripting</CODE> needs to include an enumeration consisting of symbols for each method 
+that a Lingo Xtra implements. This enumeration is defined in the header file that declares the class and interface implementations. 
+The members of this enumeration match the naming and ordering of the functions listed in the message table. By convention, 
+for each function name in the message table, you create a corresponding enum with the prefix &quot;<CODE>m_</CODE>&quot;, 
+as follows: 
+<PRE>
+enum { 
+        m_new = 0, 
+        m_globalFunction, 
+        m_parentFunction, 
+        m_childFunction
+};</PRE>
+
+Values in this enumeration enable the script interpreter to convert
+function names listed in your message table to calls into your
+implementation. The order in this enumeration must match the order
+of function entries in the message table. Otherwise, the script
+interpreter will call the wrong function.
+
+<H5><A NAME="RTFToC20">Creator and destructor functions </A></H5>
+
+An earlier discussion mentions that one instance of the Scripting
+class is always created to respond to a Scripting Xtra's global
+and parent functions. This instance is usually created the first
+time a script in a presentation calls a global or parent function.
+A new instance of the Xtra class is also created each time a new
+child is created. This instance supports the child's unique properties
+through its instance variables. This means that the <CODE>MoaCreate...</CODE>
+and <CODE>MoaDestroy...</CODE> functions for the Xtra class should
+be designed carefully. For general allocations and initializations
+at startup, the Xtra class should probably implement the <A HREF="../MMREF/MMINTRRG.HTM">IMoaMmInterrogator</A>
+interface. To allocate and initialize resources for a child instance,
+implement the <CODE>new</CODE> function in the <CODE>IMoaMmXScripting::Call()</CODE>
+method. The <CODE>new</CODE> function is called for each child
+created from your Scripting Xtra.
+
+<H5><A NAME="RTFToC21">Implementing IMoaMmXScripting </A></H5>
+
+<P> To implement its functions, the Scripting Xtra implements the <CODE>IMoaMmXScripting::Call()</CODE> 
+  method. The Xtra should perform a <CODE>switch</CODE> selection based on the 
+  value of the <CODE>methodSelector</CODE> passed in the <A HREF="../mmref/mmtypndx.htm#MoaMmCallInfo">MoaMmCallInfo</A> 
+  structure. This field contains the enumeration constant corresponding to the 
+  function being called. The same structure also provides values for any arguments 
+  to the function and a field for a return value. <BR>
+<BR>
+Here's a complete sample implementation of the <CODE>Call()</CODE>
+method.
+
+<PRE>
+STDMETHODIMP CScriptingTemplate_IMoaMmXScripting_Call(PMoaMmCallInfo callPtr)
+{
+        X_ENTER
+        PIMoaMmUtils pMmUtils = NULL; 
+        MoaError err = kMoaErr_NoErr;
+        err = This-&gt;pObj-&gt;pCallback-&gt;QueryInterface(&amp;IID_IMoaMmUtils, &amp;pMmUtils);
+        if (err == kMoaErr_NoErr) 
+		 {
+                switch ( callPtr-&gt;methodSelector ) 
+                {
+                        case m_new:
+                                /* Called when creating a new child.  
+                                Setup instance vars for child.*/
+                                break;
+                        case m_globalFunction: /* a global function */
+                                err = pMmUtils-&gt;PrintMessage(&quot;you've called the global function example\n&quot;);
+                                break;
+                        case m_parentFunction: /* a parent function */
+                                err = pMmUtils-&gt;PrintMessage(&quot;You've called the parent function example\n&quot;);
+                                break;
+                        case m_childFunction: /* a child function */
+                                err = pMmUtils-&gt;PrintMessage(&quot;you've called the child function example\n&quot;);
+                                break;
+                        default:
+                                err = kMoaDrErr_FunctionNotDefined;
+                                break;
+                }
+        }
+        X_RETURN(MoaError, err);
+        X_EXIT
+}</PRE>
+
+<H4><A NAME="RTFToC22">Scripting Xtras in Director</A></H4>
+
+<H5>Loading Scripting Xtras</H5>
+
+<P> When the user puts a Scripting Xtra into the standard Xtra directory, it is 
+  loaded automatically when Director starts. <BR>
+<BR>
+To load a Scripting Xtra into Director from another directory,
+use the Lingo command <CODE>openXLib</CODE>. The <CODE>openXLib</CODE>
+takes a complete pathname for the Xtra. The pathname may be relative
+to the folder containing the movie or complete, including the
+source disk or volume. The pathname always includes the filename
+of the Xtra (not the internal name identifying the Xtra). For
+example:<BR>
+<BR>
+<CODE>openXLib &quot;LocalDrive:MoreLingo:MyLingoXtra&quot; <BR>
+<BR>
+openXLib</CODE> is documented in the Lingo Dictionary.
+
+<H5><A NAME="RTFToC23">Unloading Scripting Xtras </A></H5>
+
+<p>To remove a Scripting Xtra from memory, if it has been loaded with <CODE>openXLib</CODE>, you can call the <CODE>closeXLib</CODE> 
+  Lingo command. You must first set all previously defined child variable references to zero. Starting with Director MX 2004, 
+  this is not sufficient to ensure your Xtras &quot;destroy&quot; method is called. See <a href="#GlobalRefs">Global References 
+  to Xtras</a> for more information about this aspect of Xtras. For example:<BR>
+  <BR>
+  <CODE>myXtraChild = 0</CODE><CODE><BR>
+  closeXLib &quot;MyLingoXtra&quot; <BR>
+  <BR>
+  closeXLib</CODE> is documented in the Lingo Dictionary. </p>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+
+</HTML>

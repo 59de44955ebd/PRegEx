@@ -1,0 +1,1977 @@
+<HTML>
+<HEAD>
+<TITLE>Director Types and Miscellaneous API</TITLE>
+<link href="../xdk.css" rel="stylesheet" type="text/css">
+</HEAD>
+<BODY>
+<A HREF="../drdg/index.htm">DR Developer's Guide</A> | <A HREF="../mmdg/index.htm">MM 
+Developer's Guide</A> <BR>
+<A HREF="index.htm">DR Interfaces</A> | <A HREF="drmthndx.htm">DR Methods</A> 
+<HR width=45% align=left>
+<H3><A NAME="RTFToC2">Director Xtra Development Kit</A></H3>
+<H2>Director Properties, Types, Structures, Macros, Constants</H2>
+<HR width=45% align=left>
+This document contains the following sections: 
+<UL>
+  <LI><A HREF = "#DRPROPS">Director Properties</A> 
+  <LI><A HREF = "#DRTYPES">Director Types</A> 
+  <LI><A HREF = "#DRMACS">Director Macros</A> 
+  <LI><A HREF = "#DRCONS">Director Constants</A> 
+  <LI><A HREF = "#DRNIDS">Director Notification IDs</A> 
+  <LI><A HREF = "#DRERRS">Director Error Codes</A> 
+</UL>
+<HR width=45% align=left>
+<H4><A NAME="DRPROPS">Director Properties</A></H4>
+<H5><A NAME="CASTPROPS">Cast properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=102><B>Symbol</B></TD>
+    <TD WIDTH=47><B>Type</B></TD>
+    <TD WIDTH=59><B>Get/Set</B></TD>
+    <TD WIDTH=255><B>Description</B> </TD>
+    <TD WIDTH=350><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>name</TT> </TD>
+    <TD WIDTH=47>string</TD>
+    <TD WIDTH=59>G/S</TD>
+    <TD WIDTH=255>Author-defined name of cast (!= filename) </TD>
+    <TD WIDTH=350>User sets in Cast Properties dialog</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>pathName</TT> </TD>
+    <TD WIDTH=47>string</TD>
+    <TD WIDTH=59>G/S</TD>
+    <TD WIDTH=255>Full pathname of cast. Set allowed only for linked casts </TD>
+    <TD WIDTH=350>Setting this swaps in new linked cast on-the-fly </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>preloadMode</TT> </TD>
+    <TD WIDTH=47>integer</TD>
+    <TD WIDTH=59>G/S</TD>
+    <TD WIDTH=255>Cast preload mode: <BR>
+      0 = none, <BR>
+      1 = before 1st frame, <BR>
+      2 = after first frame </TD>
+    <TD WIDTH=350></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>memberCount</TT> </TD>
+    <TD WIDTH=47>integer</TD>
+    <TD WIDTH=59>G</TD>
+    <TD WIDTH=255>The number of occupied cast member slots in the cast </TD>
+    <TD WIDTH=350>Does not incude <TT>&quot;empty&quot;</TT> cast member slots&quot;    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>minMember</TT> </TD>
+    <TD WIDTH=47>integer</TD>
+    <TD WIDTH=59>G</TD>
+    <TD WIDTH=255>The index of the first occupied cast member slot </TD>
+    <TD WIDTH=350></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>maxMember</TT> </TD>
+    <TD WIDTH=47>integer</TD>
+    <TD WIDTH=59>G</TD>
+    <TD WIDTH=255>The index of the last occupied cast member slot </TD>
+    <TD WIDTH=350></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><I>Authoring-only</I></TD>
+    <TD WIDTH=47></TD>
+    <TD WIDTH=59></TD>
+    <TD WIDTH=255></TD>
+    <TD WIDTH=350></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=102><TT>selection</TT> </TD>
+    <TD WIDTH=47>linear list</TD>
+    <TD WIDTH=59>G/S</TD>
+    <TD WIDTH=255>List indicating current cast selection </TD>
+    <TD WIDTH=350>List of lists. Each sublist specifies a continuous range of 
+      selected cast members, for example [[1, 5], [8, 12], [15,15]] </TD>
+  </TR>
+</TABLE>
+Notes:<br>
+The <TT>selection</TT> property provides a list of lists describing 
+selected thumbnails in the cast. Each cast maintains its own selection. Each sublist 
+contains two elements, integers for the <TT>&quot;startRun&quot;</TT> and <TT>&quot;endRun&quot;</TT> 
+of a contiguous range of selected cast members. To find the active cast at author 
+time, use the <TT>&quot;activeCast&quot;</TT> movie property. 
+The <tt>maxMember</tt> property gives the same results as using the scripting expression <span class="code">castlib.member.count</span>. 
+There are not simple scripting properties equivalent to the <tt>memberCount</tt> or <tt>minMember</tt> properties provided by the Cast interface.
+<HR width=45% align=left>
+<H5><A NAME="CASTMEMPROPS">Cast member properties</A></H5>
+<H5><A NAME="RTFToC4">General 
+cast member properties</A></H5>
+These common properties apply to Director cast 
+members, including both internal and Xtra cast member types. 
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=108><B>Symbol</B></TD>
+    <TD WIDTH=56><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=272><B>Description</B> </TD>
+    <TD WIDTH=256><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>name</TT> </TD>
+    <TD WIDTH=56>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>User-defined name of the cast member </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>size</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Memory currently occupied by cast member (in bytes) </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>castType</TT> </TD>
+    <TD WIDTH=56>symbol</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Type of cast member returned as symbol. </TD>
+    <TD WIDTH=256>Using <TT>&quot;castType&quot;</TT>, text fields are returned 
+      as type <TT>#text </TT>(for Director 4.0 compat.) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>type</TT> </TD>
+    <TD WIDTH=56>symbol</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Type of cast member returned as symbol. </TD>
+    <TD WIDTH=256>Using <TT>&quot;type&quot;</TT>, text fields are returned as 
+      <TT>#field </TT>(Director 5.0 naming) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>scriptText</TT> </TD>
+    <TD WIDTH=56>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>The text of the cast member script </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>modified</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>0 = not modified since last save, <BR>
+      1 = props or media modified </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>loaded</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>0 = unloaded, <BR>
+      1= load. Setting to 0 unloads cast member, setting to 1 loads it </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>fileName</TT> </TD>
+    <TD WIDTH=56>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>Full pathname of linked cast member, only valid for linked <TT>castMems</TT>, 
+      setting changes link on-the-fly </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>purgePriority</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>0=never, <BR>
+      1=last, <BR>
+      2=next, <BR>
+      3=normal</TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>number</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Integer repetition of <TT>castMemRef </TT>(high 16-bits = <TT>castLibIndex 
+      </TT>- 1) </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>member</TT> </TD>
+    <TD WIDTH=56>castMem</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272><TT>CastMemRef </TT>of cast member </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>width</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Width of cast member's default rectangle </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>height</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=272>Height of cast member's default rectangle </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>rect</TT> </TD>
+    <TD WIDTH=56>rect</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>Cast member's default rectangle; set only allowed for text field    </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>hilite</TT> </TD>
+    <TD WIDTH=56>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>0=not hilighted, 1=highlighted </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>regPoint</TT> </TD>
+    <TD WIDTH=56>point</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=272>Registration point for cast member. Currently can only set for 
+      bitmaps, returns (0,0) for all others </TD>
+    <TD WIDTH=256></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC5">Cast type</A></H5>
+The <TT>&quot;castType&quot;</TT> 
+property of a cast member represents the type of the cast member. The valid BUILT-IN 
+cast member type symbols are: 
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=138><B>Name</B></TD>
+    <TD WIDTH=617><B>Description</B> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#bitmap</tt></TD>
+    <TD WIDTH=617>Static bitmap image of any pixel depth </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#filmLoop</tt></TD>
+    <TD WIDTH=617>Looped section of Director score (mini, embedded, non-interactive 
+      movie) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#text</tt></TD>
+    <TD WIDTH=617>Block of styled text </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#palette</tt></TD>
+    <TD WIDTH=617>Color Look-Up Table (CLUT), associated with bitmap cast members    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#picture</tt></TD>
+    <TD WIDTH=617>Macintosh PICT (metafile-like) object </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#sound</tt></TD>
+    <TD WIDTH=617>Sound chunk (can be various sample rates/sizes, compressed, 
+      looped, and so on) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#button</tt></TD>
+    <TD WIDTH=617>Simple button, created with the Director Tools palette </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#shape</tt></TD>
+    <TD WIDTH=617>Simple shape (square, oval, or line; filled or unfilled) created 
+      with Tools </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#movie</tt></TD>
+    <TD WIDTH=617>Linked (external) fully-interactive Director movie </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#digitalVideo</tt></TD>
+    <TD WIDTH=617>QuickTime or AVI movie </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#script</tt></TD>
+    <TD WIDTH=617>Lingo script (in styled text form) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#richText</tt></TD>
+    <TD WIDTH=617>Block of Rich Text (new to Director 5.0; includes special formatting 
+      information) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#OLE</tt></TD>
+    <TD WIDTH=617>Microsoft OLE object (new to Director 5.0) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=138><tt>#transition</tt></TD>
+    <TD WIDTH=617>Transition and associated properties (new to Director 5.0) </TD>
+  </TR>
+</TABLE>
+In addition, other cast member types can be registered by Sprite and Transition 
+Xtras. These types can be obtained using the <TT>IMoaDrPlayer </TT>methods such 
+as <TT>GetCastMemTypeCount() </TT>and so on.<br>
+<H5><A NAME="RTFToC6">Bitmap cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=104><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=451><B>Description</B> </TD>
+    <TD WIDTH=46><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>depth</TT> </TD>
+    <TD WIDTH=104>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=451>Pixel depth of bitmap (1,2,4,8,16,32) </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>palette</TT> </TD>
+    <TD WIDTH=104>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Palette of cast member as integer. Negative numbers indicate 
+      built-in palettes, positive numbers indicate cast-based palette </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>paletteRef</TT> </TD>
+    <TD WIDTH=104>castMem/symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Palette of cast member as castMemRef (cast-based palette) or 
+      symbol (built-in palette) </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>maskMember</TT> </TD>
+    <TD WIDTH=104>castMem</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=451><TT>CastMemRef </TT>of cast member to be used as mask if mask 
+      ink applied </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC7">Button cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=44><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=511><B>Description</B> </TD>
+    <TD WIDTH=45><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>text</TT> </TD>
+    <TD WIDTH=44>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The characters in the text field (null-terminated) </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>textStyle</TT> </TD>
+    <TD WIDTH=44>string </TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The styles used in the text field; comma-delimited, combination 
+      of: <TT>&quot;bold&quot;</TT>, <TT>&quot;italic&quot;</TT>, <TT>&quot;underline&quot;</TT>,<TT> 
+      &quot;outline&quot;</TT>, <TT>&quot;shadow&quot;,&quot;condense&quot;</TT>, 
+      and <TT>&quot;extend&quot;</TT> </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>textFont</TT> </TD>
+    <TD WIDTH=44>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The font of the entire text field </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>textHeight</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The line height of every line in the text field </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>textSize</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The font size of every character in the text field </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>foreColor</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The foreground color index of every character in the text field    </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>backColor</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The background color of the text field </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>textAlign</TT> </TD>
+    <TD WIDTH=44>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>The alignment mode as a string: <TT>&quot;left&quot;</TT>, <TT>&quot;center&quot;</TT>, 
+      <TT>&quot;right&quot;</TT> </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>buttonType</TT> </TD>
+    <TD WIDTH=44>symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=511>Style of the button as symbol: <TT>#pushButton</TT>, <TT>#checkBox</TT>, 
+      <TT>#radioButton</TT> </TD>
+    <TD WIDTH=45></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC8">Digital video cast member properties and functions</A></H5>
+<H5><A NAME="RTFToC9">Digital video cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=132><B>Symbol</B></TD>
+    <TD WIDTH=45><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=461><B>Description</B> </TD>
+    <TD WIDTH=46><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>loop</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=don't loop, 1=loop </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>center</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=don't center, 1=center </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>crop</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=scale, 1=crop </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>sound</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=sound disabled, 1=sound enabled </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>duration</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Duration of movie in ticks (1/60th second) </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>controller</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=hide controller, 1=show controller </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>directToStage</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=composite (slower), 1=directToStage (faster) </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>frameRate</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>Framerate of movie: fixed frame rate or: 0=normal playback; 
+      <BR>
+      -1=play every frame, normal rate; <BR>
+      -2=play every frame, fast as possible. </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>pausedAtStart</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=play immediately, 1=paused at start </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>video</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=video disabled, 1=video enabled </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>preload</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=461>0=disable preload into RAM, <BR>
+      1=enable preload into RAM </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>timeScale</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Time scale of movie </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>tracks</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Track count: number of tracks in the movie </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>track</TT> </TD>
+    <TD WIDTH=45>symbol</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Track type of track #1: <TT>#video</TT>, <TT>#sound</TT>, <TT>#text</TT>, 
+      <tt>#music</TT>, <TT>#timeCode</TT> </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>startTime</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Start time of track #1 </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>stopTime</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461>Stop time of track #1 </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=132><TT>digitalVideoType</TT> </TD>
+    <TD WIDTH=45>symbol</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=461><TT>#quickTime</TT> or <TT>#videoForWindows</TT> </TD>
+    <TD WIDTH=46></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC10">Digital video cast member functions</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=116><B>Name</B></TD>
+    <TD WIDTH=61><B>Returns</B> </TD>
+    <TD WIDTH=565><B>Description</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>trackCount</TT> </TD>
+    <TD WIDTH=61>integer</TD>
+    <TD WIDTH=565>No arguments; returns number of tracks; this is the same as 
+      getting <TT>&quot;tracks&quot;</TT> property </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>trackType</TT> </TD>
+    <TD WIDTH=61>symbol</TD>
+    <TD WIDTH=565>argument 1: track number. Returns type of specified track. Similar 
+      to the <TT>&quot;track&quot;</TT> property but operates on any track. </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>trackStartTime</TT> </TD>
+    <TD WIDTH=61>integer</TD>
+    <TD WIDTH=565>argument 1: track number. Returns start time of specified track. 
+      Similar to <TT>&quot;startTime&quot;</TT> property but operates on any track    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>trackStopTime</TT> </TD>
+    <TD WIDTH=61>integer</TD>
+    <TD WIDTH=565>argument 1: track number. Returns stop time of specified track. 
+      Similar to <TT>&quot;stopTime&quot;</TT> property but operates on any track    </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC11">Director movie cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=116><A NAME="_Toc348749236"><B>Symbol</B></A></TD>
+    <TD WIDTH=45><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=466><B>Description</B></TD>
+    <TD WIDTH=52><B>Notes</B> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>loop</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=466>0=don't loop, 1=loop </TD>
+    <TD WIDTH=52></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>center</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=466>0=don't center, 1=center </TD>
+    <TD WIDTH=52></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>crop</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=466>0=scale, 1=crop </TD>
+    <TD WIDTH=52></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>sound</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=466>0=sound disabled, 1=sound enabled </TD>
+    <TD WIDTH=52></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>scriptsEnabled</TT> </TD>
+    <TD WIDTH=45>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=466>0=scripts disabled, 1=scripts enabled </TD>
+    <TD WIDTH=52></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC12">Filmloop cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=63><B>Symbol</B></TD>
+    <TD WIDTH=43><B>Type</B></TD>
+    <TD WIDTH=61><B>Get/Set</B></TD>
+    <TD WIDTH=514><B>Description</B> </TD>
+    <TD WIDTH=49><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=63><TT>loop</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=61>G/S</TD>
+    <TD WIDTH=514>0=don't loop, 1=loop </TD>
+    <TD WIDTH=49></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=63><TT>center</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=61>G/S</TD>
+    <TD WIDTH=514>0=don't center, 1=center </TD>
+    <TD WIDTH=49></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=63><TT>crop</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=61>G/S</TD>
+    <TD WIDTH=514>0=scale, 1=crop </TD>
+    <TD WIDTH=49></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=63><TT>sound</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=61>G/S</TD>
+    <TD WIDTH=514>0=sound disabled, 1=sound enabled </TD>
+    <TD WIDTH=49></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC13">OLE cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=64><B>Type</B></TD>
+    <TD WIDTH=55><B>Get/Set</B></TD>
+    <TD WIDTH=477><B>Description</B> </TD>
+    <TD WIDTH=50><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>depth</TT> </TD>
+    <TD WIDTH=64>integer</TD>
+    <TD WIDTH=55>G</TD>
+    <TD WIDTH=477>Pixel depth of bitmap (1,2,4,8,16,32) </TD>
+    <TD WIDTH=50></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>palette</TT> </TD>
+    <TD WIDTH=64>integer</TD>
+    <TD WIDTH=55>G/S</TD>
+    <TD WIDTH=477>Palette of cast member as integer (negative numbers indicate 
+      built-in palettes, positive numbers indicate cast-based palette </TD>
+    <TD WIDTH=50></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>paletteRef</TT> </TD>
+    <TD WIDTH=64>castMem/ <BR>
+      symbol</TD>
+    <TD WIDTH=55>G/S</TD>
+    <TD WIDTH=477>Palette of cast member as <TT>castMemRef</TT> (cast-based palette) 
+      or symbol (built-in palette) </TD>
+    <TD WIDTH=50></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>maskMember</TT> </TD>
+    <TD WIDTH=64>castMem</TD>
+    <TD WIDTH=55>G</TD>
+    <TD WIDTH=477><TT>CastMemRef</TT> of cast member to be used as mask if mask 
+      ink applied </TD>
+    <TD WIDTH=50></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC14">Rich Text (RTF) cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=44><B>Type</B></TD>
+    <TD WIDTH=55><B>Get/Set</B></TD>
+    <TD WIDTH=493><B>Description</B> </TD>
+    <TD WIDTH=53><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>text</TT> </TD>
+    <TD WIDTH=44>string</TD>
+    <TD WIDTH=55>G/S</TD>
+    <TD WIDTH=493>The characters of the rich text. Set only supported in authoring 
+      mode </TD>
+    <TD WIDTH=53></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>scrollTop</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=55>G/S</TD>
+    <TD WIDTH=493>Vertical scroll offset (pixels) </TD>
+    <TD WIDTH=53></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>pageHeight</TT> </TD>
+    <TD WIDTH=44>integer</TD>
+    <TD WIDTH=55>G</TD>
+    <TD WIDTH=493>Vertical size of visible area (page) in scrolling field (pixels)    </TD>
+    <TD WIDTH=53></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC15">Script cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=53><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=494><B>Description</B> </TD>
+    <TD WIDTH=47><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>scriptType</TT> </TD>
+    <TD WIDTH=53>symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=494>Type of script: <TT>#score</TT>, <TT>#movie</TT>, <TT>#parent</TT>    </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC16">Shape cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=76><B>Symbol</B></TD>
+    <TD WIDTH=43><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=514><B>Description</B> </TD>
+    <TD WIDTH=47><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=76><TT>shapeType</TT> </TD>
+    <TD WIDTH=43>symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=514>Shape type: <TT>#rect</TT>, <TT>#roundRect</TT>, <TT>#oval</TT> 
+      , <TT>#line</TT> </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=76><TT>lineSize</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=514>Line thickness (pixels) </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=76><TT>pattern</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=514>Pattern index (1-64) </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=76><TT>filled</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=514>0=unfilled, 1=filled </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC17">Sound cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=100><B>Symbol</B></TD>
+    <TD WIDTH=40><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=495><B>Description</B> </TD>
+    <TD WIDTH=40><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=100><TT>loop</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=495>0=disable looping, 1=enable looping </TD>
+    <TD WIDTH=40></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=100><TT>sampleSize</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=495>Number of bits per sample (typically 8 or 16) </TD>
+    <TD WIDTH=40></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=100><TT>sampleRate</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=495>Samples per second </TD>
+    <TD WIDTH=40></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=100><TT>channelCount</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=495>Number of channels (1=mono, 2=stereo) </TD>
+    <TD WIDTH=40></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC18">Text cast member properties and functions</A></H5>
+<H5><A NAME="RTFToC19">Text cast member properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=108><B>Symbol</B></TD>
+    <TD WIDTH=43><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=472><B>Description</B> </TD>
+    <TD WIDTH=55><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>text</TT> </TD>
+    <TD WIDTH=43>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The characters in the text field (null-terminated) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>textStyle</TT> </TD>
+    <TD WIDTH=43>string </TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The styles used in the text field, comma-delimited, combo of: 
+      <TT>&quot;bold&quot;</TT>, <TT>&quot;italic&quot; /FONT&gt;, &quot;underline&quot;</TT>, 
+      <TT>&quot;outline&quot;</TT>, <TT>&quot;shadow&quot;</TT>, <TT>&quot;condense&quot;</TT>, 
+      <TT>&quot;extend&quot;</TT> </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>textFont</TT> </TD>
+    <TD WIDTH=43>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The font of the entire text field </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>textHeight</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The line height of every line in the text field </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>textSize</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The font size of every character in the text field </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>foreColor</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The foreground color index of every character in the text field    </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>backColor</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The background color of the text field </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>textAlign</TT> </TD>
+    <TD WIDTH=43>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>The alignment mode as a string: <TT>&quot;left&quot;</TT>, <TT>&quot;center&quot;</TT>, 
+      <TT>&quot;right&quot;</TT> </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>boxType</TT> </TD>
+    <TD WIDTH=43>symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Text box type: <TT>#adjust</TT>, <TT>#scroll</TT>, <TT>#fixed</tt>, 
+      <tt>#limit</TT> </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>border</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Text border size (pixels) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>margin</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Text margin size (pixels) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>scrollTop</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Vertical scroll offset (pixels) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>dropShadow</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Character drop shadow size (pixels) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>boxDropShadow</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>Box drop shadow size (pixels) </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>autoTab</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>0=autoTab disabled, 1=autoTab enabled </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>wordWrap</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>0=wordWrap disabled, 1=wordWrap enabled </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>editable</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=472>0=not editable, 1=editable </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>pageHeight</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=472>Vertical size of visible area (page) in scrolling field (pixels)    </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>lineCount</TT> </TD>
+    <TD WIDTH=43>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=472>Number of lines in text field </TD>
+    <TD WIDTH=55></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC20">Text cast member functions</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=115><B>Name</B></TD>
+    <TD WIDTH=58><B>Returns</B> </TD>
+    <TD WIDTH=570><B>Description</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>lineHeight</TT> </TD>
+    <TD WIDTH=58>integer</TD>
+    <TD WIDTH=570>argument 1: line number. Returns height of specified line (pixels)    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>linePosToLocV</TT> </TD>
+    <TD WIDTH=58>integer</TD>
+    <TD WIDTH=570>argument 1: <TT>linePosition</TT>. Returns vertical pixel offset 
+      from line position </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>locVtoLinePos</TT> </TD>
+    <TD WIDTH=58>integer</TD>
+    <TD WIDTH=570>argument 1: <TT>locV</TT>. Returns line position from vertical 
+      pixel offset </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>charPosToLoc</TT> </TD>
+    <TD WIDTH=58>point</TD>
+    <TD WIDTH=570>argument 1: character position. Returns (x,y) point offset for 
+      given character </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>locToCharPos</TT> </TD>
+    <TD WIDTH=58>integer</TD>
+    <TD WIDTH=570>argument 1: location (point). Returns character position from 
+      given point </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>scrollByPage</TT> </TD>
+    <TD WIDTH=58>void</TD>
+    <TD WIDTH=570>argument 1: page offset. Scroll up or down <I>n </I>pages ( 
+      <I>n</I> &lt; 0 for down, <I>n </I>&gt; 0 for up) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=115><TT>scrollByLine</TT> </TD>
+    <TD WIDTH=58>void</TD>
+    <TD WIDTH=570>argument 1: line offset. Scroll up or down <I>n </I>lines ( 
+      <I>n </I>&lt; 0 for down, <I>n </I>&gt; 0 for up) </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC21">Xtra cast member properties</A></H5>
+The Sprite Xtra developer can define and support any other properties desired through the 
+implementation of the <TT>GetProp()</TT> and <TT>SetProp()</TT> methods of the 
+<TT>IMoaMmXAsset</TT> interface.<br>
+<H5><A NAME="MOVPROPS">Movie properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=140><B>Symbol</B></TD>
+    <TD WIDTH=103><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=216><B>Description</B> </TD>
+    <TD WIDTH=237><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>name</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Filename of the movie (not full path) </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>pathName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Full pathname of the movie </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>createName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Name of user who authored the movie </TD>
+    <TD WIDTH=237>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>modifyName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Name of user who last modified the movie </TD>
+    <TD WIDTH=237>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>playing</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>0 = movie is stopped in author mode, 1 = movie is playing </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultColorDepth</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Default color depth for new movies: 1,2,4,8,16,32. </TD>
+    <TD WIDTH=237>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultStageRect</TT> </TD>
+    <TD WIDTH=103>rect</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Default stage rectangle for new movies </TD>
+    <TD WIDTH=237>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>tempo</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Current tempo setting (requested tempo, not actual) </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultPalette</TT> </TD>
+    <TD WIDTH=103>castMem/symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Default palette for new movies </TD>
+    <TD WIDTH=237><TT>CastMem </TT>(for cast-based pal) or Symbol (for built-in pal) value accepted </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>remapPalettes</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>0 = don't remap bitmaps on the fly, 1 = remap to cur palette </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>castCount</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>The number of casts (internal + external) in the movie </TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>stageColor</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>The palette index of the movie stage's background color </TD>
+    <TD WIDTH=237>Range depends on current pixel depth (0-255 max) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>frame</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>The frame number where the playback head currently is </TD>
+    <TD WIDTH=237>Setting this does a <TT>&quot;go to frame&quot;</TT> </TD>
+  </TR>
+  <TR>
+    <TD><tt>scriptExecutionStyle</tt></TD>
+    <TD>integer</TD>
+    <TD>G/S</TD>
+    <TD>9 for compatibility with DMX<br>
+      10 for new DMX 2004 features</TD>
+    <TD></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><I>Authoring-only</I></TD>
+    <TD WIDTH=103></TD>
+    <TD WIDTH=51></TD>
+    <TD WIDTH=216></TD>
+    <TD WIDTH=237></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>activeCastLib</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Movie cast index of the <TT>&quot;active&quot; </TT>cast </TD>
+    <TD WIDTH=237>An active cast is one whose cast window was most recently active </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>scoreSelection</TT> </TD>
+    <TD WIDTH=103>linear list</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>List indicating current score selection </TD>
+    <TD WIDTH=237>Only valid for main movie. It's a list of lists; each sublist specifies a rectangular portion of the selection. 
+      For example, [[topSprite, bottomSprite, firstFrame, lastFrame]] </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="PALPROPS">Palette properties</A></H5>
+There are no palette-specific MOA properties. 
+<H5><A NAME="PLAYPROPS">Player properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=140><B>Symbol</B></TD>
+    <TD WIDTH=103><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=216><B>Description</B> </TD>
+    <TD WIDTH=227><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>name</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Filename of the movie (not full path) </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>pathName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Full pathname of the movie </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>createName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Name of user who authored the movie </TD>
+    <TD WIDTH=227>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>modifyName</TT> </TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Name of user who last modified the movie </TD>
+    <TD WIDTH=227>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>playing</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>0 = movie is stopped in author mode, 1 = movie is playing </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultColorDepth</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Default color depth for new movies: 1,2,4,8,16,32. </TD>
+    <TD WIDTH=227>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultStageRect</TT> </TD>
+    <TD WIDTH=103>rect</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Default stage rectangle for new movies </TD>
+    <TD WIDTH=227>May not be valid until movie is saved</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>tempo</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Current tempo setting (requested tempo, not actual) </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>defaultPalette</TT> </TD>
+    <TD WIDTH=103>castMem/symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>Default palette for new movies </TD>
+    <TD WIDTH=227><TT>CastMem </TT>(for cast-based pal) or Symbol (for built-in 
+      pal) value accepted </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>remapPalettes</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>0 = don't remap bitmaps on the fly, 1 = remap to cur palette    </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>castCount</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>The number of casts (internal + external) in the movie </TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>stageColor</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>The palette index of the movie stage's background color </TD>
+    <TD WIDTH=227>Range depends on current pixel depth (0-255 max) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><tt>folderName</tt></TD>
+    <TD WIDTH=103>string</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Full pathname to the folder of the movie</TD>
+    <TD WIDTH=227>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>frame</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>The frame number where the playback head currently is </TD>
+    <TD WIDTH=227>Setting this does a <TT>&quot;go to frame&quot;</TT> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><I>Authoring-only</I></TD>
+    <TD WIDTH=103></TD>
+    <TD WIDTH=51></TD>
+    <TD WIDTH=216></TD>
+    <TD WIDTH=227></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>activeCastLib</TT> </TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>G</TD>
+    <TD WIDTH=216>Movie cast index of the <TT>&quot;active&quot; </TT>cast </TD>
+    <TD WIDTH=227>An active cast is one whose cast window was most recently active    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><tt>authorMode</tt></TD>
+    <TD WIDTH=103>integer</TD>
+    <TD WIDTH=51>&nbsp;</TD>
+    <TD WIDTH=216>&nbsp;</TD>
+    <TD WIDTH=227>&nbsp;</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=140><TT>scoreSelection</TT> </TD>
+    <TD WIDTH=103>linear list</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=216>List indicating current score selection </TD>
+    <TD WIDTH=227>Only valid for main movie. It's a list of lists; each sublist 
+      specifies a rectangular portion of the selection. For example, [[topSprite, 
+      bottomSprite, firstFrame, lastFrame]] </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="FRMPROPS">Score frame properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=175><B>Symbol</B></TD>
+    <TD WIDTH=60><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=451><B>Description</B> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>tempo</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Frame tempo in FPS, 0 to clear cell completely </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>waitSeconds</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Wait in seconds, returns 0 if not <TT>waitSeconds</TT>, set 
+      to 0 to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>waitClick</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Wait for mouse click, returns 0 if not <TT>waitClick</TT>, set 
+      to 0 to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>waitSound</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Specify sound channel number (1-2), returns 0 if not <TT>waitSound</TT>, 
+      set to 0 to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>waitDigitalVideo</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Specify sprite channel number (1-48), returns 0 if not <TT>waitDigitalVideo</TT>, 
+      set to 0 to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>palette</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Access palette as integer (negative numbers indicate built-in 
+      palettes), setting defaults to instant normal palette transition, set to 
+      0 to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>paletteRef</TT> </TD>
+    <TD WIDTH=60>castMem <BR>
+      /symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Access palette as castMem/<BR>
+      symbol (symbols indicate built-in palettes), setting defaults to instant 
+      normal palette transition, set to <TT>castMem(0,0)</TT> to clear cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>paletteTransitionType</TT> </TD>
+    <TD WIDTH=60>symbol</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>&quot;<TT>#normal</TT>, <TT>#fadeToBlack</TT>, <TT>#fadeToWhite</>. 
+      Setting this clears paletteOverTime </TT>to 0 </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>paletteOverTime</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>0=transition palette between frames, <BR>
+      1 = transition palette over time, <BR>
+      setting to 1 ignores <TT>paletteSpeed</TT> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>paletteFrames</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>1-n, <BR>
+      setting &gt; 0 switches to <TT>paletteOverTime</TT>, set to 0 to clear (turns 
+      off <TT>overTime</TT>) </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>paletteSpeed</TT> </TD>
+    <TD WIDTH=60>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>1-30, setting this causes <TT>paletteOverTime </TT>to be ignored    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>transition</TT> </TD>
+    <TD WIDTH=60>castMem</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Transition <TT>castMemRef</TT>, set to castMem(0,0) to clear 
+      cell </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=175><TT>script</TT> </TD>
+    <TD WIDTH=60>castMem</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=451>Script <TT>castMemRef</TT>, set to castMem(0,0) to clear cell    </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="SCSNDPROPS">Score sound properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=84><B>Symbol</B></TD>
+    <TD WIDTH=65><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=464><B>Description</B> </TD>
+    <TD WIDTH=66><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>member</TT> </TD>
+    <TD WIDTH=65>castMem</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=464>Sound <TT>castMemRef</TT>, set to castMem(0,0) to clear cell    </TD>
+    <TD WIDTH=66></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=84><TT>scoreColor</TT> </TD>
+    <TD WIDTH=65>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=464>Score color index (0-5) </TD>
+    <TD WIDTH=66></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="SCSPPROPS">Score sprite properties</A></H5>
+<table bordercolor=#808080 border=2>
+  <tr> 
+    <td width=112><b>Symbol</b></td>
+    <td width=58><b>Type</b></td>
+    <td width=55><b>Get/Set</b></td>
+    <td width=442><b>Description</b> </td>
+    <td width=60><b>Notes</b></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>member</tt> </td>
+    <td width=58>castMem</td>
+    <td width=55>G/S</td>
+    <td width=442><tt>CastMemRef </tt>of cast member </td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>scoreColor</tt></td>
+    <td width=58>integer</td>
+    <td width=55>G/S</td>
+    <td width=442>Score color index (0-5) </td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>script</tt></td>
+    <td width=58>castMem</td>
+    <td width=55>G/S</td>
+    <td width=442><tt>CastMemRef </tt>of cast member </td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112> <tt>size</tt></td>
+    <td width=58>point</td>
+    <td width=55>G/S</td>
+    <td width=442>&nbsp;</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112> <tt>loc</tt></td>
+    <td width=58>point</td>
+    <td width=55>G/S</td>
+    <td width=442>Returns (x,y) point offset from stage point(0,0)</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>foreColor</tt></td>
+    <td width=58>integer</td>
+    <td width=55>G/S</td>
+    <td width=442>The foreground color index </td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112> <tt>backColor</tt></td>
+    <td width=58>integer</td>
+    <td width=55>G/S</td>
+    <td width=442>The background color index </td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>ink</tt></td>
+    <td width=58>integer</td>
+    <td width=55>G/S</td>
+    <td width=442>The applied ink</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>trails</tt></td>
+    <td width=58>boolean</td>
+    <td width=55>G/S</td>
+    <td width=442>State of trails</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>moveAbleSprite</tt></td>
+    <td width=58>boolean</td>
+    <td width=55>G/S</td>
+    <td width=442>State of moveAbleSprite</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>editableText</tt></td>
+    <td width=58>boolean</td>
+    <td width=55>G/S</td>
+    <td width=442>State of editableText</td>
+    <td width=60></td>
+  </tr>
+  <tr> 
+    <td width=112><tt>blend</tt></td>
+    <td width=58>integer</td>
+    <td width=55>G/S</td>
+    <td width=442>The sprite blend</td>
+    <td width=60></td>
+  </tr>
+</table>
+<H5><A NAME="RTFToC28">Xtra sprite actor properties</A></H5>
+The Sprite Xtra developer can support any other properties desired through the implementation 
+of the <TT>GetProp()</TT> and <TT>SetProp()</TT> methods of the <TT>IMoaMmXSpriteActor 
+</TT>interface.<br>
+<H5><A NAME="TRASPROPS">Transition asset properties</A></H5>
+<H5><A NAME="RTFToC30">General transition properties</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=116><B>Symbol</B></TD>
+    <TD WIDTH=40><B>Type</B></TD>
+    <TD WIDTH=51><B>Get/Set</B></TD>
+    <TD WIDTH=470><B>Description</B> </TD>
+    <TD WIDTH=47><B>Notes</B></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>transitionType</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=470>Transition ID (for built-in transitions only) </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>duration</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=470>Transition duration (ms: 0-32000) </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>changeArea</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=470>0=Full-screen, 1=Change-area only </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>chunkSize</TT> </TD>
+    <TD WIDTH=40>integer</TD>
+    <TD WIDTH=51>G/S</TD>
+    <TD WIDTH=470>Chunk size (opposite of smoothness) 1-128 </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>&lt;Custom Props&gt;</TT> </TD>
+    <TD WIDTH=40></TD>
+    <TD WIDTH=51></TD>
+    <TD WIDTH=470>Additional custom properties may be supported by Xtra-based 
+      transitions. See Xtra's documentation. </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=116><TT>&lt;Custom Funcs&gt;</TT> </TD>
+    <TD WIDTH=40></TD>
+    <TD WIDTH=51></TD>
+    <TD WIDTH=470>Custom functions may be supported by Xtra-based transitions. 
+      See Xtra's documentation. </TD>
+    <TD WIDTH=47></TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC31">Xtra transition properties</A></H5>
+The Transition Xtra developer can support any other properties desired through the implementation 
+of the <TT>GetProp()</TT> and <TT>SetProp()</TT> methods of the <TT>IMoaMmXAsset 
+</TT>interface. 
+<HR width=45% align=left>
+<H4><A NAME="DRTYPES">Director Types</A></H4>
+Defined in: drtypes.h<br>
+<H5><A NAME="RTFToC33">Cast member types</A></H5>
+<A NAME="MoaDrCastIndex"><code>MoaDrCastIndex</code></A>: <TT>MoaLong</TT> representing the index of a cast <BR>
+<code>PMoaDrCastIndex</code>: Pointer to the <TT>MoaDrCastIndex</TT> 
+of a cast <BR>
+<code>ConstPMoaDrCastIndex</code>: Pointer to a constant <TT>MoaDrMemberIndex</TT><br><br>
+ <A NAME="MoaDrCmRef"></A><code>MoaDrCMRef</code>, 
+<BR>
+<code>PMoaDrCMRef</code>, <BR>
+<A NAME="RTFToC36"><code>ConstPMoaDrCMRef</code></A><br>
+<code>typedef struct<br>
+{<br>
+&nbsp;MoaDrCastIndex movieCastIndex; <br>
+&nbsp;MoaDrMemberIndex memberIndex; <br>
+} MoaDrCMRef, FAR * PMoaDrCMRef;</code><br>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=114><TT>movieCastIndex</TT> </TD>
+    <TD WIDTH=390>Index of the cast to which the member belongs </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=114><TT>memberIndex</TT> </TD>
+    <TD WIDTH=390>Index of the cast member</TD>
+  </TR>
+</TABLE>
+The cast member reference structure represents a specific cast member in a specific 
+cast. Use the accessors, described in the macros section of this reference, to 
+access members of these structures. <TT>MoaDrCMRef T</TT>ype of a cast member 
+reference structure <TT>PMoaDrCMRef </TT>Pointer to a cast member reference structure 
+<TT>ConstPMoaDrCMRef </TT>Constant pointer to a cast member reference structure<br><br>
+<A NAME="MoaDrMemberIndex"><code>MoaDrMemberIndex</code></A><code>, 
+<BR>
+PMoaDrMemberIndex, <BR>
+ConstPMoaDrMemberIndex</code><br><TT>MoaDrMemberIndex MoaLong</TT> type representing 
+a MOA cast member.<br><TT>PMoaDrMemberIndex </TT>Pointer to the <TT>MoaDrMemberIndex</TT> 
+of a cast member<br><TT>ConstPMoaDrMemberIndex </TT>Pointer to a constant <TT>MoaDrMemberIndex</TT><br>
+<H5><A NAME="RTFToC41">Media access types</A></H5>
+<A NAME="MoaDrAccessInfo"><code>MoaDrAccessInfo</code></A><code>, 
+<BR>
+PMoaDrAccessInfo,<BR>
+ConstPMoaDrAccessInfo<br>
+typedef struct<br>
+{<br>
+struct IMoaDrMediaOwner FAR * pOwner;<br>
+MoaMmSymbol labelSymbol;<br>
+MoaMmSymbol formatSymbol; <br>
+} MoaDrAccessInfo;</code><br>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=99><TT>pOwner</TT> </TD>
+    <TD WIDTH=405>Interface of the object owning the media</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>labelSymbol</TT> </TD>
+    <TD WIDTH=405>label of media </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>formatSymbol</TT> </TD>
+    <TD WIDTH=405>format of media</TD>
+  </TR>
+</TABLE>
+Structure representing information used by the <TT>MediaAccess</TT> interface. 
+<TT>MediaAccess</TT> and <TT>ScoreAccess </TT>interface providers handle communication 
+with the media owner object to provide a task-specific interface for accessing 
+its media. <TT>MoaDrAccessInfo </TT>Structure representing media access information 
+<TT>PMoaDrAccessInfo </TT>Pointer to a <TT>MoaDrAccessInfo</TT> structure <TT>ConstPMoaDrAccessInfo 
+</TT>Constant pointer to a <TT>MoaDrAccessInfo</TT> structure<br><br>
+<A NAME="MoaDrImageAuxInfo"><code>MoaDrImageAuxInfo</code></A><code>, 
+<BR>
+PMoaDrImageAuxInfo,<BR>
+ConstPMoaDrImageAuxInfo<br>
+typedef struct<br>
+{<br>
+MoaLong pixelDepth;<br>
+MoaMmSymbol paletteSymbol; <br>
+MoaDrCMRef paletteCMRef; <br>
+MoaBoolParam dither; <br>
+} MoaDrImageAuxInfo;</code><br>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=108><TT>pixelDepth</TT> </TD>
+    <TD WIDTH=610>Pixel depth: 1, 2, 4, 8, 16, 32</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>paletteSymbol</TT> </TD>
+    <TD WIDTH=610>Symbol of built-in palette to use, 0 to use <TT>paletteCMRef</TT>    </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>paletteCMRef</TT> </TD>
+    <TD WIDTH=610><TT>MoaDrCMRef </TT>of cast-based palette to use. <TT><I>paletteSymbol 
+      </I></TT>must be set for this field. </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=108><TT>dither</TT> </TD>
+    <TD WIDTH=610>TRUE: dither, FALSE: remap</TD>
+  </TR>
+</TABLE>
+This structure applies only when setting image media. When specifying <TT>kMoaDrImgMediaOpts</TT>_AuxInfo 
+option for setting image media, the <TT>&quot;aux&quot; </TT>field of your <TT>MoaDrMediaInfo</TT> 
+structure must be a FAR * (pointer) to a caller-owned <TT>MoaDrImageAuxInfo</TT> 
+structure. This permits explicit definition of the pixel depth, associated palette 
+cast member, and resampling option (dither or remap) to be used. <TT>MoaDrImageAuxInfo 
+</TT>Structure representing auxilliary information <TT>PMoaDrImageAuxInfo </TT>Pointer 
+to a <TT>MoaDrImageAuxInfo</TT> structure <TT>ConstPMoaDrImageAuxInfo </TT>Constant 
+pointer to a <TT>MoaDrImageAuxInfo</TT> structure<br><br>
+<A NAME="MoaDrMediaInfo"><code>MoaDrMediaInfo</code></A><code>, 
+<BR>
+<A NAME="RTFToC45">PMoaDrMediaInfo,</A><BR>
+<A NAME="RTFToC46">ConstPMoaDrMediaInfo</A><br>
+typedef struct<br>
+{<br>
+MoaMmSymbol labelSymbol;<br>
+MoaMmSymbol formatSymbol;<br>
+PMoaVoid mediaData;<br>
+MoaDrMediaOpts options;<br>
+PMoaVoid aux;<br>
+PMoaVoid refCon; <br>
+} MoaDrMediaInfo;</code><br>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=99><TT>labelSymbol</TT> </TD>
+    <TD WIDTH=405>Label of media to set/get </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>formatSymbol</TT> </TD>
+    <TD WIDTH=405>Format of media to set/get</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>mediaData</TT> </TD>
+    <TD WIDTH=405>Media data </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>options</TT> </TD>
+    <TD WIDTH=405>Get/set options</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>aux</TT> </TD>
+    <TD WIDTH=405>Auxiliary data</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=99><TT>refCon</TT> </TD>
+    <TD WIDTH=405>Reserved </TD>
+  </TR>
+</TABLE>
+Structure providing information about media in a movie. Values of this type are 
+passed as arguments to the <TT>IMoaDrCastMember</TT> and <TT>IMoaDrMovie</TT> 
+methods <TT>GetMedia()</TT> and <TT>SetMedia()</TT>. <TT>MoaDrMediaInfo</TT> Structure 
+representing media information <TT>PMoaDrMediaInfo</TT> Pointer to <TT>MoaDrMediaInfo</TT> 
+<TT>ConstPMoaDrMediaInfo</TT> Constant pointer to <TT>MoaDrMediaInfo</TT><br>
+<H5><A NAME="RTFToC47">Notification type</A></H5>
+<TT><A NAME="MoaDrNotifyType">MoaDrNotifyType</A><br>MoaDrNotifyType</TT> 
+<TT>MoaLong</TT> representing type of notification requested Type representing 
+the type of a notification client. Director defines one value for this type: <code>kMoaDrDrNotifyType_DocFileIO</code>. 
+<BR>
+<H5><A NAME="RTFToC49">Score access types</A></H5>
+<code><A NAME="MoaDrFrameIndex">MoaDrFrameIndex</A>, 
+<BR>
+<A NAME="RTFToC51">PMoaDrFrameIndex</A></code><A NAME="RTFToC51"></A><br><TT>MoaDrFrameIndex</TT> <TT>MoaLong</TT> 
+representing a frame in a score<br><TT>PMoaDrFrameIndex</TT> Pointer to a <TT>MoaDrFrameIndex</TT> <br><br>
+
+<TT><A NAME="MoaDrSpriteChanIndex">MoaDrSpriteChanIndex</A>, 
+<BR>
+PMoaDrSpriteChanIndex<br>MoaDrSpriteChanIndex MoaLong</TT> representing 
+the score channel of a sprite<br><TT>PMoaDrSpriteChanIndex</TT> Pointer to a <TT>MoaDrSpriteChanIndex</TT>of 
+a sprite<br><br>
+<A NAME="MoaDrSoundChanIndex"><code>MoaDrSoundChanIndex</code></A><code>, 
+<BR>
+PMoaDrSoundChanIndex</code><br>
+<TT>MoaDrSoundChanIndex</TT> <TT>MoaLong</TT> representing 
+a sound channel in a score<br><TT>PMoaDrSoundChanIndex</TT> Pointer to a <TT>MoaDrSoundChanIndex</tt> 
+<BR>
+<H5><A NAME="MoaDrCharStyleData">Style data type</A></H5>
+<code>MoaDrCharStyleData, 
+PMoaDrCharStyleData<br>
+typedef struct {<br>
+&nbsp;MoaMmRGBTriple fCharForeColor;<br>
+&nbsp;MoaDouble fCharLetterspace;<br>
+&nbsp;MoaDouble fCharLinespace;<br>
+&nbsp;MoaShort fCharSize;<br>
+&nbsp;MoaShort fCharFont;<br>
+&nbsp;MoaDrCharStyle fCharFace;<br>
+} MoaDrCharStyleData,  * PMoaDrCharStyleData;<br></code>
+Structure passed to <A HREF="drrtaccs.htm" >IMoaDrRTAccess</A> 
+interface to specify style runs within a string to be rendered in rtf. It contains 
+the following fields:<BR>
+<TABLE>
+  <TR> 
+    <TD WIDTH=197><tt>fCharForeColor</tt> </TD>
+    <TD WIDTH=317>RGB text color </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=197><CODE>fCharLetterspace</CODE> </TD>
+    <TD WIDTH=317>Character spacing </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=197><CODE>fCharLinespace</CODE> </TD>
+    <TD WIDTH=317>Line spacing </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=197><CODE>fCharSize</CODE> </TD>
+    <TD WIDTH=317>Font size </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=197><CODE>fCharFont</CODE> </TD>
+    <TD WIDTH=317>Font style </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=197><CODE>fCharFace</CODE> </TD>
+    <TD WIDTH=317>Font face </TD>
+  </TR>
+</TABLE>
+<CODE>MoaDrCharStyleData</CODE> Style data structure<br><CODE>PMoaDrCharStyleData</CODE> 
+Pointer to style data structure 
+<HR width=45% align=left>
+<H4><A NAME="DRMACS">Director Macros</A></H4>
+Defined in: drtypes.h<br>
+<H5><A NAME="RTFToC58">Cast member reference access</A></H5>
+<TT><A NAME="CMRef_GetMemberIndex">CMRef_GetMemberIndex</A>()<br>
+CMRef_GetMemberIndex(MoaDrCMRef</TT> <TT><I>pCMRef</I>)</TT><br>
+<TT><I>pCMRef</I></TT>Pointer to a <TT>MoaDrCMRef</TT> structure. Returns the <TT>MoaDrMemberIndex</TT> 
+for the cast member referred to by the cast member reference structure <TT><I>pCMRef</I></TT>.<br><br>
+<TT><A NAME="CMRef_GetMovieCastIndex">CMRef_GetMovieCastIndex</A>()<br>
+CMRef_GetMovieCastIndex(MoaDrCMRef</TT> <TT><I>pCMRef</I>)</TT><br>
+<TT><I>pCMRef</I></TT>Pointer to a <TT>MoaDrCMRef</TT> structure. Returns the <TT>MoaDrCastIndex</TT> 
+for the cast referred to by the cast member reference structure <TT><I>pCMRef</I></TT>.<br><br>
+<A NAME="CMRef_Make"><code>CMRef_Make</code></A><code>()<br>
+CMRef_Make(MoaDrCMRef pCMRef, MoaDrCastIndex <I>castInd</I>, MoaDrMemberIndex <I>memberInd</I>)</code><br>
+<TT><I>pCMRef</I> </TT>Pointer to a <TT>MoaDrCMRef</TT> structure<br><TT><I>castInd</I> 
+MoaDrCastIndex</TT> value representing the cast <TT><I>castInd</I><br><I>memberInd</I> MoaDrMemberIndex</TT> 
+value representing the cast member<br>Places the cast represented by <TT><I>castInd 
+</I></TT>and cast member represented by <TT><I>castInd </I></TT>in the cast member 
+reference structure <TT><I>pCMRef</I></TT>.<br><br>
+<A NAME="CMRef_MakeNull"><code>CMRef_MakeNull</code></A><code>() 
+</code><br>
+<TT>CMRef_MakeNull(MoaDrCMRef <I>pCMRef</I></TT>)<br><TT><I>pCMRef</I> 
+</TT>Pointer to the <TT>MoaDrCMRef</TT> structure to clear<br>Clears the fields in 
+the cast member reference structure <TT><I>pCMRef</I></TT>.<br><br>
+<H5><A NAME="RTFToC63">Scripting Xtra call access</A></H5>
+<TT><A NAME="pciGetArgByIndex">pciGetArgByIndex</A>() <br>
+pciGetArgByIndex(PMoaMmCallInfo <I>pCallInfo</I>, MoaLong <I>argIndex</I>, MoaMmValue <I>pValue</I>)<br>
+</TT>
+<TT><I>pCallInfo</I></TT> Pointer type <TT>MoaMmCallInfo</TT>structure<br><TT><I>argIndex</I></TT> 
+<TT>MoaLong</TT> representing argument index<br><TT><I>pValue</I></TT> Pointer to 
+the argument<br>Accesses argument information in the <TT>MoaDrCallInfo</TT> structure 
+<TT><I>pCallInfo</I></TT>. Returns, in <TT><I>pValue</I></TT>, a pointer to the 
+argument specified by <TT><I>argIndex</I></TT>. 
+<HR width=45% align=left>
+<H4><A NAME="DRCONS">Director Constants</A></H4>
+Defined in: drtypes.h
+<H5><A NAME="RTFToC66">Cast name length constant</A></H5>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=161>Name </TD>
+    <TD WIDTH=400>Description</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=161><TT>kMoaDrMaxCastName</TT> </TD>
+    <TD WIDTH=400>Maximum length of cast name in bytes (255) </TD>
+  </TR>
+</TABLE>
+<H5><A NAME="RTFToC67">Image media option constants</A></H5>
+<TABLE BORDERCOLOR=#808080 BORDER=2>
+  <TR> 
+    <TD WIDTH=300><B>Name</B></TD>
+    <TD WIDTH=416><B>Description</B> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrMediaOpts_None</TT> </TD>
+    <TD WIDTH=416>Normal case when setting, getting, and attaching </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_AuthorDefined</TT> </TD>
+    <TD WIDTH=416>Assign pixel depth and palette for cast member based on author's 
+      preferences. In Director 5.0, this is currently the stage window screen's 
+      current pixel depth and palette. Supplied image data is remapped to this 
+      pixel depth and pale tte when placed in the cast member. This option is 
+      the default. </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_CastMemDepthAndPal</TT> </TD>
+    <TD WIDTH=416>Use the cast member's existing pixel depth and palette. Supplied 
+      image data is remapped to this pixel depth &amp; palette when placed in 
+      the cast member. If there is no image data for the cast member yet, this 
+      option is equivalent t o <TT>kMoaDrImgMediaOpts_AuthorDefined</TT> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_ScreenDepthAndPal</TT> </TD>
+    <TD WIDTH=416>Use the stage window screen's current pixel depth and palette. 
+      Supplied image data is remapped to this pixel depth &amp; palette when placed 
+      in the cast member. </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_Dialog</TT> </TD>
+    <TD WIDTH=416>Available in authoring application only. Invoke a dialog asking 
+      the user whether to use the image's current pixel depth or the screen's. 
+      Also, if it's an indexed image, user has the option of remapping to another 
+      existing palette. I f pixel depth is being reduced or a new palette is requested, 
+      the user can choose whether remapping or dithering should take place. </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_AuxInfo</TT> </TD>
+    <TD WIDTH=416>Explicitly specifies pixel depth, palette, and dither/remap 
+      option. If set, the <TT>&quot;aux&quot; </TT>field must be a pointer to 
+      a caller-owned <TT>MoaDrImageAuxInfo /FONT&gt;structure. See DRTYPES.H. 
+      </TT> </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=300><TT>kMoaDrImgMediaOpts_ImageDepthAndPal</TT> </TD>
+    <TD WIDTH=416>Use the supplied image's pixel depth and palette; don't do any 
+      remapping. If it has a palette (it's an indexed image) and the palette doesn't 
+      exist in the current movie's cast(s), a new palette cast member is created 
+      automatically c ontaining the image's palette, and is assigned to the bitmap 
+      cast member. </TD>
+  </TR>
+</TABLE>
+<HR width=45% align=left>
+<H4><A NAME="DRNIDS">Director Notification IDs</A></H4>
+<p>Defined in: driservc.h. </p>
+Notification events are sent to Xtras that implement the <A HREF="../moref/montfcln.htm">IMoaNotificationClient</A> interface 
+and that subscribe to specific events through the <A HREF="../moref/montfctn.htm">IMoaNotification</A> callback interface. 
+<a href="../drdg/index.htm#NotificationIDs">Notification IDs</a> are documented in the developer's guide. <BR>
+<HR width=45% align=left>
+<H4><A NAME="DRERRS">Director Error Codes</A></H4>
+Defined in: drtypes.h<br> 
+<TT>kMoaDrErr_Base</TT> Base value of Director error codes<br>
+<H5><A NAME="RTFToC73">Media access errors</A></H5>
+<TT>kMoaDrErr_PictureExpected<br>
+kMoaDrErr_MediaLabelNotSupported<br>
+kMoaDrErr_MediaFormatNotSupported<br>
+kMoaDrErr_MediaInUse<br>
+kMoaDrErr_MediaDataInvalid<br>
+kMoaDrErr_MediaDataNonexistent <br>
+kMoaDrErr_LabelNotFound<br>
+</TT>
+<H5><A NAME="RTFToC74">Property access errors</A></H5>
+<TT>kMoaDrErr_CastMemberExpected<BR>
+kMoaDrErr_MediaExpected</TT> <BR>
+<H5><A NAME="RTFToC75">Score access errors</A></H5>
+<TT>kMoaDrErr_NotInUpdateMode</TT> <BR>
+<TT>kMoaDrErr_OwnerNotSet</TT><BR>
+<H5><A NAME="RTFToC77">Miscellaneous error</A></H5>
+<TABLE BORDER="2">
+  <TR> 
+    <TD WIDTH=220><TT>kMoaDrErr_CastNotFound</TT> </TD>
+    <TD WIDTH=562>Returned by cast accessor methods to indicate specified cast 
+      not found </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=220><TT>kMoaDrErr_CastMemNotFound</TT> </TD>
+    <TD WIDTH=562>Returned by cast member accessor methods to indicate specified 
+      cast member not found </TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=220><TT>kMoaDrErr_DiskIO</TT> </TD>
+    <TD WIDTH=562>Disk input/output error</TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=220><TT>kMoaDrErr_FrameNotFound</TT> </TD>
+    <TD WIDTH=562></TD>
+  </TR>
+  <TR> 
+    <TD WIDTH=220><TT>kMoaDrErr_NotifyTypeUnknown</TT> </TD>
+    <TD WIDTH=562></TD>
+  </TR>
+</TABLE>
+<HR width=45% align=left>
+<A HREF = "../copyrite.htm">Copyright &#169; 1995-2007 Adobe Macromedia Software LLC, Inc.</A>
+</BODY>
+</HTML>
